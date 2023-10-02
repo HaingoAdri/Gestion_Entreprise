@@ -1,5 +1,7 @@
 # Gestion_Entreprise
-Créer un module pour RH pour les recrutements ainsi que l'identification des besoins.
+
+## 💻 Le language utiliser PHP comme techno, Postgres comme base, Laravel comme Framework !!!💻
+🔎🔎 Créer un module pour RH pour les recrutements ainsi que l'identification des besoins. 🔎🔎
 Dans ce module RH il y aura la Gestion de recrutement:
   - Savoir tous les services ou département .
   - Identifier les besoins de chaque services .
