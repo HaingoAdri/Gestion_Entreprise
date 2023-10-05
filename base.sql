@@ -164,7 +164,7 @@ create table Details_Besoin_Ville(
 
 -- **************************************FRONT-OFFICE************************************************
 
--- CV
+-- CV ----------------------tsy vita
     create table cv(
         id serial primary key,
         idClient int,

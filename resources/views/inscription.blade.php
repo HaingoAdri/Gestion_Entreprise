@@ -70,7 +70,6 @@
                               <option value="{{ $module->id }}">
                                 {{ $module->type }}
                               </option>
-                            </tr>
                             @endforeach
                           </select>
                         </div>

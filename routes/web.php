@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Inscription_controller;
 use App\Http\Controllers\Connexion_controller;
+use App\Http\Controllers\Service_controller;
+use App\Http\Controllers\Besoin_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +17,21 @@ use App\Http\Controllers\Connexion_controller;
 |
 */
 
-Route::get('/', [Connexion_controller::class, "index"])->name("connexion");
 
+// CONNEXION
+Route::get('/', [Connexion_controller::class, "index"])->name("connexion");
 Route::get('/authentification_connexion', [Connexion_controller::class, "authentification_connexion"])->name("authentification_connexion");
 
+// INSCRIPTION
 Route::get('/inscription', [Inscription_controller::class, "index"])->name("inscription");
-
 Route::get('/authentification_inscription', [Inscription_controller::class, "authentification_inscription"])->name("authentification_inscription");
+
+// SERVICES
+Route::get('/ajout_service', [Service_controller::class, "index"])->name("ajout_service");
+Route::get('/insert_service', [Service_controller::class, "insertService"])->name("insert_service");
+
+// BESOINS
+Route::get('/ajout_besoin', [Besoin_controller::class, "index"])->name("ajout_besoin");
 
 Route::get('/accueil', function () {
     return view('accueil');
