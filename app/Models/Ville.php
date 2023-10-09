@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB; // Importez la classe DB
 class Ville extends Model
 {
     public $id;
+    public $idregion;
     public $region;
     public $type;
 
@@ -21,6 +22,7 @@ class Ville extends Model
             foreach($reponse as $resultat) {
                 $ville = new Ville();
                 $ville->id = $resultat->id;
+                $ville->idregion = $resultat->idregion;
                 $region = new Region();
                 $ville->region = $region->getUneRegion($resultat->idregion);
                 $ville->type = $resultat->type;
@@ -29,4 +31,12 @@ class Ville extends Model
         }
         return $liste;
     }
+
+    public function getOneVille($idRegion){
+        // Assuming you have defined an Eloquent model for the 'ville' table
+        $villes = DB::table('ville') -> where('idregion', $idRegion)->get();
+    
+        return $villes;
+    }
+    
 }

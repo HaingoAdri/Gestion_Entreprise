@@ -94,13 +94,17 @@
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#service"
                             aria-expanded="false" aria-controls="service">
                                 <i class="mdi mdi-email"></i>
-                                <span class="nav-text">Services</span> <b class="caret"></b>
+                                <span class="nav-text">Services / Postes</span> <b class="caret"></b>
                             </a>
                             <ul  class="collapse"  id="service" data-parent="#sidebar-menu">
                                 <div class="sub-menu">
                                 
                                     <li><a class="sidenav-item-link" href="{{ route('ajout_service') }}">
                                         <span class="nav-text">Ajouter une service</span>
+                                    </a></li>
+
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_poste') }}">
+                                        <span class="nav-text">Ajouter un poste</span>
                                     </a></li>
                         
                                 </div>

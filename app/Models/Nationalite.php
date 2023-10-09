@@ -26,4 +26,10 @@ class Nationalite extends Model
         }
         return $liste;
     }
+
+    public function getNationalite($id){
+        $nationalite = DB::table('nationalite') -> where('id', $id)->get();
+    
+        return $nationalite;
+    }
 }

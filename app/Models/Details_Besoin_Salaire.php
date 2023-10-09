@@ -15,8 +15,35 @@ class Details_Besoin_Salaire extends Model
     public $max;
     public $note;
 
+    public function insertDetailsBesoinSalaire($idBesoin, $min,$max, $note) {
+        try {
+            $requete = "insert into Details_Besoin_Salaire(idBesoin, min, max, note) values (".$idBesoin.",".$min.",".$max.",".$note.")";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin Salaire: ".$e->getMessage());
+        }    
+    }
+
     public function getListeBesoinsSalaire() {
         $requette = "select * from details_Besoin_Salaire";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $details_Besoin_Salaire = new Details_Besoin_Salaire();
+                $details_Besoin_Salaire->id = $resultat->id;
+                $details_Besoin_Salaire->idBesoin = $resultat->idBesoin;
+                $details_Besoin_Salaire->min = $resultat->min;
+                $details_Besoin_Salaire->max = $resultat->max;
+                $details_Besoin_Salaire->note = $resultat->note;
+                $liste[] = $details_Besoin_Salaire;
+            }
+        }
+        return $liste;
+    }
+
+    public function getListeBesoinsSalaireParIdBesoin($idBesoin) {
+        $requette = "select * from details_Besoin_Salaire where idBesoin = "+$idBesoin;
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

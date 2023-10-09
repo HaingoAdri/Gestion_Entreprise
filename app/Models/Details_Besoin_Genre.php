@@ -14,6 +14,15 @@ class Details_Besoin_Genre extends Model
     public $idGenre;
     public $note;
 
+    public function insertDetailsBesoinGenre($idBesoin, $idGenre, $note) {
+        try {
+            $requete = "insert into Details_Besoin_Genre(idBesoin, idGenre, note) values (".$idBesoin.",".$idGenre.",".$note.")";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin Genre: ".$e->getMessage());
+        }    
+    }
+
     public function getListeBesoinsGenre() {
         $requette = "select * from Details_Besoin_Genre";
         $reponse = DB::select($requette);

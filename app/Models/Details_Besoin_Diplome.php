@@ -14,6 +14,15 @@ class Details_Besoin_Diplome extends Model
     public $idDiplome;
     public $note;
 
+    public function insertDetailsBesoinDiplome($idBesoin, $idDiplome, $note) {
+        try {
+            $requete = "insert into Details_Besoin_Diplome(idBesoin, idDiplome, note) values (".$idBesoin.",".$idDiplome.",".$note.")";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin Diplome: ".$e->getMessage());
+        }    
+    }
+
     public function getListeBesoinsDiplome() {
         $requette = "select * from details_Besoin_Diplome";
         $reponse = DB::select($requette);

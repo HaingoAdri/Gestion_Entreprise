@@ -13,7 +13,6 @@ class Service_controller extends Controller
         $listeServices = $service->getListeServices();
 
         return view('ajout_service', compact("listeServices"));
-        return view("ajout_service");
     }
 
     public function insertService(Request $request) {

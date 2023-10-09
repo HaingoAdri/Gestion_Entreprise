@@ -12,7 +12,7 @@ class Situation_Matrimoniale extends Model
     public $id;
     public $type;
 
-    public function getListesituation_Matrimoniales() {
+    public function getListeSituation_Matrimoniales() {
         $requette = "select * from situation_Matrimoniale";
         $reponse = DB::select($requette);
         $liste = array();

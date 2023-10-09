@@ -162,6 +162,13 @@ create table Details_Besoin_Ville(
     foreign key (idVille) references Ville(id)
 );
 
+
+-- ALTER:
+ALTER TABLE Besoin DROP COLUMN besoin_horaire;
+ALTER TABLE Besoin DROP COLUMN heure_jour_homme;
+ALTER TABLE besoin ADD COLUMN besoin_horaire DOUBLE PRECISION;
+ALTER TABLE besoin ADD COLUMN heure_jour_homme DOUBLE PRECISION;
+
 -- **************************************FRONT-OFFICE************************************************
 
 -- CV ----------------------tsy vita

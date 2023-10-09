@@ -14,6 +14,16 @@ class Details_Besoin_Region extends Model
     public $idRegion;
     public $note;
 
+    public function insertDetailsBesoinRegion($idBesoin, $idRegion, $note) {
+        try {
+            $requete = "insert into Details_Besoin_Region(idBesoin, idRegion, note) values (".$idBesoin.",".$idRegion.",".$note.")";
+            echo $requete;
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin Region: ".$e->getMessage());
+        }    
+    }
+
     public function getListeBesoinsRegion() {
         $requette = "select * from details_Besoin_Region";
         $reponse = DB::select($requette);
@@ -37,10 +47,10 @@ class Details_Besoin_Region extends Model
         $details_Besoin_Region = null;
         if(count($reponse) > 0) {
             $details_Besoin_Region = new Details_Besoin_Region();
-            $details_Besoin_Region->id = $resultat->id;
-            $details_Besoin_Region->idBesoin = $resultat->idBesoin;
-            $details_Besoin_Region->idRegion = $resultat->idRegion;
-            $details_Besoin_Region->note = $resultat->note;
+            $details_Besoin_Region->id = $reponse->id;
+            $details_Besoin_Region->idBesoin = $reponse->idBesoin;
+            $details_Besoin_Region->idRegion = $reponse->idRegion;
+            $details_Besoin_Region->note = $reponse->note;
         }
         return $details_Besoin_Region;
     }

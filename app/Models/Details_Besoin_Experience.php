@@ -14,6 +14,15 @@ class Details_Besoin_Experience extends Model
     public $annee_experience;
     public $note;
 
+    public function insertDetailsBesoinExperience($idBesoin, $annee_experience, $note) {
+        try {
+            $requete = "insert into Details_Besoin_Experience(idBesoin, annee_experience, note) values (".$idBesoin.",".$annee_experience.",".$note.")";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin Experience: ".$e->getMessage());
+        }    
+    }
+
     public function getListeBesoinsExperience() {
         $requette = "select * from details_Besoin_Experience";
         $reponse = DB::select($requette);

@@ -77,12 +77,12 @@
         </div>
     </div>
 
-    <!-- Add Contact Button  -->
+    <!-- Add Besoin Poste, Horaire, TJH, Service  -->
     <div class="modal fade" id="modal-add-contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <form >
+                <form action="{{ route('insertion_Besoin') }}">
                     <div class="modal-header px-4">
                         <h5 class="modal-title" id="exampleModalCenterTitle">Mes Besoins</h5>
                     </div>
@@ -92,138 +92,89 @@
                             <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Nom du Poste</label>
                             <div class="col-sm-8 col-lg-10">
                                 <div class="custom-file mb-1">
-                                    <input type="text" class="form-control" id="firstName" value="Albrecht">
+                                @foreach($listePostes as $poste)
+                                  <select name="poste_id" class="form-control">
+                                    <option value="{{ $poste->id }}">{{ $poste->type }}</option>
+                                  </select>
+                                @endforeach
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group row mb-6">
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Service</label>
+                            <div class="col-sm-8 col-lg-10">
+                                <div class="custom-file mb-1">
+                                  @foreach($listeServices as $service)
+                                    <select name="service_id" class="form-control">
+                                      <option value="{{ $service->id }}">{{ $service->type }}</option>
+                                    </select>
+                                  @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-6">
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Horaires</label>
+                            <div class="col-sm-8 col-lg-10">
+                                <div class="custom-file mb-1">
+                                  <input type="number" class="form-control" id="horaireBesoin" name="horaireBesoin">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-6">
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">TJH</label>
+                            <div class="col-sm-8 col-lg-10">
+                                <div class="custom-file mb-1">
+                                  <input type="number" class="form-control" id="tjh" name="tjh">
+                                </div>
+                            </div>
+                        </div>
+                        
+
                     </div>
                     <div class="modal-footer px-4">
                         <button type="button" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary btn-pill" data-toggle="modal" data-dismiss="modal" data-target="#modal-suivant">Suivant</button>
+                        <button type="submit" class="btn btn-primary btn-pill">Suivant</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Add Contact Button  -->
-    <div class="modal fade" id="modal-suivant" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <form >
-                    <div class="modal-header px-4">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">Quels sont les criteres ?</h5>
-                    </div>
-                    <div class="modal-body px-4">
-
-                    <div class="row mb-2">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="firstName">Genre</label>
-                                <div class="row" style="padding-left: 1rem;">
-                                    <div class="custom-control custom-checkbox d-inline-block mr-3 mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="masculin" name="masculin">
-                                        <label class="custom-control-label" for="customCheckPrimary">Masculin</label>
-                                    </div>
-                            
-                                    <div class="custom-control custom-checkbox checkbox-secondary d-inline-block mr-3 mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="feminin" name="feminin">
-                                        <label class="custom-control-label" for="customCheckSecondary">Feminin</label>
-                                    </div>  
-                    </div>
-            </div>
-            </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="email">Diplome</label>
-              <select class="form-control" name="diplome">
-                <option value="">BEPC</option>
-                <option value="">BACC</option>
-                <option value="">Licence</option>
-                <option value="">Master</option>
-                <option value="">Doctorat</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="event">Age</label>
-              <input type="text" class="form-control" id="age" name="age">
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="event">Experience minimum</label>
-              <input type="text" class="form-control" id="experience" name="experience">
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="lastName">Nationalite</label>
-              <select class="form-control" name="nationalite">
-                <option value="">Un</option>
-                <option value="">Deux</option>
-                <option value="">Trois</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="event">Horaires besoins</label>
-              <input type="text" class="form-control" id="horaireBesoin" name="horaireBesoin">
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="lastName">Situation matrimoniale</label>
-              <select class="form-control" name="situationMatrimoniale">
-                <option value="">Celibataire</option>
-                <option value="">En couple</option>
-                <option value="">Fiance(e)</option>
-                <option value="">Marie(e)</option>
-                <option value="">Veuf</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="event">TJH</label>
-              <input type="text" class="form-control" id="tjh" name="tjh">
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-4">
-              <label for="email">Residence</label>
-              <select class="form-control" name="residenceRegion">
-                <option value="">Antananarivo</option>
-                <option value="">Antsirabe</option>
-                <option value="">Mahajanga</option>
-                <option value="">Tamatavy</option>
-                <option value="">Toliara</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer px-4">
-        <button type="button" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn-pill">Suivant</button>
-      </div>
-    </form>
-  </div>
-</div>
 </div>
 
-</div>
+<script defer>
+   
+    document.querySelector("#ajout-age").addEventListener("click", () => {
+        ajoutDeLigneAge()
+    })
+    document.querySelector("#supprimer-age").addEventListener("click", () => {
+        deleteLigneAge()
+    })
+
+    function ajoutDeLigneAge() {
+        var container = document.getElementById("line-container-age");
+        var lines = document.querySelectorAll("#tbody-age");
+        var newLine = lines[lines.length - 1].cloneNode(true);
+
+        var prevMaxAgeInput = lines[lines.length - 1].querySelector("input[name='maxAge[]']");
+        var minAgeInput = newLine.querySelector("input[name='minAge[]']");
+        minAgeInput.value = prevMaxAgeInput.value;
+
+        var maxAgeInput = newLine.querySelector("input[name='maxAge[]']");
+        var noteInput = newLine.querySelector("input[name='noteAge[]']");
+        maxAgeInput.value = "";
+        noteInput.value = "";
+
+        container.appendChild(newLine);
+    }
+
+   function deleteLigneAge(){
+       document.getElementById("line-container").deleteRow(1);
+   }
+
+</script>
 
 @endsection

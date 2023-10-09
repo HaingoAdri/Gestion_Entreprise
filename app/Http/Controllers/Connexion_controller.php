@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Administrateur;
 use App\Models\Module;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
+use Illuminate\Support\Facades\Session;
 
 class Connexion_controller extends Controller
 {
@@ -23,6 +24,7 @@ class Connexion_controller extends Controller
         $mot_de_passe = $request->input('mot_de_passe');
         $connecteur = $administrateur->getAdministrateur($email, $mot_de_passe);
         if($connecteur != null){
+            Session::put('administrateur_rh', $connecteur);
             return view('accueil');
         }
         return view("connexion", compact("listeModules"));

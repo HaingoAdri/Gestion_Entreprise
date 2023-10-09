@@ -12,6 +12,15 @@ class Poste extends Model
     public $id;
     public $type;
 
+    public function insertPoste($type) {
+        try {
+            $requete = "insert into poste(type) values ('".$type."')";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Poste: " . $e->getMessage());
+        }    
+    }
+
     public function getListePostes() {
         $requette = "select * from Poste";
         $reponse = DB::select($requette);
