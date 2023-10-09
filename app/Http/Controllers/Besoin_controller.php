@@ -74,4 +74,16 @@ class Besoin_controller extends Controller
         return redirect()->route('ajout_details_besoin_age');
     }
     
+    public function annonce() {
+        $listeRegions = (new Region())->getListeRegions();
+        $listeVilles = (new Ville())->getListeVilles();
+
+        $listeSituations = (new Situation_Matrimoniale())->getListeSituation_Matrimoniales();
+
+        $listeNationalites = (new Nationalite())->getListeNationalites();
+
+        $listeDiplomes = (new Diplome())->getListeDiplomes();
+        
+        return view("liste_annonce", compact("listeRegions","listeVilles", "listeSituations", "listeNationalites", "listeDiplomes"));
+    }
 }

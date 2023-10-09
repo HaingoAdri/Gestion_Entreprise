@@ -68,6 +68,10 @@ create table Client (
     idGenre int
 );
 
+insert into Client (nom,prenom,email,mot_de_passe,date_naissance, idGenre) values
+('ANDRIAMANANTSOA', 'Tojo', 'tojo@gmail.com', 'tojo', '2003-10-07', 1),
+('RAKOTONIRIANA', 'Sandy', 'sandy@gmail.com', 'sandy', '1998-02-15', 2);
+
 -- BESOIN
 create table Besoin (
     id serial primary key,

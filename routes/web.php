@@ -23,10 +23,17 @@ use App\Http\Controllers\Details_Besoin_controller;
 // CONNEXION
 Route::get('/', [Connexion_controller::class, "index"])->name("connexion");
 Route::get('/authentification_connexion', [Connexion_controller::class, "authentification_connexion"])->name("authentification_connexion");
+//CONNEXION Client
+Route::get('/login', [Connexion_controller::class, "login"])->name("login");
+Route::get('/authentification_client', [Connexion_controller::class, "authentification_client"])->name("authentification_client");
 
 // INSCRIPTION
 Route::get('/inscription', [Inscription_controller::class, "index"])->name("inscription");
 Route::get('/authentification_inscription', [Inscription_controller::class, "authentification_inscription"])->name("authentification_inscription");
+// INSCRIPTION 
+Route::get('/inscription_client', [Inscription_controller::class, "inscription"])->name("inscription_client");
+Route::get('/authentification_inscription_client', [Inscription_controller::class, "inscription_client"])->name("authentification_inscription_client");
+
 
 // SERVICES
 Route::get('/ajout_service', [Service_controller::class, "index"])->name("ajout_service");
@@ -60,7 +67,7 @@ Route::get('/insertion_Details_Salaire', [Details_Besoin_controller::class, "ins
 
 // web.php
 Route::get('/send-ville/{idRegion}', [Details_Besoin_controller::class, "sendVille"]);
-
+Route::get('/liste_annonce', [Besoin_controller::class, "annonce"])->name("liste_annonce");
 Route::get('/accueil', function () {
     return view('accueil');
 });

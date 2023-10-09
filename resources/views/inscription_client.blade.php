@@ -14,7 +14,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Mono - Responsive Admin & Dashboard Template</title>
+  <title>Inscription</title>
 
   <!-- GOOGLE FONTS -->
   <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
@@ -53,38 +53,38 @@
                   </div>
                   <div class="card-body px-5 pb-5 pt-0">
                     <h4 class="text-dark text-center mb-5">Inscription</h4>
-                    <form action="{{ route('authentification_inscription') }}" method="post">
+                    <form action="{{ route('authentification_inscription_client') }}" method="post">
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
-                          <input type="text" class="form-control input-lg" id="nom" name="nom" aria-describedby="nameHelp" placeholder="Nom">
+                          <input type="text" class="form-control input-lg" id="nom" name="nom" aria-describedby="nameHelp" placeholder="Nom" required>
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <input type="text" class="form-control input-lg" id="prenom" name="prenom" aria-describedby="nameHelp" placeholder="Prenom">
+                          <input type="text" class="form-control input-lg" id="prenom" name="prenom" aria-describedby="nameHelp" placeholder="Prenom" required>
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <input type="email" class="form-control input-lg" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
+                          <input type="date" class="form-control input-lg" id="date" name="date_naissance" aria-describedby="nameHelp" placeholder="Date" required>
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <select class="form-control" name="module">
-                            @foreach($listeModules as $module)
-                              <option value="{{ $module->id }}">
-                                {{ $module->type }}
-                              </option>
-                            @endforeach
+                          <input type="email" class="form-control input-lg" id="email" name="email" aria-describedby="emailHelp" placeholder="Email" required>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                          <select class="form-control" name="idGenre" required>
+                              <option value="1">Homme</option>
+                              <option value="2">Femme</option>
                           </select>
                         </div>
                         <div class="form-group col-md-12 ">
-                          <input type="password" class="form-control input-lg" id="mot_de_passe" name="mot_de_passe" placeholder="Password">
+                          <input type="password" class="form-control input-lg" id="mot_de_passe" name="mot_de_passe" placeholder="Password" required>
                         </div>
                         <div class="form-group col-md-12 ">
-                          <input type="password" class="form-control input-lg" id="cmot_de_passe" name="cmot_de_passe" placeholder="Confirm Password">
+                          <input type="password" class="form-control input-lg" id="cmot_de_passe" name="cmot_de_passe" placeholder="Confirm Password" required>
                         </div>
                         <div class="col-md-12">
 
                           <button type="submit" class="btn btn-primary btn-pill mb-4">Inscritpion</button>
 
                           <p>Deja inscris ?
-                            <a class="text-blue" href="{{ route('connexion') }}">Connexion</a>
+                            <a class="text-blue" href="{{ route('login') }}">Connexion</a>
                           </p>
                         </div>
                       </div>

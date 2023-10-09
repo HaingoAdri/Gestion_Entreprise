@@ -128,6 +128,23 @@
                             </ul>
                         </li>
 
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
+                            aria-expanded="false" aria-controls="annonce">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Annonce</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_annonce') }}">
+                                        <span class="nav-text">Liste des annonces</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
                         <li>
                             <a class="sidenav-item-link" href="chat.html">
                                 <i class="mdi mdi-wechat"></i>
@@ -216,7 +233,7 @@
                       </li>
 
                       <li class="dropdown-footer">
-                        <a class="dropdown-link-item" href="sign-in.html"> <i class="mdi mdi-logout"></i> Log Out </a>
+                        <a class="dropdown-link-item" href="{{ route('login') }}"> <i class="mdi mdi-logout"></i> Log Out </a>
                       </li>
                     </ul>
                   </li>
