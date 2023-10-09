@@ -26,4 +26,16 @@ class Diplome extends Model
         }
         return $liste;
     }
+
+    public function getUneDiplome($id) {
+        $requette = "select * from diplome where id = " . $id;
+        $reponse = DB::select($requette);
+        $diplome = null;
+        if(count($reponse) > 0) {
+            $diplome = new Diplome();
+            $diplome->id = $reponse[0]->id;
+            $diplome->type = $reponse[0]->type;
+        }
+        return $diplome;
+    }
 }

@@ -13,6 +13,7 @@ class Details_Besoin_Matrimoniale extends Model
     public $idBesoin;
     public $idMatrimoniale;
     public $note;
+    public $matrimoniale;
 
     public function insertDetailsBesoinMatrimoniale($idBesoin, $idMatrimoniale, $note) {
         try {
@@ -31,9 +32,27 @@ class Details_Besoin_Matrimoniale extends Model
             foreach($reponse as $resultat) {
                 $details_Besoin_Matrimoniale = new Details_Besoin_Matrimoniale();
                 $details_Besoin_Matrimoniale->id = $resultat->id;
-                $details_Besoin_Matrimoniale->idBesoin = $resultat->idBesoin;
-                $details_Besoin_Matrimoniale->idMatrimoniale = $resultat->idMatrimoniale;
+                $details_Besoin_Matrimoniale->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Matrimoniale->idMatrimoniale = $resultat->idmatrimoniale;
                 $details_Besoin_Matrimoniale->note = $resultat->note;
+                $liste[] = $details_Besoin_Matrimoniale;
+            }
+        }
+        return $liste;
+    }
+
+    public function getListeBesoinsMatrimonialeParIdBesoin($idBesoin) {
+        $requette = "select * from details_Besoin_Matrimoniale where idBesoin = ".$idBesoin;
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $details_Besoin_Matrimoniale = new Details_Besoin_Matrimoniale();
+                $details_Besoin_Matrimoniale->id = $resultat->id;
+                $details_Besoin_Matrimoniale->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Matrimoniale->idMatrimoniale = $resultat->idmatrimoniale;
+                $details_Besoin_Matrimoniale->note = $resultat->note;
+                $details_Besoin_Matrimoniale->matrimoniale = (new Situation_Matrimoniale())->getUneMatrimoniale($details_Besoin_Matrimoniale->idMatrimoniale);
                 $liste[] = $details_Besoin_Matrimoniale;
             }
         }

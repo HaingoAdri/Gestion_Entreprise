@@ -43,15 +43,15 @@ class Details_Besoin_Nationalite extends Model
     }
 
     public function getListeBesoinsNationaliteParIdBesoin($idBesoin) {
-        $requette = "select * from details_Besoin_Nationalite where idBesoin = "+$idBesoin;
+        $requette = "select * from details_Besoin_Nationalite where idBesoin = ".$idBesoin;
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $details_Besoin_Nationalite = new Details_Besoin_Nationalite();
                 $details_Besoin_Nationalite->id = $resultat->id;
-                $details_Besoin_Nationalite->idBesoin = $resultat->idBesoin;
-                $details_Besoin_Nationalite->nationalite = (new Nationalite())->getNationalite($resultat->idNationalite);
+                $details_Besoin_Nationalite->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Nationalite->nationalite = (new Nationalite())->getNationalite($resultat->idnationalite);
                 $details_Besoin_Nationalite->note = $resultat->note;
                 $liste[] = $details_Besoin_Nationalite;
             }

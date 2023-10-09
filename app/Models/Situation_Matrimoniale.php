@@ -26,4 +26,16 @@ class Situation_Matrimoniale extends Model
         }
         return $liste;
     }
+
+    public function getUneMatrimoniale($id) {
+        $requette = "select * from Situation_Matrimoniale where id = " . $id;
+        $reponse = DB::select($requette);
+        $matrimoniale = null;
+        if(count($reponse) > 0) {
+            $matrimoniale = new Situation_Matrimoniale();
+            $matrimoniale->id = $reponse[0]->id;
+            $matrimoniale->type = $reponse[0]->type;
+        }
+        return $matrimoniale;
+    }
 }

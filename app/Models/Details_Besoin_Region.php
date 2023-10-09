@@ -14,6 +14,8 @@ class Details_Besoin_Region extends Model
     public $idRegion;
     public $note;
 
+    public $region;
+
     public function insertDetailsBesoinRegion($idBesoin, $idRegion, $note) {
         try {
             $requete = "insert into Details_Besoin_Region(idBesoin, idRegion, note) values (".$idBesoin.",".$idRegion.",".$note.")";
@@ -32,9 +34,27 @@ class Details_Besoin_Region extends Model
             foreach($reponse as $resultat) {
                 $details_Besoin_Region = new Details_Besoin_Region();
                 $details_Besoin_Region->id = $resultat->id;
-                $details_Besoin_Region->idBesoin = $resultat->idBesoin;
-                $details_Besoin_Region->idRegion = $resultat->idRegion;
+                $details_Besoin_Region->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Region->idRegion = $resultat->idregion;
                 $details_Besoin_Region->note = $resultat->note;
+                $liste[] = $details_Besoin_Region;
+            }
+        }
+        return $liste;
+    }
+
+    public function getListeBesoinsRegionParIdBesoin($IdBesoin) {
+        $requette = "select * from details_Besoin_Region where idBesoin = ".$IdBesoin;
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $details_Besoin_Region = new Details_Besoin_Region();
+                $details_Besoin_Region->id = $resultat->id;
+                $details_Besoin_Region->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Region->idRegion = $resultat->idregion;
+                $details_Besoin_Region->note = $resultat->note;
+                $details_Besoin_Region->region = (new Region())->getUneRegion($details_Besoin_Region->idRegion);
                 $liste[] = $details_Besoin_Region;
             }
         }

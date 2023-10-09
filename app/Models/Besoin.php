@@ -15,10 +15,16 @@ class Besoin extends Model
     public $idService;
     public $besoin_horaire;
     public $heure_jour_homme;
+    public $description;
 
-    public function insertBesoin($idPoste, $idService, $besoin_horaire, $heure_jour_homme) {
+    public $poste;
+    public $service;
+    public $personnes;
+    public $annonce;
+
+    public function insertBesoin($idPoste, $idService, $besoin_horaire, $heure_jour_homme, $description) {
         try {
-            $requete = "insert into besoin(idPoste, idService, besoin_horaire, heure_jour_homme) values (".$idPoste.",".$idService.",'".$besoin_horaire."','".$heure_jour_homme."')";
+            $requete = "insert into besoin(idPoste, idService, besoin_horaire, heure_jour_homme, description) values (".$idPoste.",".$idService.",'".$besoin_horaire."','".$heure_jour_homme."','".$description."')";
             DB::insert($requete);
             // Obtenez l'ID généré automatiquement
             $dernierBesoinId = DB::getPdo()->lastInsertId();
@@ -43,9 +49,16 @@ class Besoin extends Model
             foreach($reponse as $resultat) {
                 $besoin = new Besoin();
                 $besoin->id = $resultat->id;
-                $besoin->idPoste = $resultat->idPoste;
+                $besoin->idPoste = $resultat->idposte;
+                $besoin->idService = $resultat->idservice;
+                $besoin->poste = (new Poste())->getUnePoste($besoin->idPoste);
+                $besoin->service = (new Service())->getUneService($besoin->idService);
                 $besoin->besoin_horaire = $resultat->besoin_horaire;
                 $besoin->heure_jour_homme = $resultat->heure_jour_homme;
+                $besoin->description = $resultat->description;
+                $besoin->personnes = ((int)($besoin->besoin_horaire/$besoin->heure_jour_homme));
+                $besoin->annonce = (new Annonce())->createAnnonce($besoin->id);
+
                 $liste[] = $besoin;
             }
         }
@@ -62,6 +75,7 @@ class Besoin extends Model
             $besoin->idPoste = $reponse->idPoste;
             $besoin->besoin_horaire = $reponse->besoin_horaire;
             $besoin->heure_jour_homme = $reponse->heure_jour_homme;
+            $besoin->description = $reponse->description;
         }
         return $besoin;
     }

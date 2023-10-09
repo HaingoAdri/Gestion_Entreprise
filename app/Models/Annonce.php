@@ -14,22 +14,13 @@ use App\Models\Genre;
 
 class Annonce extends Model
 {
-    public function calcul_personne_besoin(){
-        $besoin = new Besoin();
-        $bHoraire = $besoin->besoin_horaire;
-        $tjh = $besoin->heure_jour_homme;
-        $nbPersonne = ($bHoraire/$tjh);
-        return $nbPersonne;
-    }
-
-    public function getGenre($nombre){
-        if($nombre == 1){
-            return "Femme";
-        }else if($nombre == 10){
-            return "Homme";
-        }
-        return "";
-    }
+    public $Age;
+    public $Experience;
+    public $Genre;
+    public $Diplome;
+    public $Nationalite;
+    public $Region;
+    public $Matrimoniale;
 
     public function getAge($idBesoin){
         $dataAge = (new Details_Besoin_Age())->getListeBesoinsAgeParIdBesoin($idBesoin);
@@ -39,11 +30,59 @@ class Annonce extends Model
     }
 
     public function getNationalite($idBesoin){
-        $dataNationalite = (new Details_Besoin_Salaire())->getListeBesoinsNationaliteParIdBesoin($idBesoin);
+        $dataNationalite = (new Details_Besoin_Nationalite())->getListeBesoinsNationaliteParIdBesoin($idBesoin);
         $nationalites = array();
         for($i=0; $i<count($dataNationalite); $i++){
             $nationalites[] = $dataNationalite[$i]->nationalite->type;
         }
         return $nationalites;
+    }
+    
+    public function getDiplome($idBesoin){
+        $dataDiplome = (new Details_Besoin_Diplome())->getListeBesoinsDiplomeParIdBesoin($idBesoin);
+        $diplomes = array();
+        for($i=0; $i<count($dataDiplome); $i++){
+            $diplomes[] = $dataDiplome[$i]->diplome->type;
+        }
+        return $diplomes;
+    }
+
+    public function getMatrimoniale($idBesoin){
+        $dataMatrimoniale = (new Details_Besoin_Matrimoniale())->getListeBesoinsMatrimonialeParIdBesoin($idBesoin);
+        $matrimoniales = array();
+        for($i=0; $i<count($dataMatrimoniale); $i++){
+            $matrimoniales[] = $dataMatrimoniale[$i]->matrimoniale->type;
+        }
+        return $matrimoniales;
+    }
+
+    public function getExperience($idBesoin){
+        $dataExperience = (new Details_Besoin_Experience())->getListeBesoinsExperienceParIdBesoin($idBesoin);
+        $experiences = array();
+        for($i=0; $i<count($dataExperience); $i++){
+            $experiences[] = $dataExperience[$i]->annee_experience;
+        }
+        return $experiences;
+    }
+
+    public function getRegion($idBesoin){
+        $dataRegion = (new Details_Besoin_Region())->getListeBesoinsRegionParIdBesoin($idBesoin);
+        $regions = array();
+        for($i=0; $i<count($dataRegion); $i++){
+            $regions[] = $dataRegion[$i]->region->type;
+        }
+        return $regions;
+    }
+
+    public function createAnnonce($idBesoin){
+        $annonce = new Annonce();
+        $annonce->Age = $this->getAge($idBesoin);
+        $annonce->Nationalite = $this->getNationalite($idBesoin);
+        $annonce->Genre = (new Details_Besoin_Genre())->getUneBesoinGenre($idBesoin);
+        $annonce->Diplome = $this->getDiplome($idBesoin);
+        $annonce->Matrimoniale = $this->getMatrimoniale($idBesoin);
+        $annonce->Experience = $this->getExperience($idBesoin);
+        $annonce->Region = $this->getRegion($idBesoin);
+        return $annonce;
     }
 }

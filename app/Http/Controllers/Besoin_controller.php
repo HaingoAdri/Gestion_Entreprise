@@ -21,8 +21,9 @@ class Besoin_controller extends Controller
     public function index() {
         $listePostes = (new Poste())->getListePostes();
         $listeServices = (new Service())->getListeServices();
+        $listeBesoins = (new Besoin())->getListeBesoins();
         
-        return view("ajout_besoin", compact("listePostes","listeServices"));
+        return view("ajout_besoin", compact("listePostes","listeServices","listeBesoins"));
     }
 
     public function index_age() {
@@ -68,9 +69,10 @@ class Besoin_controller extends Controller
         $id_service = $request->input('service_id');
         $horaireBesoin = $request->input('horaireBesoin');
         $tjh = $request->input('tjh');
+        $description = $request->input('description');
 
         $besoin = new Besoin();
-        $besoin->insertBesoin($id_poste, $id_service, $horaireBesoin, $tjh);
+        $besoin->insertBesoin($id_poste, $id_service, $horaireBesoin, $tjh, $description);
         return redirect()->route('ajout_details_besoin_age');
     }
     
