@@ -28,8 +28,14 @@ class Nationalite extends Model
     }
 
     public function getNationalite($id){
-        $nationalite = DB::table('nationalite') -> where('id', $id)->get();
-    
+        $requette = "select * from nationalite where id = " . $id;
+        $reponse = DB::select($requette);
+        $nationalite = null;
+        if(count($reponse) > 0) {
+            $nationalite = new Nationalite();
+            $nationalite->id = $reponse[0]->id;
+            $nationalite->type = $reponse[0]->type;
+        }
         return $nationalite;
     }
 }

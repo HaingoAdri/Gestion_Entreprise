@@ -31,7 +31,24 @@ class Details_Besoin_Experience extends Model
             foreach($reponse as $resultat) {
                 $details_Besoin_Experience = new Details_Besoin_Experience();
                 $details_Besoin_Experience->id = $resultat->id;
-                $details_Besoin_Experience->idBesoin = $resultat->idBesoin;
+                $details_Besoin_Experience->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Experience->annee_experience = $resultat->annee_experience;
+                $details_Besoin_Experience->note = $resultat->note;
+                $liste[] = $details_Besoin_Experience;
+            }
+        }
+        return $liste;
+    }
+
+    public function getListeBesoinsExperienceParIdBesoin($idBesoin) {
+        $requette = "select * from details_Besoin_Experience where idBesoin = ".$idBesoin;
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $details_Besoin_Experience = new Details_Besoin_Experience();
+                $details_Besoin_Experience->id = $resultat->id;
+                $details_Besoin_Experience->idBesoin = $resultat->idbesoin;
                 $details_Besoin_Experience->annee_experience = $resultat->annee_experience;
                 $details_Besoin_Experience->note = $resultat->note;
                 $liste[] = $details_Besoin_Experience;

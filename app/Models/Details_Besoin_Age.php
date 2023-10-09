@@ -43,14 +43,14 @@ class Details_Besoin_Age extends Model
     }
 
     public function getListeBesoinsAgeParIdBesoin($idBesoin) {
-        $requette = "select * from details_Besoin_Age where idBesoin = "+$idBesoin;
+        $requette = "select * from details_Besoin_Age where idBesoin = ".$idBesoin;
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $details_Besoin_Age = new Details_Besoin_Age();
                 $details_Besoin_Age->id = $resultat->id;
-                $details_Besoin_Age->idBesoin = $resultat->idBesoin;
+                $details_Besoin_Age->idBesoin = $resultat->idbesoin;
                 $details_Besoin_Age->min = $resultat->min;
                 $details_Besoin_Age->max = $resultat->max;
                 $details_Besoin_Age->note = $resultat->note;

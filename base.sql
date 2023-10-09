@@ -168,6 +168,7 @@ ALTER TABLE Besoin DROP COLUMN besoin_horaire;
 ALTER TABLE Besoin DROP COLUMN heure_jour_homme;
 ALTER TABLE besoin ADD COLUMN besoin_horaire DOUBLE PRECISION;
 ALTER TABLE besoin ADD COLUMN heure_jour_homme DOUBLE PRECISION;
+ALTER TABLE besoin ADD COLUMN description VARCHAR(150);
 
 -- **************************************FRONT-OFFICE************************************************
 

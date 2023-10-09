@@ -21,6 +21,18 @@ class Service extends Model
         }    
     }
 
+    public function getUneService($id) {
+        $requette = "select * from Service where id = " . $id;
+        $reponse = DB::select($requette);
+        $service = null;
+        if(count($reponse) > 0) {
+            $service = new Service();
+            $service->id = $reponse[0]->id;
+            $service->type = $reponse[0]->type;
+        }
+        return $service;
+    }
+
     public function getListeServices() {
         $requette = "select * from service";
         $reponse = DB::select($requette);

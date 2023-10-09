@@ -13,6 +13,7 @@ class Details_Besoin_Diplome extends Model
     public $idBesoin;
     public $idDiplome;
     public $note;
+    public $diplome;
 
     public function insertDetailsBesoinDiplome($idBesoin, $idDiplome, $note) {
         try {
@@ -34,6 +35,24 @@ class Details_Besoin_Diplome extends Model
                 $details_Besoin_Diplome->idBesoin = $resultat->idBesoin;
                 $details_Besoin_Diplome->idDiplome = $resultat->idDiplome;
                 $details_Besoin_Diplome->note = $resultat->note;
+                $liste[] = $details_Besoin_Diplome;
+            }
+        }
+        return $liste;
+    }
+
+    public function getListeBesoinsDiplomeParIdBesoin($idBesoin) {
+        $requette = "select * from details_Besoin_Diplome where idBesoin = ".$idBesoin;
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $details_Besoin_Diplome = new Details_Besoin_Diplome();
+                $details_Besoin_Diplome->id = $resultat->id;
+                $details_Besoin_Diplome->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Diplome->idDiplome = $resultat->iddiplome;
+                $details_Besoin_Diplome->note = $resultat->note;
+                $details_Besoin_Diplome->diplome = (new Diplome())->getUneDiplome($details_Besoin_Diplome->idDiplome);
                 $liste[] = $details_Besoin_Diplome;
             }
         }

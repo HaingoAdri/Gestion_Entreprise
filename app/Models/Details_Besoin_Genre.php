@@ -13,6 +13,7 @@ class Details_Besoin_Genre extends Model
     public $idBesoin;
     public $idGenre;
     public $note;
+    public $typeGenre;
 
     public function insertDetailsBesoinGenre($idBesoin, $idGenre, $note) {
         try {
@@ -21,6 +22,15 @@ class Details_Besoin_Genre extends Model
         } catch (Exception $e) {
             throw new Exception("Impossible to insert Besoin Genre: ".$e->getMessage());
         }    
+    }
+
+    public function getGenre($nombre){
+        if($nombre == 1){
+            return "Homme";
+        }else if($nombre == 10){
+            return "Femme";
+        }
+        return "";
     }
 
     public function getListeBesoinsGenre() {
@@ -40,17 +50,21 @@ class Details_Besoin_Genre extends Model
         return $liste;
     }
 
-    public function getUneBesoinGenre($id) {
-        $requette = "select * from besoin where id = " . $id;
+    public function getUneBesoinGenre($idbesoin) {
+        $requette = "select * from Details_Besoin_Genre where idbesoin = " . $idbesoin;
         $reponse = DB::select($requette);
-        $Details_Besoin_Genre = null;
-        if(count($reponse) > 0) {
-            $Details_Besoin_Genre = new Details_Besoin_Genre();
-            $Details_Besoin_Genre->id = $resultat->id;
-            $Details_Besoin_Genre->idBesoin = $resultat->idBesoin;
-            $Details_Besoin_Genre->idGenre = $resultat->idGenre;
-            $Details_Besoin_Genre->note = $resultat->note;
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $Details_Besoin_Genre = new Details_Besoin_Genre();
+                $Details_Besoin_Genre->id = $resultat->id;
+                $Details_Besoin_Genre->idBesoin = $resultat->idbesoin;
+                $Details_Besoin_Genre->idGenre = $resultat->idgenre;
+                $Details_Besoin_Genre->note = $resultat->note;
+                $Details_Besoin_Genre->typeGenre = $this->getGenre($Details_Besoin_Genre->idGenre);
+                $liste[] = $Details_Besoin_Genre;
+            }
         }
-        return $Details_Besoin_Genre;
+        return $liste;
     }
 }
