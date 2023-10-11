@@ -21,7 +21,7 @@ class Administrateur extends Model
             $requete = "insert into administrateur(nom, prenom, email, mot_de_passe, idmodule) values ('".$nom."','".$prenom."','".$email."','".$mot_de_passe."',".$idmodule.")";
             DB::insert($requete);
         } catch (Exception $e) {
-            throw new Exception("Impossible to insert");
+            throw new Exception("Impossible to insert Administrateur: ".$e->getMessage());
         }    
     }
 

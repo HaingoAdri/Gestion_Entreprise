@@ -68,6 +68,10 @@ create table Client (
     idGenre int
 );
 
+insert into Client (nom,prenom,email,mot_de_passe,date_naissance, idGenre) values
+('ANDRIAMANANTSOA', 'Tojo', 'tojo@gmail.com', 'tojo', '2003-10-07', 1),
+('RAKOTONIRIANA', 'Sandy', 'sandy@gmail.com', 'sandy', '1998-02-15', 2);
+
 -- BESOIN
 create table Besoin (
     id serial primary key,
@@ -162,9 +166,19 @@ create table Details_Besoin_Ville(
     foreign key (idVille) references Ville(id)
 );
 
+
+-- ALTER:
+ALTER TABLE Besoin DROP COLUMN besoin_horaire;
+ALTER TABLE Besoin DROP COLUMN heure_jour_homme;
+ALTER TABLE besoin ADD COLUMN besoin_horaire DOUBLE PRECISION;
+ALTER TABLE besoin ADD COLUMN heure_jour_homme DOUBLE PRECISION;
+ALTER TABLE besoin ADD COLUMN description VARCHAR(150);
+
+-- fb0 amdi-calendar-import
+
 -- **************************************FRONT-OFFICE************************************************
 
--- CV
+-- CV ----------------------tsy vita
     create table cv(
         id serial primary key,
         idClient int,

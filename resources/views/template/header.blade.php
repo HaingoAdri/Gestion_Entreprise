@@ -30,6 +30,7 @@
   <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link href="{{ asset('plugins/toaster/toastr.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
   
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -91,16 +92,53 @@
                     <li class="section-title"> Apps </li>
 
                         <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#email"
-                            aria-expanded="false" aria-controls="email">
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#service"
+                            aria-expanded="false" aria-controls="service">
                                 <i class="mdi mdi-email"></i>
-                                <span class="nav-text">Services</span> <b class="caret"></b>
+                                <span class="nav-text">Services / Postes</span> <b class="caret"></b>
                             </a>
-                            <ul  class="collapse"  id="email" data-parent="#sidebar-menu">
+                            <ul  class="collapse"  id="service" data-parent="#sidebar-menu">
                                 <div class="sub-menu">
                                 
-                                    <li><a class="sidenav-item-link" href="ajout_service.html">
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_service') }}">
                                         <span class="nav-text">Ajouter une service</span>
+                                    </a></li>
+
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_poste') }}">
+                                        <span class="nav-text">Ajouter un poste</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"aria-expanded="false" aria-controls="besoin">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Besoins des services</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="besoin" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_besoin') }}">
+                                        <span class="nav-text">Ajouter un besoin</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
+                            aria-expanded="false" aria-controls="annonce">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Annonce</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_annonce') }}">
+                                        <span class="nav-text">Liste des annonces</span>
                                     </a></li>
                         
                                 </div>
@@ -136,6 +174,74 @@
         ——— PAGE WRAPPER
         ===================================== -->
         <div class="page-wrapper">
+
+          <!-- Header -->
+          <header class="main-header" id="header">
+            <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+              <!-- Sidebar toggle button -->
+              <button id="sidebar-toggler" class="sidebar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+              </button>
+
+              <span class="page-title">dashboard</span>
+
+              <div class="navbar-right ">
+
+                <!-- search form -->
+                <div class="search-form">
+                  <form action="index.html" method="get">
+                    <div class="input-group input-group-sm" id="input-group-search">
+                      <input type="text" autocomplete="off" name="query" id="search-input" class="form-control" placeholder="Search..." />
+                      <div class="input-group-append">
+                        <button class="btn" type="button">/</button>
+                      </div>
+                    </div>
+                  </form>
+                  <ul class="dropdown-menu dropdown-menu-search">
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.html">Morbi leo risus</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.html">Dapibus ac facilisis in</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.html">Porta ac consectetur ac</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.html">Vestibulum at eros</a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+                <ul class="nav navbar-nav">
+
+                  <!-- User Account -->
+                  <li class="dropdown user-menu">
+                    <button class="dropdown-toggle nav-link" data-toggle="dropdown">
+                      <img src="{{ asset('images/user/user-xs-01.jpg') }}" class="user-image rounded-circle" alt="User Image" />
+                      <span class="d-none d-lg-inline-block">John Doe</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li>
+                        <a class="dropdown-link-item" href="user-profile.html">
+                          <i class="mdi mdi-account-outline"></i>
+                          <span class="nav-text">My Profile</span>
+                        </a>
+                      </li>
+
+                      <li class="dropdown-footer">
+                        <a class="dropdown-link-item" href="{{ route('deconnexion') }}"> <i class="mdi mdi-logout"></i> Log Out </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+
+          </header>
 
             @yield('contenu');
 

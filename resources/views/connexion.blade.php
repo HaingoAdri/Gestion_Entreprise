@@ -50,8 +50,7 @@
                     <form action="{{ route('authentification_connexion') }}">
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
-                          <input type="email" class="form-control input-lg" id="email" aria-describedby="emailHelp" name="email"
-                            placeholder="Email">
+                          <input type="email" class="form-control input-lg" id="email" aria-describedby="emailHelp" name="email" placeholder="Email">
                         </div>
                         <div class="form-group col-md-12 mb-4">
                           <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="mot_de_passe">
@@ -78,6 +77,9 @@
 
                           <p>Pas encore de compte ?
                             <a class="text-blue" href="{{ route('inscription') }}">Inscription</a>
+                          </p>
+                          <p>Se connecter en tant que 
+                            <a class="text-blue" href="{{ route('login') }}">Client</a>
                           </p>
                         </div>
                       </div>

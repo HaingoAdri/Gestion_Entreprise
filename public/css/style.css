@@ -52,6 +52,39 @@
   box-sizing: border-box;
 }
 
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  /* background-color: #9E6DE0; */
+}
+
+.custom-file-upload:hover {
+  /* background-color: #9E6DE0; */
+  color: #555;
+}
+
+.color-violet {
+  background-color: #9E6DE0;
+}
+
+.color-pink {
+  background-color: #fd5190;
+
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload i {
+  margin-right: 5px;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
