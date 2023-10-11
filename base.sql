@@ -174,6 +174,8 @@ ALTER TABLE besoin ADD COLUMN besoin_horaire DOUBLE PRECISION;
 ALTER TABLE besoin ADD COLUMN heure_jour_homme DOUBLE PRECISION;
 ALTER TABLE besoin ADD COLUMN description VARCHAR(150);
 
+-- fb0 amdi-calendar-import
+
 -- **************************************FRONT-OFFICE************************************************
 
 -- CV ----------------------tsy vita

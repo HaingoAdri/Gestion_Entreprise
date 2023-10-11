@@ -32,8 +32,8 @@ class Details_Besoin_Ville extends Model
             foreach($reponse as $resultat) {
                 $details_Besoin_Ville = new Details_Besoin_Ville();
                 $details_Besoin_Ville->id = $resultat->id;
-                $details_Besoin_Ville->idBesoin = $resultat->idBesoin;
-                $details_Besoin_Ville->idVille = $resultat->idVille;
+                $details_Besoin_Ville->idBesoin = $resultat->idbesoin;
+                $details_Besoin_Ville->idVille = $resultat->idville;
                 $details_Besoin_Ville->note = $resultat->note;
                 $liste[] = $details_Besoin_Ville;
             }
@@ -41,18 +41,25 @@ class Details_Besoin_Ville extends Model
         return $liste;
     }
 
-    public function getUneBesoinVille($id) {
-        $requette = "select * from details_Besoin_Ville where id = " . $id;
+    public function getUneBesoinVille($idBesoin, $idVille) {
+        $requette = "select * from details_Besoin_Ville where idBesoin = " . $idBesoin . " and idVille = " . $idVille;
         $reponse = DB::select($requette);
         $details_Besoin_Ville = null;
         if(count($reponse) > 0) {
             $details_Besoin_Ville = new Details_Besoin_Ville();
-            $details_Besoin_Ville->id = $reponse->id;
-            $details_Besoin_Ville->idBesoin = $reponse->idBesoin;
-            $details_Besoin_Ville->idVille = $reponse->idVille;
-            $details_Besoin_Ville->note = $reponse->note;
+            $details_Besoin_Ville->id = $reponse[0]->id;
+            $details_Besoin_Ville->idBesoin = $reponse[0]->idbesoin;
+            $details_Besoin_Ville->idVille = $reponse[0]->idville;
+            $details_Besoin_Ville->note = $reponse[0]->note;
         }
         return $details_Besoin_Ville;
+    }
+
+    public function note_ville_cv($idBesoin, $idVille) {
+        $details_Besoin_Ville = $this->getUneBesoinVille($idBesoin, $idVille);
+        if($details_Besoin_Ville == null)
+            return 0;
+        return $details_Besoin_Ville->note;
     }
 }
 

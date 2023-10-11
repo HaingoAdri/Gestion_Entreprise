@@ -30,6 +30,7 @@
   <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link href="{{ asset('plugins/toaster/toastr.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
   
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -112,8 +113,7 @@
                         </li>
 
                         <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"
-                            aria-expanded="false" aria-controls="besoin">
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"aria-expanded="false" aria-controls="besoin">
                                 <i class="mdi mdi-email"></i>
                                 <span class="nav-text">Besoins des services</span> <b class="caret"></b>
                             </a>
@@ -233,7 +233,7 @@
                       </li>
 
                       <li class="dropdown-footer">
-                        <a class="dropdown-link-item" href="{{ route('login') }}"> <i class="mdi mdi-logout"></i> Log Out </a>
+                        <a class="dropdown-link-item" href="{{ route('deconnexion') }}"> <i class="mdi mdi-logout"></i> Log Out </a>
                       </li>
                     </ul>
                   </li>

@@ -59,18 +59,25 @@ class Details_Besoin_Nationalite extends Model
         return $liste;
     }
 
-    public function getUneBesoinNationalite($id) {
-        $requette = "select * from details_Besoin_Nationalite where id = " . $id;
+    public function getUneBesoinNationalite($idBesoin, $idNationalite) {
+        $requette = "select * from details_Besoin_Nationalite where idBesoin = " . $idBesoin . " and idNationalite = " . $idNationalite;
         $reponse = DB::select($requette);
         $details_Besoin_Nationalite = null;
         if(count($reponse) > 0) {
             $details_Besoin_Nationalite = new Details_Besoin_Nationalite();
-            $details_Besoin_Nationalite->id = $reponse->id;
-            $details_Besoin_Nationalite->idBesoin = $reponse->idBesoin;
-            $details_Besoin_Nationalite->idNationalite = $reponse->idNationalite;
-            $details_Besoin_Nationalite->note = $reponse->note;
+            $details_Besoin_Nationalite->id = $reponse[0]->id;
+            $details_Besoin_Nationalite->idBesoin = $reponse[0]->idbesoin;
+            $details_Besoin_Nationalite->idNationalite = $reponse[0]->idnationalite;
+            $details_Besoin_Nationalite->note = $reponse[0]->note;
         }
         return $details_Besoin_Nationalite;
+    }
+
+    public function note_nationalite_cv($idBesoin, $idNationalite) {
+        $details_Besoin_Nationalite = $this->getUneBesoinNationalite($idBesoin, $idNationalite);
+        if($details_Besoin_Nationalite == null) 
+            return 0;
+        return $details_Besoin_Nationalite->note;
     }
 }
 

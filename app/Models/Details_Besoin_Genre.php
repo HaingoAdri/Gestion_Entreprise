@@ -67,4 +67,14 @@ class Details_Besoin_Genre extends Model
         }
         return $liste;
     }
+
+    public function note_genre_cv($idBesoin, $idGenre) {
+        $note = 0;
+        $listeDetails = $this->getUneBesoinGenre($idBesoin);
+        foreach ($listeDetails as $genre) {
+            if($idGenre == $genre->idGenre)
+                $note = $genre->note;
+        }
+        return $note;
+    }
 }

@@ -19,6 +19,8 @@ use App\Http\Controllers\Details_Besoin_controller;
 |
 */
 
+//DECONNEXION
+Route::get('/deconnexion', [Connexion_controller::class, "deconnect"])->name("deconnexion");
 
 // CONNEXION
 Route::get('/', [Connexion_controller::class, "index"])->name("connexion");
@@ -71,3 +73,7 @@ Route::get('/liste_annonce', [Besoin_controller::class, "annonce"])->name("liste
 Route::get('/accueil', function () {
     return view('accueil');
 });
+
+//CV
+Route::post('/ajout_cv', [Besoin_controller::class, "ajout_cv"])->name("ajout_cv");
+

@@ -59,17 +59,24 @@ class Details_Besoin_Matrimoniale extends Model
         return $liste;
     }
 
-    public function getUneBesoinMatrimoniale($id) {
-        $requette = "select * from details_Besoin_Matrimoniale where id = " . $id;
+    public function getUneBesoinMatrimoniale($idBesoin, $idSituation) {
+        $requette = "select * from details_Besoin_Matrimoniale where idBesoin = " . $idBesoin . " and idMatrimoniale = " . $idSituation;
         $reponse = DB::select($requette);
         $details_Besoin_Matrimoniale = null;
         if(count($reponse) > 0) {
             $details_Besoin_Matrimoniale = new Details_Besoin_Matrimoniale();
-            $details_Besoin_Matrimoniale->id = $reponse->id;
-            $details_Besoin_Matrimoniale->idBesoin = $reponse->idBesoin;
-            $details_Besoin_Matrimoniale->idMatrimoniale = $reponse->idMatrimoniale;
-            $details_Besoin_Matrimoniale->note = $reponse->note;
+            $details_Besoin_Matrimoniale->id = $reponse[0]->id;
+            $details_Besoin_Matrimoniale->idBesoin = $reponse[0]->idbesoin;
+            $details_Besoin_Matrimoniale->idMatrimoniale = $reponse[0]->idmatrimoniale;
+            $details_Besoin_Matrimoniale->note = $reponse[0]->note;
         }
         return $details_Besoin_Matrimoniale;
+    }
+
+    public function note_situation_matrimonial($idBesoin, $idSituation) {
+        $details_Besoin_Matrimoniale = $this->getUneBesoinMatrimoniale($idBesoin, $idSituation);
+        if($details_Besoin_Matrimoniale == null) 
+            return 0;
+        return $details_Besoin_Matrimoniale->note;
     }
 }

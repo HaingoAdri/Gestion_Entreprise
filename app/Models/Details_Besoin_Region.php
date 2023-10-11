@@ -61,18 +61,25 @@ class Details_Besoin_Region extends Model
         return $liste;
     }
 
-    public function getUneBesoinRegion($id) {
-        $requette = "select * from details_Besoin_Region where id = " . $id;
+    public function getUneBesoinRegion($idBesoin, $idRegion) {
+        $requette = "select * from details_Besoin_Region where idBesoin = " . $idBesoin . " and idRegion = " . $idRegion;
         $reponse = DB::select($requette);
         $details_Besoin_Region = null;
         if(count($reponse) > 0) {
             $details_Besoin_Region = new Details_Besoin_Region();
-            $details_Besoin_Region->id = $reponse->id;
-            $details_Besoin_Region->idBesoin = $reponse->idBesoin;
-            $details_Besoin_Region->idRegion = $reponse->idRegion;
-            $details_Besoin_Region->note = $reponse->note;
+            $details_Besoin_Region->id = $reponse[0]->id;
+            $details_Besoin_Region->idBesoin = $reponse[0]->idbesoin;
+            $details_Besoin_Region->idRegion = $reponse[0]->idregion;
+            $details_Besoin_Region->note = $reponse[0]->note;
         }
         return $details_Besoin_Region;
+    }
+
+    public function note_region_cv($idBesoin, $idRegion) {
+        $details_Besoin_Region = $this->getUneBesoinRegion($idBesoin, $idRegion);
+        if($details_Besoin_Region == null)
+            return 0;
+        return $details_Besoin_Region->note;
     }
 }
 

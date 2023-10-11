@@ -66,12 +66,25 @@ class Details_Besoin_Age extends Model
         $details_Besoin_Age = null;
         if(count($reponse) > 0) {
             $details_Besoin_Age = new Details_Besoin_Age();
-            $details_Besoin_Age->id = $resultat->id;
-            $details_Besoin_Age->idBesoin = $resultat->idBesoin;
-            $details_Besoin_Age->min = $resultat->min;
-            $details_Besoin_Age->max = $resultat->max;
-            $details_Besoin_Age->note = $resultat->note;
+            $details_Besoin_Age->id = $reponse[0]->id;
+            $details_Besoin_Age->idBesoin = $reponse[0]->idBesoin;
+            $details_Besoin_Age->min = $reponse[0]->min;
+            $details_Besoin_Age->max = $reponse[0]->max;
+            $details_Besoin_Age->note = $reponse[0]->note;
         }
         return $details_Besoin_Age;
     }
+
+    public function note_age_cv($idBesoin, $age) {
+        // select * from details_Besoin_Age where min <= 25 and max>25;
+        $note = 0;
+        $requette = "select * from details_Besoin_Age where idBesoin = ". $idBesoin. " and min <= ". $age ." and max> " . $age;
+        $reponse = DB::select($requette);
+        if(count($reponse) > 0) {
+            $note = $reponse[0]->note;
+        }
+        return $note;
+    }
+
+
 }

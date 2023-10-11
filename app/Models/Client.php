@@ -61,4 +61,14 @@ class Client extends Model
         }
         return $liste;
     }
+
+    public function ageClient($idClient) {
+        $requette = "select EXTRACT(YEAR FROM AGE(CURRENT_DATE, date_naissance)) AS age from client where id = '". $idClient . "'";
+        $reponse = DB::select($requette);
+        $age = null;
+        if(count($reponse) > 0){
+            $age = $reponse[0]->age;
+        }
+        return $age;
+    }
 }
