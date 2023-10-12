@@ -29,7 +29,13 @@ class Connexion_controller extends Controller
             Session::put('profil', 20); //profil: 20 ==> Admin
             return view('accueil');
         }
-        return view("connexion", compact("listeModules"));
+        $erreur = "Email ou Mot de passe incorrect";
+        return redirect()->route('connexion')->with([
+            'erreur' => $erreur,
+            'email' => $email,
+            'mot_de_passe' => $mot_de_passe,
+        ]);
+        
     }
 
     public function login() {
@@ -47,7 +53,12 @@ class Connexion_controller extends Controller
             return view('accueil');
         }
         $erreur = "Email ou Mot de passe incorrect";
-        return view("login", compact($erreur));
+        // return view("login", compact("erreur", "email", "mot_de_passe"));
+        return redirect()->route('login')->with([
+            'erreur' => $erreur,
+            'email' => $email,
+            'mot_de_passe' => $mot_de_passe,
+        ]);
     }
 
     public function deconnect(){

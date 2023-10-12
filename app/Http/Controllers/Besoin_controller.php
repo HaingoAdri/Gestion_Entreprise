@@ -139,6 +139,7 @@ class Besoin_controller extends Controller
 
     public function ajout_cv(Request $request) {
         try {
+
             $request->validate([
                 'file_diplome' => 'required|file|max:2048', // Limite à 2 Mo (2048 KB)
                 'file_attestation' => 'required|file|max:2048'
@@ -194,9 +195,9 @@ class Besoin_controller extends Controller
             }
             return redirect()->route('liste_annonce');
         }
-        catch (Exception $e) {
+        catch (\Illuminate\Validation\ValidationException $e) {
             echo '<br>Erreur: ' . $e->getMessage();
-            return redirect()->route('liste_annonce');
+            return redirect()->route('liste_annonce')->with('erreur', $e->getMessage());
         }
 
 

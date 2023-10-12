@@ -7,6 +7,11 @@
             <div class="card-header align-items-center px-3 px-md-5">
                 <h2>Annonce</h2>
             </div>
+            @if (session('erreur'))
+            <div class="alert alert-danger" role="alert">
+            <p>{{ session('erreur') }}</p>
+            </div>
+            @endif
 
             <div class="card-body px-3 px-md-5">
                 <div class="row">

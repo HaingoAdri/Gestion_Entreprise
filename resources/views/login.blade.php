@@ -47,20 +47,23 @@
 
                     <h4 class="text-dark mb-6 text-center">Login</h4>
 
-                    <form action="{{ route('authentification_client') }}">
-                    <!-- @csrf -->
+                    <form method="POST" action="{{ route('authentification_client') }}">
+                    @csrf
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
-                          <input type="email" class="form-control input-lg" id="email" aria-describedby="emailHelp" name="email" placeholder="Email">
+                          <input type="email" class="form-control input-lg" id="email" aria-describedby="emailHelp" name="email" @if (session('email')) value="{{ session('email') }}" @endif placeholder="Email" required>
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="mot_de_passe">
+                          <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="mot_de_passe" @if (session('mot_de_passe')) value="{{ session('mot_de_passe') }}" @endif required>
                         </div>
+                        @if (session('erreur'))
+                        <div class="form-group col-md-12 mb-4">
+                          <p style="color: red;">{{ session('erreur') }}</p>
+                        </div>
+                        @endif
                         <div class="col-md-12">
                           <div class="d-flex justify-content-between mb-3">
-
                             <a class="text-color" href="#"> Forgot password? </a>
-
                           </div>
 
                           <button type="submit" class="btn btn-primary btn-pill mb-4">Connexion</button>

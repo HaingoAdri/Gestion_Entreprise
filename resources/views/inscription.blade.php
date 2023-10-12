@@ -53,16 +53,17 @@
                   </div>
                   <div class="card-body px-5 pb-5 pt-0">
                     <h4 class="text-dark text-center mb-5">Inscription</h4>
-                    <form action="{{ route('authentification_inscription') }}" method="post">
+                    <form action="{{ route('authentification_inscription') }}" method="POST">
+                      @csrf
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
-                          <input type="text" class="form-control input-lg" id="nom" name="nom" aria-describedby="nameHelp" placeholder="Nom">
+                          <input type="text" class="form-control input-lg" id="nom" name="nom" @if (session('nom')) value="{{ session('nom') }}" @endif aria-describedby="nameHelp" placeholder="Nom">
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <input type="text" class="form-control input-lg" id="prenom" name="prenom" aria-describedby="nameHelp" placeholder="Prenom">
+                          <input type="text" class="form-control input-lg" id="prenom" name="prenom" @if (session('prenom')) value="{{ session('prenom') }}" @endif aria-describedby="nameHelp" placeholder="Prenom">
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                          <input type="email" class="form-control input-lg" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
+                          <input type="email" class="form-control input-lg" id="email" name="email" @if (session('email')) value="{{ session('email') }}" @endif aria-describedby="emailHelp" placeholder="Email">
                         </div>
                         <div class="form-group col-md-12 mb-4">
                           <select class="form-control" name="module">
@@ -74,12 +75,18 @@
                           </select>
                         </div>
                         <div class="form-group col-md-12 ">
-                          <input type="password" class="form-control input-lg" id="mot_de_passe" name="mot_de_passe" placeholder="Password">
+                          <input type="password" class="form-control input-lg" id="mot_de_passe" name="mot_de_passe" @if (session('mot_de_passe')) value="{{ session('mot_de_passe') }}" @endif placeholder="Password">
                         </div>
                         <div class="form-group col-md-12 ">
-                          <input type="password" class="form-control input-lg" id="cmot_de_passe" name="cmot_de_passe" placeholder="Confirm Password">
+                          <input type="password" class="form-control input-lg" id="cmot_de_passe" name="cmot_de_passe" @if (session('cmot_de_passe')) value="{{ session('cmot_de_passe') }}" @endif placeholder="Confirm Password">
                         </div>
                         <div class="col-md-12">
+
+                        @if (session('erreur'))
+                        <div class="form-group col-md-12 mb-4">
+                          <p style="color: red;">{{ session('erreur') }}</p>
+                        </div>
+                        @endif
 
                           <button type="submit" class="btn btn-primary btn-pill mb-4">Inscritpion</button>
 

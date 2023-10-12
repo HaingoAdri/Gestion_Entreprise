@@ -30,7 +30,15 @@ class Inscription_controller extends Controller
             return redirect()->route('connexion');
         }
 
-        return redirect()->route('inscription');
+        $erreur = "Mot de passe incorrect";
+        return redirect()->route('inscription')->with([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email,
+            'mot_de_passe' => $mot_de_passe,
+            'cmot_de_passe' => $cmot_de_passe,
+            'erreur' => $erreur,
+        ]);
     }
 
     public function inscription() {
@@ -51,7 +59,15 @@ class Inscription_controller extends Controller
             $client->insertClient($nom, $prenom, $email, $mot_de_passe,  $date_naissance, $idGenre);
             return redirect()->route('login');
         }
-
-        return redirect()->route('inscription');
+        $erreur = "Mot de passe incorrect";
+        return redirect()->route('inscription_client')->with([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email,
+            'date_naissance' => $date_naissance,
+            'mot_de_passe' => $mot_de_passe,
+            'cmot_de_passe' => $cmot_de_passe,
+            'erreur' => $erreur,
+        ]);
     }
 }

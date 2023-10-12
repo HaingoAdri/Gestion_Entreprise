@@ -24,17 +24,17 @@ Route::get('/deconnexion', [Connexion_controller::class, "deconnect"])->name("de
 
 // CONNEXION
 Route::get('/', [Connexion_controller::class, "index"])->name("connexion");
-Route::get('/authentification_connexion', [Connexion_controller::class, "authentification_connexion"])->name("authentification_connexion");
+Route::post('/authentification_connexion', [Connexion_controller::class, "authentification_connexion"])->name("authentification_connexion");
 //CONNEXION Client
 Route::get('/login', [Connexion_controller::class, "login"])->name("login");
-Route::get('/authentification_client', [Connexion_controller::class, "authentification_client"])->name("authentification_client");
+Route::post('/authentification_client', [Connexion_controller::class, "authentification_client"])->name("authentification_client");
 
 // INSCRIPTION
 Route::get('/inscription', [Inscription_controller::class, "index"])->name("inscription");
-Route::get('/authentification_inscription', [Inscription_controller::class, "authentification_inscription"])->name("authentification_inscription");
+Route::post('/authentification_inscription', [Inscription_controller::class, "authentification_inscription"])->name("authentification_inscription");
 // INSCRIPTION 
 Route::get('/inscription_client', [Inscription_controller::class, "inscription"])->name("inscription_client");
-Route::get('/authentification_inscription_client', [Inscription_controller::class, "inscription_client"])->name("authentification_inscription_client");
+Route::post('/authentification_inscription_client', [Inscription_controller::class, "inscription_client"])->name("authentification_inscription_client");
 
 
 // SERVICES
