@@ -7,6 +7,7 @@ use App\Http\Controllers\Service_controller;
 use App\Http\Controllers\Poste_controller;
 use App\Http\Controllers\Besoin_controller;
 use App\Http\Controllers\Details_Besoin_controller;
+use App\Http\Controllers\Contrat_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,3 +78,14 @@ Route::get('/accueil', function () {
 //CV
 Route::post('/ajout_cv', [Besoin_controller::class, "ajout_cv"])->name("ajout_cv");
 
+//contrat d'essaie
+Route::get('/liste_contrat_essaie_a_faire', [Contrat_controller::class, "index"])->name("contrat_essaie");
+Route::post('/ajout_contrat_essaie', [Contrat_controller::class, "ajout_contrat_essaie"])->name("ajout_contrat_essaie");
+Route::get('/ajout_menbre_famille', [Contrat_controller::class, "inserer_proche"])->name("proche");
+Route::post('/ajout_proche', [Contrat_controller::class, "ajout_proche"])->name("ajout_proche");
+Route::get('/avantage_en_nature', [Contrat_controller::class, "avantage_en_nature"])->name("avantage_en_nature");
+Route::post('/inserer_avantage', [Contrat_controller::class, "inserer_avantage"])->name("inserer_avantage");
+
+//contrat renouveler
+Route::get('/liste_contrat_a_renouveler', [Contrat_controller::class, "liste_contrat_renouveler"])->name("liste_contrat_renouveler");
+Route::get('/renouveler', [Contrat_controller::class, "renouveler_un_contrat"])->name("renouveler_un_contrat");

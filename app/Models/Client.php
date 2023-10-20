@@ -71,4 +71,21 @@ class Client extends Model
         }
         return $age;
     }
+
+    public function getDonneesClient($idClient) {
+        $requette = "select * from client where id = ". $idClient;
+        $reponse = DB::select($requette);
+        $client = null;
+        if(count($reponse) > 0){
+            $client = new Client();
+            $client->id = $reponse[0]->id;
+            $client->nom = $reponse[0]->nom;
+            $client->prenom = $reponse[0]->prenom;
+            $client->email = $reponse[0]->email;
+            $client->mot_de_passe = $reponse[0]->mot_de_passe;
+            $client->date_naissance = $reponse[0]->date_naissance;
+            $client->genre = new Genre($reponse[0]->idgenre);
+        }
+        return $client;
+    }
 }

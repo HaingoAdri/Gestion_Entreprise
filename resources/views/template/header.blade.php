@@ -145,6 +145,26 @@
                             </ul>
                         </li>
 
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#contrat"
+                            aria-expanded="false" aria-controls="contrat">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Contrat</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="contrat" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('contrat_essaie') }}">
+                                        <span class="nav-text">Contrat D'essaie</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_contrat_renouveler') }}">
+                                        <span class="nav-text">Contrat A renouveler</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
                         <li>
                             <a class="sidenav-item-link" href="chat.html">
                                 <i class="mdi mdi-wechat"></i>

@@ -116,13 +116,13 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                            <label for="lastName">Nationalite</label>
-                                            <select name="idNationalite" class="form-control" required>
-                                                <option value="">Nationalite</option>
-                                                @foreach($listeNationalites as $nationalite)
-                                                    <option value="{{ $nationalite->id }}">{{ $nationalite->type }}</option>
-                                                @endforeach
-                                            </select>
+                                                <label for="lastName">Nationalite</label>
+                                                <select name="idNationalite" class="form-control" required>
+                                                    <option value="">Nationalite</option>
+                                                    @foreach($listeNationalites as $nationalite)
+                                                        <option value="{{ $nationalite->id }}">{{ $nationalite->type }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
