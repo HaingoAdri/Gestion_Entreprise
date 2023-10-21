@@ -42,7 +42,7 @@ class CV extends Model
 
 
         } catch (Exception $e) {
-            throw new Exception("Impossible to insert Besoin: ".$e->getMessage());
+            throw new Exception("Impossible to insert CV: ".$e->getMessage());
         }    
     }
 

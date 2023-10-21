@@ -224,7 +224,7 @@ create table Note_Cv(
     id serial primary key,
     idCv int,
     note double precision default 0,
-    foreign key (idCv) references Cv(id),
+    foreign key (idCv) references Cv(id)
 );
 
 create table qcm_admis(
@@ -330,6 +330,112 @@ create table employer (
     foreign key (etat) references Etats(id_et)
 );
 
+<<<<<<< Updated upstream
+create table qcm_admis(
+    id_qcm serial primary key,
+    titre varchar(200) not null,
+    description varchar(200) not null,
+    durer int not null,
+    id_cv int not null,
+    note_total int not null,
+    foreign key (id_cv) references Note_Cv(id)
+);
+
+alter table qcm_admis drop COLUMN id_cv;
+alter table qcm_admis add COLUMN id_annonce int not null;
+alter table qcm_admis add  foreign key (id_annonce) references Besoin(id);
+
+create table question_posée(
+    id_q serial primary key,
+    questions varchar(200) not null,
+    note int not null,
+    id_qcm int not null,
+    foreign key (id_qcm) references qcm_admis(id_qcm)
+);
+alter table question_posée drop column note;
+alter table question_posée add COLUMN note int default 5;
+
+create table reponse_q(
+    id_r serial primary key,
+    id_question int not null,
+    reponse varchar(200) not null,
+    foreign key (id_question) references question_posée(id_q)
+);
+alter table reponse_q add COLUMN note int default 0;
+
+create table reponse_faux(
+    id_f serial primary key,
+    id_q int not null,
+    reponse_f varchar(200) not null,
+    foreign key (id_q) references question_posée(id_q)
+);
+alter table reponse_faux add COLUMN note int default 0;
+
+
+create table qcm_result(
+    id_r serial primary key,
+    qcm int not null,
+    notes_r int not null,
+    foreign key (qcm) references qcm_admis(id_qcm)
+);
+alter table qcm_result drop COLUMN notes_r ;
+alter table qcm_result add COLUMN notes_r int default 0 ;
+
+
+--entretient
+create table afaka_qcm (
+    id_as serial primary key,
+    qcm_r int not null,
+    id_users int not null,
+    foreign key (qcm_r) references qcm_result(id_r),
+    foreign key (id_users) references Client(id)
+);
+
+create table entretient(
+    id_e serial primary key,
+    aa int not null,
+    dates date not null,
+    heures int not null,
+    lieu varchar(200) not null,
+    foreign key (aa) references afaka_qcm(id_as)
+);
+
+--etat
+create table etats(
+    id_et serial primary key,
+    nom_etats varchar(200) not null
+);
+insert into etats values (1, 'Pere'), (2, 'Mere'), (3, 'Conjoint'), (4, 'Enfant'), (12, 'Entretient Fini'), (15, 'Contrat essaie'), (20, 'Embauché'), (10, 'Debauché');
+insert into etats values (7, 'Annuler'), (8, 'Valider');
+
+create table ok_vita (
+    id_o serial primary key,
+    id_e int not null,
+    id_et int not null,
+    foreign key (id_e) references entretient(id_e),
+    foreign key (id_et) references etats(id_et)
+);
+
+create table tafiditra_mpiasa(
+    id_taf serial primary key,
+    id_ok int not null,
+    foreign key (id_ok) references ok_vita(id_o)
+);
+
+--liste employer
+create table employer (
+    id_emp varchar(200) primary key,
+    idClient int,
+    cin varchar(12) default NULL,
+    telephone varchar(10) default NULL,
+    adresse varchar(30) default NULL,
+    etat int,
+    foreign key (idClient) references Client(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+=======
+>>>>>>> Stashed changes
 -- insert into employer (id_emp, idClient, etat) values ('EMP0000001', 1, 12);
 -- insert into employer (id_emp, idClient, etat) values ('EMP0000002', 2, 12);
 -- insert into employer (id_emp, idClient, etat) values ('EMP0000003', 4, 12);
@@ -342,6 +448,7 @@ create table historique_embauche (
     foreign key (etat) references Etats(id_et),
     foreign key (id_emp) references Employer(id_emp)
 );
+<<<<<<< Updated upstream
 
 -- insert into historique_embauche (id_emp, date, etat) values ('EMP0000001', '2023-10-20', 12);
 -- insert into historique_embauche (id_emp, date, etat) values ('EMP0000002', '2023-10-20', 12);
@@ -418,7 +525,113 @@ select id, ce.id_emp, lieu_travail, date_debut, date_fin , etat from contrat_ess
     join employer e on ce.id_emp = e.id_emp
     where etat = 15;
 
+=======
+>>>>>>> Stashed changes
 
+-- insert into historique_embauche (id_emp, date, etat) values ('EMP0000001', '2023-10-20', 12);
+-- insert into historique_embauche (id_emp, date, etat) values ('EMP0000002', '2023-10-20', 12);
+-- insert into historique_embauche (id_emp, date, etat) values ('EMP0000003', '2023-10-20', 12);
+
+create table salaire (
+    id serial primary key,
+    id_emp varchar(200),
+    brut double precision default 0,
+    net double precision default 0,
+    date date,
+    foreign key (id_emp) references Employer(id_emp)
+);
+
+-- insert into salaire (id_emp, brut, net, date) values ('EMP0000001', 2700000, 1600000, '2023-10-20');
+-- insert into salaire (id_emp, brut, net, date) values ('EMP0000002', 2500000, 1400000, '2023-10-20');
+-- insert into salaire (id_emp, brut, net, date) values ('EMP0000001', 3000000, 2400000, '2023-10-20');
+
+-- Annexe
+create table liste_Adresse_entreprise (
+    id serial primary key,
+    adresse varchar(200)
+);
+Alter table liste_Adresse_entreprise add date Date default Null;
+
+insert into liste_Adresse_entreprise (adresse) values ('M 203 Mahabo Andoharanofotsy');
+insert into liste_Adresse_entreprise (adresse) values ('Lot F-102 Fiadanamanga');
+
+-- Contrat d'essaie
+create table contrat_essaie (
+    id serial primary key,
+    id_emp varchar(200),
+    lieu_travail int,
+    date_debut date,
+    date_fin date,
+    foreign key (id_emp) references Employer(id_emp),
+    foreign key (lieu_travail) references liste_Adresse_entreprise(id)
+);
+
+create table proche (
+    id serial primary key,
+    id_emp varchar(200),
+    nom varchar(50),
+    prenom varchar(50),
+    dateDeNaissance date,
+    idGenre varchar(50),
+    etat int,
+    foreign key (id_emp) references Employer(id_emp),
+    foreign key (etat) references Etats(id_et)
+);
+
+-- Avanatge en nature
+create table type_avantage_nature (
+    id serial primary key,
+    type varchar(50)
+);
+
+insert into type_avantage_nature (type) values ('Telephone'), ('Voiture'), ('Maison'), ('Secretaire');
+
+create table avantage_nature (
+    id serial,
+    id_emp varchar(200),
+    idAvanatge int,
+    date date,
+    etat int,
+    foreign key (id_emp) references Employer(id_emp),
+    foreign key (etat) references Etats(id_et),
+    foreign key (idAvanatge) references type_avantage_nature(id)
+);
+
+-- Conge
+create table type_conge(
+    id serial primary key,
+    Nom VARCHAR(150),
+    politique VARCHAR(250),
+    commentaires VARCHAR(250)
+);
+
+create table conge(
+    id SERIAL PRIMARY KEY,
+    id_employer VARCHAR(100),
+    id_type_conge INT,
+    Raison VARCHAR(250),
+    debut TIMESTAMP,
+    fin TIMESTAMP,
+    Statut INT, -- 1: en attente, 21: approuve, 41: refuse
+    Justificatif VARCHAR(250),
+    foreign key (id_employer) references employer(id_emp),
+    foreign key (id_type_conge) references type_conge(id)
+);
+
+create table confirmation_date(
+    id SERIAL PRIMARY KEY,
+    idconge INT,
+    depart TIMESTAMP,
+    foreign key (idconge) references conge(id)
+);
+
+create table solde_conge(
+    id SERIAL PRIMARY KEY,
+    idconge INT,
+    conge_consomme DOUBLE PRECISION,
+    solde_actuel DOUBLE PRECISION,
+    foreign key (idconge) references conge(id)
+);
 
 
 

@@ -47,8 +47,13 @@
 
                     <h4 class="text-dark mb-6 text-center">Connexion</h4>
 
+<<<<<<< Updated upstream
                     <form method="POST" action="{{ route('authentification_connexion') }}">
                       @csrf
+=======
+                    <form action="{{ route('authentification_connexion') }}">
+                    @csrf
+>>>>>>> Stashed changes
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
                           <input type="email" class="form-control input-lg" id="email" aria-describedby="emailHelp" name="email" @if (session('email')) value="{{ session('email') }}" @endif placeholder="Email" required>

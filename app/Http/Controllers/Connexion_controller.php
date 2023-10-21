@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Administrateur;
 use App\Models\Client;
+use App\Models\Employer;
 use App\Models\Module;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
@@ -50,6 +51,12 @@ class Connexion_controller extends Controller
         if($connecteur != null){
             Session::put('client', $connecteur);
             Session::put('profil', 5); //profil: 5 ==> Client
+
+            if(((new Employer())->checkIfEmployer($connecteur->id)) != null) {
+                Session::put('employer', checkIfEmployer($connecteur->id));
+            }else{
+                Session::put('employer', 'null');
+            }
             return view('accueil');
         }
         $erreur = "Email ou Mot de passe incorrect";

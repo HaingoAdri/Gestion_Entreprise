@@ -27,6 +27,8 @@
   <link href="{{ asset('plugins/nprogress/nprogress.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet" />
+  <link href="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.css') }}" rel='stylesheet' />
+  <link href="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.css') }}" rel='stylesheet' />
   <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link href="{{ asset('plugins/toaster/toastr.min.css') }}" rel="stylesheet" />
@@ -145,6 +147,7 @@
                             </ul>
                         </li>
 
+<<<<<<< Updated upstream
                         <li  class="has-sub" >
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#contrat"
                             aria-expanded="false" aria-controls="contrat">
@@ -169,8 +172,24 @@
                             <a class="sidenav-item-link" href="chat.html">
                                 <i class="mdi mdi-wechat"></i>
                                 <span class="nav-text">Chat</span>
+=======
+                        @if( session("profil") == 5 & session("employer") == "ok")
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Conge et Besoin</span>
+>>>>>>> Stashed changes
                             </a>
-                        </li>
+                          </li>
+                        @elseif( session("profil") == 20 )
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('accueil_Conge') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Conge et Besoin</span>
+                            </a>
+                          </li>
+                        @endif
+            
                     </li>
                 </ul>
             </div>
@@ -293,6 +312,9 @@
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-us-aea.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js') }}"></script>
+    <script src="{{ asset('js/calendar.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 

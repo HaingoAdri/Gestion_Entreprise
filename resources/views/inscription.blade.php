@@ -53,8 +53,14 @@
                   </div>
                   <div class="card-body px-5 pb-5 pt-0">
                     <h4 class="text-dark text-center mb-5">Inscription</h4>
+<<<<<<< Updated upstream
                     <form action="{{ route('authentification_inscription') }}" method="POST">
                       @csrf
+=======
+                    <form action="{{ route('authentification_inscription') }}" method="post">
+                    @csrf
+                      
+>>>>>>> Stashed changes
                       <div class="row">
                         <div class="form-group col-md-12 mb-4">
                           <input type="text" class="form-control input-lg" id="nom" name="nom" @if (session('nom')) value="{{ session('nom') }}" @endif aria-describedby="nameHelp" placeholder="Nom">
