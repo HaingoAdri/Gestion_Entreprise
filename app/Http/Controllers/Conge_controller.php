@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Type_Conge;
 use App\Models\Conge;
 use App\Models\Confirmation_date;
+use App\Models\Contrat_Essaie;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
@@ -26,8 +27,9 @@ class Conge_controller extends Controller
         $congePris = (new Conge())->calculCongePris($id_employer);
         $congeSolde = (new Conge())->calculSolde($id_employer);
         $congeEmployer = (new Conge())->getListeCongesPerEmployer($id_employer);
+        $subordonnees = (new Contrat_Essaie())->getEmployer_subordonnees($id_employer);
 
-        return view("client_conge/demande_conge", compact("listeTypeConges", "congeAcquis", "congePris", "congeSolde", "congeEmployer"));
+        return view("client_conge/demande_conge", compact("listeTypeConges", "congeAcquis", "congePris", "congeSolde", "congeEmployer","subordonnees"));
     }
 
     public function index_accueil_conge() {
@@ -54,6 +56,16 @@ class Conge_controller extends Controller
     public function changeStatut($id,$statut){
         $conge = (new Conge())->updateStatutConge($id, $statut);
         return redirect()->route('liste_demande');
+    }
+
+    public function getAllConge_one_employer($id_emp){
+        $demandes_en_attente = (new Conge())->getListeCongesEnAttente_un_employer($id_emp);
+        return view("client_conge/action_conge_subordonnees", compact("demandes_en_attente"));
+    }
+
+    public function changeStatut_Subordonnees($id, $statut){
+        $conge = (new Conge())->updateStatutConge($id, $statut);
+        return redirect()->route('ajout_Conge');
     }
 
     // INSERTION
@@ -84,9 +96,17 @@ class Conge_controller extends Controller
             $file_justificatif = null;
             $file_justificatif_name = null;
 
+            if(Session::get("erreur") != ""){
+                Session::forget("erreur");
+            }
             if((new Conge())->checkIfConge($id_employer) != 0){
                 if((new Conge())->getIfNegatif($id_employer, $dateDebut, $dateFin) < 0){
                     Session::put("erreur","Vous ne pouvez pas prendre plus de conge que vous le permez votre solde!");
+                    return redirect()->route('ajout_Conge');
+                }
+                echo "okee";
+                if((new Conge())->checkIf_Pouvoir_Demande($dateDebut) == 15200){
+                    Session::put("erreur","Vous devez faire une demande de conge 1 mois avant, ou au plus tard 15 jours avant le conge que vous voulez!");
                     return redirect()->route('ajout_Conge');
                 }
                 if ($request->hasFile('file_justificatif')) {

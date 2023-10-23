@@ -43,7 +43,8 @@ class Historique_embauche extends Model {
     }
 
     public function getDate_Embauche_Employer() {
-        $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and etat = 12";
+        $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and etat = 15 order by date desc";
+        echo $requette;
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

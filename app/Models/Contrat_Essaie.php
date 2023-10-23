@@ -17,6 +17,9 @@ class Contrat_Essaie extends Model
     public $obligation;
     public $superieur;
 
+    public $conge;
+    public $employe;
+
     public function __construct($id ="", $id_emp ="",  $lieu_travail = "", $date_debut ="", $date_fin = "", $obligation = "", $superieur = "") {
         $this->id = $id;
         $this->id_emp = $id_emp;
@@ -62,6 +65,21 @@ class Contrat_Essaie extends Model
             }
         }
         return $contrat;    
+    }
+
+    public function getEmployer_subordonnees($id_superieur) {
+        $requette = "select * from contrat_essaie where superieur = '". $id_superieur ."'";
+        $reponse = DB::select($requette);
+        $contrats = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $lieu = (new Liste_Adresse_entreprise(id: $resultat->lieu_travail))->getDonneesAdresse();                
+                $contrat = new Contrat_Essaie($resultat->id, $resultat->id_emp, $lieu, $resultat->date_debut, $resultat->date_fin, $resultat->obligation, $resultat->superieur);
+                $contrat->employe = (new Employer())->getOneEmployer($resultat->id_emp);
+                $contrats[] = $contrat;
+            }
+        }
+        return $contrats;    
     }
 
 

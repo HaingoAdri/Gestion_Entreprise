@@ -27,6 +27,10 @@
   <link href="{{ asset('plugins/nprogress/nprogress.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet" />
+
+  <link href="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.css') }}" rel='stylesheet' />
+  <link href="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.css') }}" rel='stylesheet' />
+
   <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link href="{{ asset('plugins/toaster/toastr.min.css') }}" rel="stylesheet" />
@@ -329,6 +333,10 @@
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-us-aea.js') }}"></script>
+
+    <script src="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js') }}"></script>
+
     <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 

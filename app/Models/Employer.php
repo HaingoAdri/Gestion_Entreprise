@@ -125,4 +125,21 @@ class Employer extends Model {
         }
         return $Employer;   
     }
+
+    public function getOneEmployer($id_emp) {
+        $requette = "select * from employer where id_emp = '". $id_emp ."'";
+        $reponse = DB::select($requette);
+        $Employer = null;
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $Employer = new Employer($resultat->id_emp, $resultat->idclient, $resultat->etat);
+                $Employer->cin = $resultat->cin;
+                $Employer->adresse = $resultat->adresse;
+                $Employer->telephone = $resultat->telephone;
+                $Employer->client = (new Client())->getDonneesClient($resultat->idclient);
+                break;
+            }
+        }
+        return $Employer;   
+    }
 }
