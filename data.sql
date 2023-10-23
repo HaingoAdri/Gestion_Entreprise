@@ -86,3 +86,15 @@ insert into Ville(idRegion,type) values    (1,'Ampefy'),
                                             (6,'Marovato'),
                                             (7,'Ambositra'),
                                             (7,'Sandradahy');
+
+insert into type_contrat(nom, acronyme) values  ('Le contrat de travail à durée indéterminée ','CDI'),
+                                                ('Le contrat de chantier ou d opération ','CCO'),
+                                                ('Le contrat à durée déterminée  ','CDD'),
+                                                ('Le CDD à objet défini ','CDDO'),
+                                                ('Le CDD senior ','CDDS'),
+                                                ('Le contrat de travail temporaire ','CTT'),
+                                                ('Le contrat de travail à temps partiel ','CTTP'),
+                                                ('Le travail intermittent  ','TI'),
+                                                ('Le contrat saisonnier  ','CS'),
+                                                ('Le contrat vendanges  ','CV'),
+                                                ('Le titre emploi-service entreprise','TESE');

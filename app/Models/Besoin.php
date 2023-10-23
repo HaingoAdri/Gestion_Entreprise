@@ -16,15 +16,17 @@ class Besoin extends Model
     public $besoin_horaire;
     public $heure_jour_homme;
     public $description;
+    public $id_type_contrat;
 
+    public $type_contrat;
     public $poste;
     public $service;
     public $personnes;
     public $annonce;
 
-    public function insertBesoin($idPoste, $idService, $besoin_horaire, $heure_jour_homme, $description) {
+    public function insertBesoin($idPoste, $idService, $besoin_horaire, $heure_jour_homme, $description, $id_type_contrat) {
         try {
-            $requete = "insert into besoin(idPoste, idService, besoin_horaire, heure_jour_homme, description) values (".$idPoste.",".$idService.",'".$besoin_horaire."','".$heure_jour_homme."','".$description."')";
+            $requete = "insert into besoin(idPoste, idService, besoin_horaire, heure_jour_homme, description) values (".$idPoste.",".$idService.",'".$besoin_horaire."','".$heure_jour_homme."','".$description."',".$id_type_contrat.")";
             DB::insert($requete);
             // Obtenez l'ID généré automatiquement
             $dernierBesoinId = DB::getPdo()->lastInsertId();
@@ -56,6 +58,7 @@ class Besoin extends Model
                 $besoin->besoin_horaire = $resultat->besoin_horaire;
                 $besoin->heure_jour_homme = $resultat->heure_jour_homme;
                 $besoin->description = $resultat->description;
+                $besoin->type_contrat = (new Type_Contrat())->getUnTypeContrat($resultat->id_type_contrat);
                 $besoin->personnes = ((int)($besoin->besoin_horaire/$besoin->heure_jour_homme));
                 $besoin->annonce = (new Annonce())->createAnnonce($besoin->id);
 

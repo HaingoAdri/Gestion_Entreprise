@@ -7,11 +7,8 @@ use App\Http\Controllers\Service_controller;
 use App\Http\Controllers\Poste_controller;
 use App\Http\Controllers\Besoin_controller;
 use App\Http\Controllers\Details_Besoin_controller;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\Contrat_controller;
 use App\Http\Controllers\Conge_controller;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -72,9 +69,6 @@ Route::get('/insertion_Details_Region_Ville', [Details_Besoin_controller::class,
 Route::get('/insertion_Details_Experience', [Details_Besoin_controller::class, "insertion_Details_Experience"])->name("insertion_Details_Experience");
 Route::get('/insertion_Details_Salaire', [Details_Besoin_controller::class, "insertion_Details_Salaire"])->name("insertion_Details_Salaire");
 
-<<<<<<< Updated upstream
-=======
-
 // -- CONGE
 Route::get('/ajout_Conge', [Conge_controller::class, "index_employe"])->name("ajout_Conge");
 Route::get('/accueil_Conge', [Conge_controller::class, "index_accueil_conge"])->name("accueil_Conge");
@@ -90,11 +84,13 @@ Route::post('/insertion_conge', [Conge_controller::class, "insertion_conge"])->n
 Route::get('/insertion_Type_Conge', [Conge_controller::class, "insertion_type_conge"])->name("insertion_type_conge");
 Route::get('/insertion_confirmation_depart', [Conge_controller::class, "insertion_confirmation_depart"])->name("insertion_confirmation_depart");
 Route::get('/insertion_confirmation_fin', [Conge_controller::class, "insertion_confirmation_fin"])->name("insertion_confirmation_fin");
-
->>>>>>> Stashed changes
 // web.php
 Route::get('/send-ville/{idRegion}', [Details_Besoin_controller::class, "sendVille"]);
 Route::get('/liste_annonce', [Besoin_controller::class, "annonce"])->name("liste_annonce");
+
+Route::get('/contrat_essaie', [Besoin_controller::class, "annonce"])->name("contrat_essaie");
+Route::get('/liste_contrat_renouveler', [Besoin_controller::class, "annonce"])->name("liste_contrat_renouveler");
+
 Route::get('/accueil', function () {
     return view('accueil');
 });

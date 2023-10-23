@@ -24,6 +24,7 @@ use App\Models\Details_Besoin_Salaire;
 use App\Models\Details_Besoin_Ville;
 use App\Models\Note_Cv;
 use App\Models\Client;
+use App\Models\Type_Contrat;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
@@ -36,8 +37,9 @@ class Besoin_controller extends Controller
         $listePostes = (new Poste())->getListePostes();
         $listeServices = (new Service())->getListeServices();
         $listeBesoins = (new Besoin())->getListeBesoins();
+        $listeTypeContrats = (new Type_Contrat())->getListeTypeContrats();
         
-        return view("ajout_besoin", compact("listePostes","listeServices","listeBesoins"));
+        return view("ajout_besoin", compact("listePostes","listeServices","listeBesoins","listeTypeContrats"));
     }
 
     public function index_age() {
@@ -81,12 +83,13 @@ class Besoin_controller extends Controller
     public function insertion_Besoin(Request $request) {
         $id_poste = $request->input('poste_id');
         $id_service = $request->input('service_id');
+        $id_type_contrat = $request->input('type_contrat_id');
         $horaireBesoin = $request->input('horaireBesoin');
         $tjh = $request->input('tjh');
         $description = $request->input('description');
 
         $besoin = new Besoin();
-        $besoin->insertBesoin($id_poste, $id_service, $horaireBesoin, $tjh, $description);
+        $besoin->insertBesoin($id_poste, $id_service, $horaireBesoin, $tjh, $description,$id_type_contrat);
         return redirect()->route('ajout_details_besoin_age');
     }
     

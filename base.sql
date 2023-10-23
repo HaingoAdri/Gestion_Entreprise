@@ -83,6 +83,12 @@ create table Besoin (
     foreign key (idService) references Service(id)
 );
 
+ALTER TABLE besoin add column id_type_contrat INT;
+ALTER TABLE besoin
+ADD CONSTRAINT fk_type_contrat
+FOREIGN KEY (id_type_contrat)
+REFERENCES type_contrat(id);
+
 -- DETAILS BESOIN
 -- Details_Besoin_Genre, Details_Besoin_Age, Details_Besoin_Diplome, Details_Besoin_Experience, Details_Besoin_Matrimoniale
 -- Details_Besoin_Salaire, Details_Besoin_Nationalite, Details_Besoin_Region, Details_Besoin_Ville
@@ -478,6 +484,12 @@ SELECT *,
        EXTRACT(MONTH FROM AGE(retour, depart)) AS monthsDifference
 FROM conf_conge;
 -- WHERE id_employer = 'your_employee_id';
+
+create table type_contrat(
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(250),
+    Acronyme VARCHAR(50)
+);
 
 
 

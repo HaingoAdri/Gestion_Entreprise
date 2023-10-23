@@ -27,6 +27,9 @@
                                         <li class="d-flex">
                                             <span>On a besoin de : <strong>{{ $besoin->personnes }}</strong> personnes</span>
                                         </li>
+                                        <li class="d-flex">
+                                            <span>Type de contrat : {{ $besoin->type_contrat->nom }} | <strong>{{ $besoin->type_contrat->acronyme }}</strong></span>
+                                        </li>
                                     </ul>
                                 </div>
                             </a>
@@ -113,11 +116,11 @@
                             <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Nom du Poste</label>
                             <div class="col-sm-8 col-lg-10">
                                 <div class="custom-file mb-1">
-                                @foreach($listePostes as $poste)
                                   <select name="poste_id" class="form-control">
+                                @foreach($listePostes as $poste)
                                     <option value="{{ $poste->id }}">{{ $poste->type }}</option>
-                                  </select>
                                 @endforeach
+                                </select>
                                 </div>
                             </div>
                         </div>
@@ -126,11 +129,24 @@
                             <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Service</label>
                             <div class="col-sm-8 col-lg-10">
                                 <div class="custom-file mb-1">
+                                <select name="service_id" class="form-control">
                                   @foreach($listeServices as $service)
-                                    <select name="service_id" class="form-control">
                                       <option value="{{ $service->id }}">{{ $service->type }}</option>
-                                    </select>
                                   @endforeach
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-6">
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Nom du Type de contrat</label>
+                            <div class="col-sm-8 col-lg-10">
+                                <div class="custom-file mb-1">
+                                  <select name="type_contrat_id" class="form-control">
+                                @foreach($listeTypeContrats as $type_contrat)
+                                    <option value="{{ $type_contrat->id }}">{{ $type_contrat->nom }} | {{ $type_contrat->acronyme }}</option>
+                                @endforeach
+                                </select>
                                 </div>
                             </div>
                         </div>
@@ -160,8 +176,7 @@
                                   <input type="text" class="form-control" id="description" name="description">
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
 
                     </div>
                     <div class="modal-footer px-4">
