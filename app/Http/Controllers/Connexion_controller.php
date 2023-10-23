@@ -44,6 +44,15 @@ class Connexion_controller extends Controller
         if($connecteur != null){
             Session::put('client', $connecteur);
             Session::put('profil', 5); //profil: 5 ==> Client
+<<<<<<< Updated upstream
+=======
+
+            if(((new Employer())->checkIfEmployer($connecteur->id)) != null) {
+                Session::put('employer', (new Employer())->checkIfEmployer($connecteur->id));
+            }else{
+                Session::put('employer', 'null');
+            }
+>>>>>>> Stashed changes
             return view('accueil');
         }
         $erreur = "Email ou Mot de passe incorrect";

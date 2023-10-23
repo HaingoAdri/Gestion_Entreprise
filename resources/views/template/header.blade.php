@@ -145,6 +145,7 @@
                             </ul>
                         </li>
 
+<<<<<<< Updated upstream
                         <li>
                             <a class="sidenav-item-link" href="chat.html">
                                 <i class="mdi mdi-wechat"></i>
@@ -152,6 +153,43 @@
                             </a>
                         </li>
                     </li>
+=======
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#contrat"
+                            aria-expanded="false" aria-controls="contrat">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Contrat</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="contrat" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('contrat_essaie') }}">
+                                        <span class="nav-text">Contrat D'essaie</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_contrat_renouveler') }}">
+                                        <span class="nav-text">Contrat A renouveler</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
+                        @if( session("profil") == 5 & session("employer") != null)
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Conge et Besoin</span>
+                            </a>
+                          </li>
+                        @elseif( session("profil") == 20 )
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('accueil_Conge') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Conge et Besoin</span>
+                            </a>
+                          </li>
+                        @endif
+>>>>>>> Stashed changes
                 </ul>
             </div>
                   
@@ -273,6 +311,12 @@
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-us-aea.js') }}"></script>
+<<<<<<< Updated upstream
+=======
+    <script src="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js') }}"></script>
+    <!-- <script src="{{ asset('js/calendar.js') }}"></script> -->
+>>>>>>> Stashed changes
     <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 
