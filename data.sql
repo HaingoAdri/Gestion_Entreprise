@@ -2,6 +2,8 @@
     insert into module(type) values ('Ressource Humaine'),
                                     ('Secretariat');
 
+    insert into module(type) values ('Securite');
+
 -- DIPLOME
     insert into diplome(type) values ('BEPC'),
                                     ('BACC'),

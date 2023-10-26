@@ -73,6 +73,17 @@
             <!-- begin sidebar scrollbar -->
             <div class="sidebar-left" data-simplebar style="height: 100%;">
                 <!-- sidebar menu -->
+                @if(session("administrateur_rh")->module->id == 3)
+                <ul class="nav sidebar-inner" id="sidebar-menu">
+                
+                    <li class="active">
+                        <a class="sidenav-item-link" href="{{ route('index_pointage') }}">
+                            <i class="mdi mdi-briefcase-account-outline"></i>
+                            <span class="nav-text">Pointages</span>
+                        </a>
+                    </li>
+                </ul>
+                @else
                 <ul class="nav sidebar-inner" id="sidebar-menu">
                 
                     <li class="active">
@@ -246,6 +257,7 @@
                         </li>
                     </li>
                 </ul>
+                @endif
             </div>
                   
 

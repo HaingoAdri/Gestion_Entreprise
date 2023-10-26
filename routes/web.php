@@ -12,6 +12,7 @@ use App\Http\Controllers\Personnel_controller;
 use App\Http\Controllers\Conge_controller;
 use App\Http\Controllers\Tester_Qcm_Controller;
 use App\Http\Controllers\Qcm_controller;
+use App\Http\Controllers\Pointage_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,3 +133,7 @@ Route::get('/result_Qcm', [Tester_Qcm_Controller::class, "insererResultatQcm"])-
 
 // afaka qcm
 Route::get('/afaka{idqcm}', [Tester_Qcm_Controller::class, "afaka_Qcm"])->name("afaka");
+
+// pointage
+Route::get('/index_pointage', [Pointage_controller::class, "index"])->name("index_pointage");
+Route::get('/insert_pointage', [Pointage_controller::class, "insert_pointage"])->name("insert_pointage");

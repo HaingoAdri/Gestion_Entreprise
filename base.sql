@@ -526,3 +526,14 @@ create view liste_personnel as
 -- select * from note_cv where id = 2;
 
 -- select * from cv where id = 17;
+
+-- // SECURITE
+create table pointage(
+    id SERIAL PRIMARY KEY,
+    id_employer VARCHAR(100),
+    date DATE,
+    etat INT, -- 50 : arrive && 100 : sortie
+    securite INT,
+    foreign key (id_employer) references employer(id_emp),
+    foreign key (securite) references Administrateur(id)
+);
