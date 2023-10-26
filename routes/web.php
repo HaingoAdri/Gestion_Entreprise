@@ -109,6 +109,9 @@ Route::get('/changeStatut/{id?}/{statut?}', [Conge_controller::class, "changeSta
 Route::get('/liste_valider', [Conge_controller::class, "index_liste_valider"])->name("liste_valider");
 Route::get('/liste_retour', [Conge_controller::class, "index_liste_confirmer_retour"])->name("liste_retour");
 
+Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
+Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
+
 Route::get('/test', [Conge_controller::class, "test_date"])->name("test");
 
 // -- INSERTION CONGE

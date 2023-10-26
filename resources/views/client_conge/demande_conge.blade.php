@@ -52,13 +52,49 @@
                     @endif
 
                 </div>
+
+                <div class="card card-default">
+
+                    <div class="card-title text-center">
+                        <br>
+                        <h4>Liste des subordonnees</h4>
+                    </div>
+                
+                    <div class="card-body pt-0">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Nom et Prenom</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="line-container-age">
+                                @if(count($subordonnees) > 0)
+                                    @foreach($subordonnees as $employe)
+                                    <tr id="tbody-age">
+                                        <th>{{ $employe->id_emp }}</th>
+                                        <td>{{ $employe->employe->client->nom }} {{ $employe->employe->client->prenom }}</td>
+                                        <td><div class="modal-footer border-top-0 px-4 pt-0">
+                                            <a href="{{ route('getAll_One_Employer', ['id_emp' => $employe->id_emp] ) }}"><button type="button" class="btn btn-primary">voir</button></a>
+                                        </div></td>
+                                    </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
             </div>
             
             <div class="col-md-8">
                 <div class="card card-default">
                     <div class="card-body p-0">
                         <div class="full-calendar">
-                        <div id='calendar'></div>
+                            <div id='calendar'></div>
                         </div>
                     </div>
                 </div>
