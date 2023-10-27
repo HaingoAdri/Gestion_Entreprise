@@ -1,0 +1,254 @@
+@extends("template.header")
+
+@section("contenu")
+<div class="content-wrapper">
+  <div class="content">
+    <div class="card card-default" style="padding:1rem;">
+
+      <div class="card-body px-3 px-md-5">
+
+        <div class="card-title">
+            <center><h2>FICHE DE PAIE</h2></center>
+            <center><h4>ARRETE AU 31/08/2023</h4></center>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Nom et Prénoms :</strong></p>
+                <p><strong>Matricule :</strong></p>
+                <p><strong>Fonction :</strong></p>
+                <p><strong>N° CNaPS :</strong></p>
+                <p><strong>Date d'embauche :</strong></p>
+                <p><strong>Ancienneté :</strong></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Classification :</strong></p>
+                <p><strong>Salaire de base :</strong></p>
+                <p><strong>Taux journaliers :</strong></p>
+                <p><strong>Taux horaires :</strong></p>
+                <p><strong>Indice :</strong></p>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="card-body">
+        <table class="table">
+            <thead style="align-items: center;">
+                <th class="col-6">Désignations</th>
+                <th class="col-2">Nombre</th>
+                <th class="col-2">Taux</th>
+                <th class="col-2">Montant</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Salaire du 01/06/23 au 30/06/23</td>				
+                    <td>1 mois</td>	
+                    <td>136,114.00</td>
+                    <td>4,083,409.09</td>
+                </tr>
+                <tr>
+                    <td>Absences déductibles</td>				
+                    <td>0</td>	
+                    <td>136,114.00</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Primes de rendement</td>				
+                    <td>0</td>	
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Primes d'ancienneté</td>				
+                    <td>0</td>	
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Heures supplémentaires majorées de 30%</td>				
+                    <td>0</td>	
+                    <td>30,627.00</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Heures supplémentaires majorées de 40%</td>				
+                    <td>0</td>	
+                    <td>32,983.00</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Heures supplémentaires majorées de 50%</td>				
+                    <td>0</td>	
+                    <td>35,339.00</td>
+                    <td>0</td>
+                </tr>		
+                <tr>
+                    <td>Heures supplémentaires majorées de 100%</td>				
+                    <td>0</td>	
+                    <td>47,118.00</td>
+                    <td>0</td>
+                </tr>	
+                <tr>
+                    <td>Majoration pour heures de nuit</td>				
+                    <td>0</td>	
+                    <td>7,068.00</td>
+                    <td>0</td>
+                </tr>	
+                <tr>
+                    <td>Primes diverses</td>				
+                    <td>0</td>	
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Rappels sur période antérieure</td>				
+                    <td>0</td>	
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Droits de congés</td>				
+                    <td>0</td>	
+                    <td>136,114.00</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Droits de préavis</td>				
+                    <td>0</td>	
+                    <td>136,114.00</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Indemnités de licenciement</td>				
+                    <td>0</td>	
+                    <td>136,114.00</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td></td>				
+                    <td></td>	
+                    <td><strong>Salaire Brut</strong></td>
+                    <td><strong>4,083,409.09</strong></td>
+                </tr>
+        
+            </tbody>
+        
+        </table>
+
+        <table class="table">
+          <thead style="align-items: center;">
+            <th class="col-6"></th>
+            <th class="col-2"></th>
+            <th class="col-2"></th>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Retenue CNaPS 1%</td>	
+                <td></td>	
+                <td>0</td>	
+                <td>20,000.00</td>
+            </tr>
+            <tr>
+                <td>Retenue Salaire</td>				
+                <td></td>	
+                <td>0</td>	
+                <td>40,834.09</td>
+            </tr>
+            <tr>
+                <td>Tranche IRSA INF 350 0000</td>				
+                <td></td>	
+                <td>0</td>	
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Tranche IRSA I DE 350 0001 à 400 000</td>				
+                <td></td>	
+                <td>5%</td>	
+                <td>2,500.00</td>
+            </tr>
+            <tr>
+                <td>Tranche IRSA I DE 400 0001 à 500 000</td>				
+                <td></td>
+                <td>10%</td>	
+                <td>10,000.00</td>
+            </tr>
+            <tr>
+                <td>Tranche IRSA I DE 500 001 à 600 000</td>				
+                <td></td>	
+                <td>15%</td>	
+                <td>15,000.00</td>
+            </tr>
+            <tr>
+                <td>Tranche IRSA SUP 600 0000</td>				
+                <td></td>	
+                <td>20%</td>	
+                <td>684,515.00</td>
+            </tr>
+            <tr>
+                <td></td>				
+                <td></td>	
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>TOTAL IRSA</strong></td>				
+                <td></td>	
+                <td>712,015.00</td>
+            </tr>
+            <tr>
+                <td></td>				
+                <td></td>	
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>				
+                <td></td>	
+                <td><strong>Total des retenues</strong></td>
+                <td><strong>772,849.09</strong></td>
+            </tr>
+
+            <tr>
+                <td></td>				
+                <td></td>	
+                <td><strong>Autres indemnités</strong></td>
+                <td><strong>0</strong></td>
+            </tr>
+
+            <tr>
+                <td></td>				
+                <td></td>	
+                <td><strong>Net à payer</strong></td>
+                <td><strong>3,310,560.00</strong></td>
+            </tr>
+    
+          </tbody>
+    
+        </table>
+
+        <p><strong>Avantages en nature: </strong></p>
+        <p><strong>Deduction IRSA: </strong></p>
+        <p><strong>Montant imposable: </strong> 4,022,575.00</p>
+
+        <br>
+
+        <p><strong>Mode de paiement: </strong> <strong style="color:blueviolet"> Virement / Chèque</strong></p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <center><p><strong>L'employeur</strong></p></center>
+          </div>
+          <div class="col-md-6">
+            <center><p><strong>L'employé(e)</strong></p></center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
