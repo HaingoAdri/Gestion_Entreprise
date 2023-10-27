@@ -72,7 +72,7 @@
 
                             <div class="form-group">
                                 <label for="firstName">Date</label>
-                                <input type="date" class="form-control" name="pointage_date">
+                                <input type="datelocal-time" class="form-control" name="pointage_date">
                             </div>
 
                             <div class="form-group" >
