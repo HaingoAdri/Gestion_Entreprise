@@ -531,7 +531,7 @@ create view liste_personnel as
 create table pointage(
     id SERIAL PRIMARY KEY,
     id_employer VARCHAR(100),
-    date DATE,
+    date DATETIME,
     etat INT, -- 50 : arrive && 100 : sortie
     jour_nuit INT, -- 25 : jour && 55 : nuit
     securite INT,
