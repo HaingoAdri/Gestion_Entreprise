@@ -28,7 +28,10 @@ class Pointage extends Model
 
     public function insert() {
         try {
-            $requete = "insert into pointage (id_employer, date, etat,jour_nuit,securite) values ('".$this->id_employer."','".$this->date."',".$this->etat.",".$this->jour_nuit.",".$this->securite.")";
+            $isoDatetime = $this->date;
+            $formattedDatetime = str_replace("T", " ", $isoDatetime);
+
+            $requete = "insert into pointage (id_employer, date, etat,jour_nuit,securite) values ('".$this->id_employer."','".$formattedDatetime."',".$this->etat.",".$this->jour_nuit.",".$this->securite.")";
             echo $requete;
             DB::insert($requete);
         } catch (Exception $e) {
