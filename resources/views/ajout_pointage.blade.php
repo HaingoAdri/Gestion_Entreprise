@@ -25,6 +25,7 @@
                                 <th scope="col">Employer</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Etat</th>
+                                <th scope="col">Jour / Nuit</th>
                                 <th scope="col">Pointeur</th>
                             </tr>
                         </thead>
@@ -35,6 +36,7 @@
                                 <td>{{ $pointage->employer->client->nom}} {{ $pointage->employer->client->prenom}}</td>
                                 <td>{{ $pointage->date}}</td>
                                 <td>{{ $pointage->etat}}</td>
+                                <td>{{ $pointage->jour_nuit}}</td>
                                 <td>{{ $pointage->securite}}</td>
                             </tr>
                             @endforeach
@@ -78,6 +80,14 @@
                                 <select name="type_de_pointage" class="form-control">
                                     <option value="50">Arrive</option>
                                     <option value="100">Sortie</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" >
+                                <label for="firstName">Type jour/nuit</label>
+                                <select name="type_de_pointage" class="form-control">
+                                    <option value="25">Jour</option>
+                                    <option value="55">Nuit</option>
                                 </select>
                             </div>
                         

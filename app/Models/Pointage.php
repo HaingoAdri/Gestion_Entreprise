@@ -13,20 +13,22 @@ class Pointage extends Model
     public $id_employer;
     public $date;
     public $etat;
+    public $jour_nuit;
     public $securite;
 
     public $employer;
 
-    public function __construct($id_employer = "", $date = "", $etat = "", $securite = "") {
+    public function __construct($id_employer = "", $date = "", $etat = "", $jour_nuit = "", $securite = "") {
         $this->id_employer = $id_employer;
         $this->date = $date;
         $this->etat = $etat;
+        $this->jour_nuit = $jour_nuit;
         $this->securite = $securite;
     }
 
     public function insert() {
         try {
-            $requete = "insert into pointage (id_employer, date, etat,securite) values ('".$this->id_employer."','".$this->date."',".$this->etat.",".$this->securite.")";
+            $requete = "insert into pointage (id_employer, date, etat,jour_nuit,securite) values ('".$this->id_employer."','".$this->date."',".$this->etat.",".$this->jour_nuit.",".$this->securite.")";
             echo $requete;
             DB::insert($requete);
         } catch (Exception $e) {
@@ -39,6 +41,10 @@ class Pointage extends Model
             return "Arrive";
         }else if($etat == 100){
             return "Sortie";
+        }else if($etat == 25){
+            return "Jour";
+        }else if($etat == 55){
+            return "nuit";
         }
         return "";
     }
@@ -54,6 +60,7 @@ class Pointage extends Model
                 $pointage->employer = (new Employer(id_emp: $resultat->id_employer))->getDonneesEmployer();
                 $pointage->date = $resultat->date;
                 $pointage->etat = $this->getEtat($resultat->etat);
+                $pointage->jour_nuit = $this->getEtat($resultat->jour_nuit);
                 $pointage->securite = $resultat->securite;
                 $liste[] = $pointage;
             }

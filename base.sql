@@ -533,6 +533,7 @@ create table pointage(
     id_employer VARCHAR(100),
     date DATE,
     etat INT, -- 50 : arrive && 100 : sortie
+    jour_nuit INT, -- 25 : jour && 55 : nuit
     securite INT,
     foreign key (id_employer) references employer(id_emp),
     foreign key (securite) references Administrateur(id)

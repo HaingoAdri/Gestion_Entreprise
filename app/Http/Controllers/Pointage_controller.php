@@ -26,10 +26,11 @@ class Pointage_controller extends Controller
         $employer = $request->input('employer');
         $date = $request->input('pointage_date');
         $type_de_pointage = $request->input('type_de_pointage');
+        $type_jour_nuit = $request->input('type_jour_nuit');
 
         // var_dump($administrateur);
         // echo $employer;
-        $pointage = new Pointage(id_employer: $employer, date: $date, etat: $type_de_pointage, securite: $administrateur->id);
+        $pointage = new Pointage(id_employer: $employer, date: $date, etat: $type_de_pointage, jour_nuit: $type_jour_nuit, securite: $administrateur->id);
         $pointage->insert();
         
         return redirect()->route('index_pointage');
