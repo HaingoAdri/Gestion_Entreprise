@@ -497,7 +497,31 @@ create table type_contrat(
     Acronyme VARCHAR(50)
 );
 
+---CNAPS
+CREATE SEQUENCE seqCnaps
+    increment by 1
+    start WITH 1
+    minValue 1;
 
+create function nextSeqCnaps() returns integer
+AS
+    $$
+Declare
+retour integer;
+BEGIN
+SELECT coalesce(nextval('seqCnaps'),1) into retour;
+return retour;
+END
+$$ LANGUAGE plpgsql;
+
+create table cnaps (
+    id varchar(10) primary key,
+    id_emp varchar(10),
+    date date,
+    etat int default 8,
+    foreign key (id_emp) references Employer(id_emp),
+    foreign key (etat) references Etats(id_et)
+);
 
 
 

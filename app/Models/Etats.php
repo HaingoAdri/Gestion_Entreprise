@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace Ap\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Databse\Eloquent\Model;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 
 
@@ -12,9 +12,9 @@ class Etats extends Model {
     public $noms_etats;
    
 
-    public function __construct($id_e, $noms_etats) {
+    public function __construct($id_e = "", $noms_etats = " ") {
         $this->id_e = $id_e;
-        $this->noms_etats = $noms_etats;
+        $this->nom_etats = $noms_etats;
         
     }
 
@@ -27,16 +27,14 @@ class Etats extends Model {
         }    
     }
 
-    public function getEtatsAa($aa) {
-        $requette = "select * from etats ";
+    public function getDonnes_Un_Etat() {
+        $requette = "select * from etats where id_e = " + $this->id_e;
         $reponse = DB::select($requette);
         $Etats = null;
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
-                $Etats = new Etats();
-                $Etats->id_e  = $resultat->id_e;
-                $Etats->noms_etats  = $resultat->nom_etats;
-                
+                $Etats = new Etats( $resultat->id_e, $resultat->nom_etats);
+                break;
             }
         }
         return $Etats;

@@ -10,6 +10,7 @@ use App\Models\Proche;
 use App\Models\Genre;
 use App\Models\Type_avantage_nature;
 use App\Models\Avantage_nature;
+use App\Models\CNAPS;
 
 use Carbon\Carbon;
 
@@ -118,6 +119,10 @@ class Contrat_controller extends Controller
 
         $embauche = new Historique_embauche("", $idEmploye, $date, 20);
         $embauche->insert();
+
+        $cnaps = new CNAPS(employe: $employe, date: $date, etat: 8);
+        $cnaps->id = $cnaps->getNextId();
+        $cnaps->insert();
 
         $employe->etat = 20;
         $employe->updateEtat();
