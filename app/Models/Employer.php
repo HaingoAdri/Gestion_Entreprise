@@ -16,6 +16,8 @@ class Employer extends Model {
     public $telephone;
     public $etat;
 
+    public $CNAPS;
+
     public function __construct($id_emp = "", $idClient = "", $etat = "") {
         $this->id_emp = $id_emp;
         $this->idClient = $idClient;
@@ -86,6 +88,7 @@ class Employer extends Model {
                 $Employer->adresse = $resultat->adresse;
                 $Employer->telephone = $resultat->telephone;
                 $Employer->client = (new Client())->getDonneesClient($resultat->idclient);
+                $Employer->CNAPS = (new CNAPS(id_emp: $Employer->id_emp))->getDonnees_Cnaps_Un_Employer();
                 break;
             }
         }

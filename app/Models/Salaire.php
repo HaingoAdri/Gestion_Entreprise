@@ -35,18 +35,18 @@ class Salaire extends Model {
     public function getSalaireEmploye() {
         $requette = "select * from salaire where id_emp = '". $this->id_emp ."' and date <= '". $this->date ."' order by date desc;";
         $reponse = DB::select($requette);
-        $Employer = null;
+        $Salaire = null;
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
-                $Employer = new Employer();
-                $Employer->id  = $resultat->id;
-                $Employer->id_emp  = $resultat->id_emp;
-                $Employer->brut  = $resultat->brut;
-                $Employer->net  = $resultat->net;
-                $Employer->date  = $resultat->date;
+                $Salaire = new Salaire();
+                $Salaire->id  = $resultat->id;
+                $Salaire->id_emp  = $resultat->id_emp;
+                $Salaire->brut  = $resultat->brut;
+                $Salaire->net  = $resultat->net;
+                $Salaire->date  = $resultat->date;
                 break;
             }
         }
-        return $Employer;
+        return $Salaire;
     }
 }

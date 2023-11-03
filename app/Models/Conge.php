@@ -317,4 +317,32 @@ class Conge extends Model
 
         return ($solde - $joursDifference);
     }
+
+    public function getListeConges_un_employe() {
+        $requette = " select * from conge where id_employer='$this->id_employer' and statut=21 and debut>='$this->debut' and fin<='$this->fin';";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $conge = new Conge();
+                $conge->id = $resultat->id;
+                $conge->id_employer = $resultat->id_employer;
+                $conge->id_type_conge = $resultat->id_type_conge;
+                $conge->raison = $resultat->raison;
+                $conge->debut = $resultat->debut;
+                $conge->fin = $resultat->fin;
+                $conge->statut = $resultat->statut;
+                $conge->justificatif = $resultat->justificatif;
+
+                $conge->nomStatut = $this->defineStatut($resultat->statut);
+                $conge->type_conge = (new Type_Conge())->getUnTypeConge($resultat->id_type_conge);
+                $conge->employer = (new Employer(id_emp: $conge->id_employer))->getDonneesEmployer();
+
+                $liste[] = $conge;
+            }
+        }
+        return $liste;
+    }
+
+
 }

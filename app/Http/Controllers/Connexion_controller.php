@@ -24,7 +24,8 @@ class Connexion_controller extends Controller
         $administrateur = new Administrateur();
         $email = $request->input('email');
         $mot_de_passe = $request->input('mot_de_passe');
-        $connecteur = $administrateur->getAdministrateur($email, $mot_de_passe);
+        $idModule = $request->input('module');
+        $connecteur = $administrateur->getAdministrateur($email, $mot_de_passe, $idModule);
         if($connecteur != null){
             Session::put('administrateur_rh', $connecteur);
             Session::put('profil', 20); //profil: 20 ==> Admin

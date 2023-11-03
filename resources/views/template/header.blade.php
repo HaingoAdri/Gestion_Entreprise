@@ -73,8 +73,18 @@
             <!-- begin sidebar scrollbar -->
             <div class="sidebar-left" data-simplebar style="height: 100%;">
                 <!-- sidebar menu -->
+                @if(session("administrateur_rh")->module->id == 5)
                 <ul class="nav sidebar-inner" id="sidebar-menu">
                 
+                    <li class="active">
+                        <a class="sidenav-item-link" href="{{ route('index_pointage') }}">
+                            <i class="mdi mdi-briefcase-account-outline"></i>
+                            <span class="nav-text">Pointages</span>
+                        </a>
+                    </li>
+                </ul>
+                @else
+                <ul class="nav sidebar-inner" id="sidebar-menu">
                     <li class="active">
                         <a class="sidenav-item-link" href="accueil.html">
                             <i class="mdi mdi-briefcase-account-outline"></i>
@@ -236,6 +246,13 @@
                             </ul>
                         </li>
 
+                        <li>
+                            <a class="sidenav-item-link" href="{{ route('voir_fiche_de_paie') }}">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Fiche de Paie</span>
+                            </a>
+                        </li>
+
                         @endif
 
                         <li>
@@ -246,6 +263,7 @@
                         </li>
                     </li>
                 </ul>
+                @endif
             </div>
                   
 
