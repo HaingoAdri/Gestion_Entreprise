@@ -584,12 +584,29 @@ create table tranche_irsa (
     date date
 );
 
-insert into tranche_irsa (debut, fin, majoration, date) values
-(1, 350000, 0, '2023-01-01'),
-(350001, 400000, 5, '2023-01-01'),
-(400001, 500000, 10, '2023-01-01'),
-(500001, 600000, 15, '2023-01-01'),
-(600001, 10000000000, 20, '2023-01-01');
+-- insert into tranche_irsa (debut, fin, majoration, date) values
+-- (1, 350000, 0, '2023-01-01'),
+-- (350001, 400000, 5, '2023-01-01'),
+-- (400001, 500000, 10, '2023-01-01'),
+-- (500001, 600000, 15, '2023-01-01'),
+-- (600001, 10000000000, 20, '2023-01-01');
+
+---Employe
+CREATE SEQUENCE seqEmploye
+    increment by 1
+    start WITH 1
+    minValue 1;
+
+create function nextSeqEmploye() returns integer
+AS
+    $$
+Declare
+retour integer;
+BEGIN
+SELECT coalesce(nextval('seqEmploye'),1) into retour;
+return retour;
+END
+$$ LANGUAGE plpgsql;
 
 
 --view liste_contrat_a_renouveler

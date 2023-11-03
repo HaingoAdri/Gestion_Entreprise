@@ -128,4 +128,18 @@ class Employer extends Model {
         }
         return $Employer;   
     }
+
+    public function getNextId() {
+        $requette = "select nextSeqEmploye()";
+        $reponse = DB::select($requette);
+        $id = "EMP";
+        if(count($reponse) > 0){
+            $index = "" . $reponse[0]->nextseqcnaps;
+            for($i = 0; $i<(10-(strlen($index)+3)); $i++)  {
+                $id = $id . "0";
+            }
+            $id = $id . $index;
+        }
+        return $id;
+    }
 }
