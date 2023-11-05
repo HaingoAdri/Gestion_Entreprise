@@ -14,6 +14,7 @@ use App\Http\Controllers\Tester_Qcm_Controller;
 use App\Http\Controllers\Qcm_controller;
 use App\Http\Controllers\Pointage_controller;
 use App\Http\Controllers\Paie_controller;
+use App\Http\Controllers\Etat_Paie_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,4 +143,7 @@ Route::get('/insert_pointage', [Pointage_controller::class, "insert_pointage"])-
 //paie
 Route::get('/voir_fiche_de_paie', [Paie_controller::class, "voir_fiche_de_paie"])->name("voir_fiche_de_paie");
 Route::post('/fiche_de_paie', [Paie_controller::class, "fiche_de_paie"])->name("fiche_de_paie");
+
+Route::get('/voir_etat_de_paie', [Etat_Paie_controller::class, "voir_etat_de_paie"])->name("voir_etat_de_paie");
+Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"])->name("etat_de_paie");
 

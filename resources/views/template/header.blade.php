@@ -203,6 +203,23 @@
                             </ul>
                         </li>
 
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#personnel"
+                            aria-expanded="false" aria-controls="personnel">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Paie</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="personnel" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('voir_etat_de_paie') }}">
+                                        <span class="nav-text">Voir Etat de Paie</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
                         <li>
                           <a class="sidenav-item-link" href="{{ route('accueil_Conge') }}">
                               <i class="mdi mdi-calendar-check"></i>

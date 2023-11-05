@@ -652,3 +652,20 @@ insert into confirmation_date (idconge, depart, retour) values
 
 insert into confirmation_date (idconge, depart, retour) values
 (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
+
+
+// --- IMPOT
+create table impot(
+    id Serial PRIMARY KEY,
+    plafond_minimum DOUBLE PRECISION,
+    plafond_maximum DOUBLE PRECISION,
+    pourcentage DOUBLE PRECISION
+);
+
+create table avance(
+    id Serial PRIMARY KEY,
+    id_employe VARCHAR(200),
+    avance DOUBLE PRECISION,
+    date DATE,
+    foreign key (id_employe) references employer(id_emp)
+);
