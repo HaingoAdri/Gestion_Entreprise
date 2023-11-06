@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\DB; // Importez la classe DB
 class CNAPS extends Model
 {
     public $id;
-    public $employe;
+    public $id_emp;
     public $date;
     public $etat;
 
-    public function __construct($id = "", $employe = "", $date = "", $etat = "") {
+    public function __construct($id = "", $id_emp = "", $date = "", $etat = "") {
         $this->id = $id;
-        $this->employe = $employe;
+        $this->id_emp = $id_emp;
         $this->date = $date;
         $this->etat = $etat;
     }
 
     public function insert() {
         try {
-            $requete = "insert into cnaps values ('".$this->id."','".$this->employe->id_emp."', '".$this->date."', ".$this->etat.")";
+            $requete = "insert into cnaps values ('".$this->id."','".$this->id_emp."', '".$this->date."', ".$this->etat.")";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert client: ".$e->getMessage());
@@ -45,13 +45,31 @@ class CNAPS extends Model
     }
 
     public function getDonnees_Cnaps_Un_Employer() {
-        $requette = "select * from cmaps where id_emp = '". $employe->id_emp ."' and etat = 8";
+        $requette = "select * from cnaps where id_emp = '". $this->id_emp ."' and etat = 8";
         $reponse = DB::select($requette);
         $cnaps = null;
         if(count($reponse) > 0){
-            $employe = (new Employer(id_emp: $reponse[0]->id_emp))->getDonneesEmployer();
-            $cnaps = new CNAPS($reponse[0]->id, $employe, $reponse[0]->date, 8);
+            $cnaps = new CNAPS($reponse[0]->id, $reponse[0]->id_emp, $reponse[0]->date, 8);
         }
         return $cnaps;
+    }
+
+    public function getDernier_Retenu_CNAPS() {
+        $requette = "select * from retenu_cnaps where date <= '". $this->date ."'";
+        // echo $requette;
+        $reponse = DB::select($requette);
+        $retenu = 0;
+        if(count($reponse) > 0){
+            $retenu = $reponse[0]->plafond;
+        }
+        return $retenu;   
+    }
+
+    public function getRetenu_CNAPS_Un_Employe($salaire_brut) {
+        $retenu = $this->getDernier_Retenu_CNAPS();
+        $retenu_cnaps = $salaire_brut * (1/100);
+        if($retenu_cnaps > $retenu)
+            $retenu_cnaps = $retenu;
+        return $retenu_cnaps;
     }
 }

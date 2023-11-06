@@ -27,6 +27,8 @@
   <link href="{{ asset('plugins/nprogress/nprogress.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet" />
+  <link href="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.css') }}" rel='stylesheet' />
+  <link href="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.css') }}" rel='stylesheet' />
   <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link href="{{ asset('plugins/toaster/toastr.min.css') }}" rel="stylesheet" />
@@ -73,9 +75,45 @@
             <!-- begin sidebar scrollbar -->
             <div class="sidebar-left" data-simplebar style="height: 100%;">
                 <!-- sidebar menu -->
+                @if(session("administrateur_rh")!=null && session("administrateur_rh")->module->id == 5)
                 <ul class="nav sidebar-inner" id="sidebar-menu">
                 
                     <li class="active">
+                        <a class="sidenav-item-link" href="{{ route('index_pointage') }}">
+                            <i class="mdi mdi-briefcase-account-outline"></i>
+                            <span class="nav-text">Pointages</span>
+                        </a>
+                    </li>
+                    
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
+                        aria-expanded="false" aria-controls="annonce">
+                            <i class="mdi mdi-format-list-bulleted"></i>
+                            <span class="nav-text">Annonce</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                            
+                                <li><a class="sidenav-item-link" href="{{ route('liste_annonce') }}">
+                                    <span class="nav-text">Liste des annonces</span>
+                                </a></li>
+                    
+                            </div>
+                        </ul>
+                    </li>
+    
+                    <li>
+                      <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                          <i class="mdi mdi-calendar-check"></i>
+                          <span class="nav-text">Conge et absence</span>
+                      </a>
+                    </li>
+
+                    
+                </ul>
+                @else
+                <ul class="nav sidebar-inner" id="sidebar-menu">
+                    <!-- <li class="active">
                         <a class="sidenav-item-link" href="accueil.html">
                             <i class="mdi mdi-briefcase-account-outline"></i>
                             <span class="nav-text">Business Dashboard</span>
@@ -87,14 +125,21 @@
                             <i class="mdi mdi-chart-line"></i>
                             <span class="nav-text">Analytics Dashboard</span>
                         </a>
-                    </li>
+                    </li> -->
                 
-                    <li class="section-title"> Apps </li>
+                    <li class="section-title"> Menu </li>
+                        @if(session("profil") == 5 && session("employer") != 'null')
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Conge et absence</span>
+                            </a>
+                          </li>
 
-                        <li  class="has-sub" >
+                          <li  class="has-sub" >
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
                             aria-expanded="false" aria-controls="annonce">
-                                <i class="mdi mdi-email"></i>
+                                <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="nav-text">Annonce</span> <b class="caret"></b>
                             </a>
                             <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
@@ -106,20 +151,115 @@
                         
                                 </div>
                             </ul>
+                          </li>
+                          
+                        @elseif( session("profil") == 20 )
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"aria-expanded="false" aria-controls="besoin">
+                                <i class="mdi mdi-playlist-plus"></i>
+                                <span class="nav-text">Besoins des services</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="besoin" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_besoin') }}">
+                                        <span class="nav-text">Ajouter un besoin</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
                         </li>
 
-                        @if(session("profil") == 5 && session("employer") != 'null')
-                          <li>
-                            <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
-                                <i class="mdi mdi-calendar-check"></i>
-                                <span class="nav-text">Conge et absence</span>
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#contrat"
+                            aria-expanded="false" aria-controls="contrat">
+                                <i class="mdi mdi-book-open-page-variant"></i>
+                                <span class="nav-text">Contrat</span> <b class="caret"></b>
                             </a>
-                          </li>
-                        @elseif( session("profil") == 20 )
+                            <ul  class="collapse"  id="contrat" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('contrat_essaie') }}">
+                                        <span class="nav-text">Contrat D'essaie</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_contrat_renouveler') }}">
+                                        <span class="nav-text">Contrat A renouveler</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li>
+                          <a class="sidenav-item-link" href="{{ route('accueil_Conge') }}">
+                              <i class="mdi mdi-calendar-check"></i>
+                              <span class="nav-text">Conge et Absence</span>
+                          </a>
+                        </li>
+                        
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#personnel"
+                            aria-expanded="false" aria-controls="personnel">
+                                <i class="mdi mdi-briefcase-account-outline"></i>
+                                <span class="nav-text">Personnel</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="personnel" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('recherche_un_personnel') }}">
+                                        <span class="nav-text">Fiche de poste</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listes_personnels') }}">
+                                        <span class="nav-text">Listes des personnels</span>
+                                    </a></li>
+                        
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#qcm"
+                            aria-expanded="false" aria-controls="qcm">
+                                <i class="mdi mdi-format-list-checks"></i>
+                                <span class="nav-text">QCM</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="qcm" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('qcm_avoaka') }}">
+                                        <span class="nav-text">Liste des annonces pour ajouter qcm</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeQcm')}}">
+                                        <span class="nav-text">Liste Qcm</span>
+                                    </a></li>
+
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#paie"
+                            aria-expanded="false" aria-controls="paie">
+                                <i class="mdi mdi-credit-card"></i>
+                                <span class="nav-text">Paie</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="paie" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('voir_fiche_de_paie') }}">
+                                            <span class="nav-text">Fiche de Paie</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('voir_etat_de_paie') }}">
+                                        <span class="nav-text">Voir Etat de Paie</span>
+                                    </a></li>
+                                </div>
+                            </ul>
+                        </li>
+
                         <li  class="has-sub" >
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#service"
                             aria-expanded="false" aria-controls="service">
-                                <i class="mdi mdi-email"></i>
+                                <i class="mdi mdi-room-service"></i>
                                 <span class="nav-text">Services / Postes</span> <b class="caret"></b>
                             </a>
                             <ul  class="collapse"  id="service" data-parent="#sidebar-menu">
@@ -138,92 +278,9 @@
                         </li>
 
                         <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"aria-expanded="false" aria-controls="besoin">
-                                <i class="mdi mdi-email"></i>
-                                <span class="nav-text">Besoins des services</span> <b class="caret"></b>
-                            </a>
-                            <ul  class="collapse"  id="besoin" data-parent="#sidebar-menu">
-                                <div class="sub-menu">
-                                
-                                    <li><a class="sidenav-item-link" href="{{ route('ajout_besoin') }}">
-                                        <span class="nav-text">Ajouter un besoin</span>
-                                    </a></li>
-                        
-                                </div>
-                            </ul>
-                        </li>
-
-                        <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#contrat"
-                            aria-expanded="false" aria-controls="contrat">
-                                <i class="mdi mdi-email"></i>
-                                <span class="nav-text">Contrat</span> <b class="caret"></b>
-                            </a>
-                            <ul  class="collapse"  id="contrat" data-parent="#sidebar-menu">
-                                <div class="sub-menu">
-                                
-                                    <li><a class="sidenav-item-link" href="{{ route('contrat_essaie') }}">
-                                        <span class="nav-text">Contrat D'essaie</span>
-                                    </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('liste_contrat_renouveler') }}">
-                                        <span class="nav-text">Contrat A renouveler</span>
-                                    </a></li>
-                        
-                                </div>
-                            </ul>
-                        </li>
-                        
-                        <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#personnel"
-                            aria-expanded="false" aria-controls="personnel">
-                                <i class="mdi mdi-email"></i>
-                                <span class="nav-text">Personnel</span> <b class="caret"></b>
-                            </a>
-                            <ul  class="collapse"  id="personnel" data-parent="#sidebar-menu">
-                                <div class="sub-menu">
-                                
-                                    <li><a class="sidenav-item-link" href="{{ route('recherche_un_personnel') }}">
-                                        <span class="nav-text">Fiche de poste</span>
-                                    </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('listes_personnels') }}">
-                                        <span class="nav-text">Listes des personnels</span>
-                                    </a></li>
-                        
-                                </div>
-                            </ul>
-                        </li>
-
-                        <li>
-                          <a class="sidenav-item-link" href="{{ route('accueil_Conge') }}">
-                              <i class="mdi mdi-calendar-check"></i>
-                              <span class="nav-text">Conge et Absence</span>
-                          </a>
-                        </li>
-
-                        <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#qcm"
-                            aria-expanded="false" aria-controls="qcm">
-                                <i class="mdi mdi-email"></i>
-                                <span class="nav-text">QCM</span> <b class="caret"></b>
-                            </a>
-                            <ul  class="collapse"  id="qcm" data-parent="#sidebar-menu">
-                                <div class="sub-menu">
-                                
-                                    <li><a class="sidenav-item-link" href="{{ route('qcm_avoaka') }}">
-                                        <span class="nav-text">Liste des annonces pour ajouter qcm</span>
-                                    </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('listeQcm')}}">
-                                        <span class="nav-text">Liste Qcm</span>
-                                    </a></li>
-
-                                </div>
-                            </ul>
-                        </li>
-
-                        <li  class="has-sub" >
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#listes"
                             aria-expanded="false" aria-controls="listes">
-                                <i class="mdi mdi-email"></i>
+                                <i class="mdi mdi-shape-square-plus"></i>
                                 <span class="nav-text">Traiter Qcm</span> <b class="caret"></b>
                             </a>
                             <ul  class="collapse"  id="listes" data-parent="#sidebar-menu">
@@ -235,17 +292,31 @@
                                 </div>
                             </ul>
                         </li>
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#entretient"
+                            aria-expanded="false" aria-controls="entretient">
+                                <i class="mdi mdi-email"></i>
+                                <span class="nav-text">Entretient</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="entretient" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                
+                                    <li><a class="sidenav-item-link" href="{{ route('entretient') }}">
+                                        <span class="nav-text">Ajouter entretient</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_entretient') }}">
+                                        <span class="nav-text">Passer entretient</span>
+                                    </a></li>
+                                </div>
+                            </ul>
+                        </li>
 
+                        
                         @endif
 
-                        <li>
-                            <a class="sidenav-item-link" href="chat.html">
-                                <i class="mdi mdi-wechat"></i>
-                                <span class="nav-text">Chat</span>
-                            </a>
-                        </li>
                     </li>
                 </ul>
+                @endif
             </div>
                   
 
@@ -276,38 +347,9 @@
                 <span class="sr-only">Toggle navigation</span>
               </button>
 
-              <span class="page-title">dashboard</span>
+              <span class="page-title">Accueil</span>
 
-              <div class="navbar-right ">
-
-                <!-- search form -->
-                <div class="search-form">
-                  <form action="index.html" method="get">
-                    <div class="input-group input-group-sm" id="input-group-search">
-                      <input type="text" autocomplete="off" name="query" id="search-input" class="form-control" placeholder="Search..." />
-                      <div class="input-group-append">
-                        <button class="btn" type="button">/</button>
-                      </div>
-                    </div>
-                  </form>
-                  <ul class="dropdown-menu dropdown-menu-search">
-
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">Morbi leo risus</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">Dapibus ac facilisis in</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">Porta ac consectetur ac</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">Vestibulum at eros</a>
-                    </li>
-
-                  </ul>
-
-                </div>
+              <div class="navbar-right" style="margin-rigth: 30px;">
 
                 <ul class="nav navbar-nav">
 
@@ -315,13 +357,21 @@
                   <li class="dropdown user-menu">
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                       <img src="{{ asset('images/user/user-xs-01.jpg') }}" class="user-image rounded-circle" alt="User Image" />
-                      <span class="d-none d-lg-inline-block">John Doe</span>
+                      @if(Session::get('profil') == 20)
+                      <span class="d-none d-lg-inline-block">{{ Session::get('administrateur_rh')->prenom }}</span>
+                      @else
+                      <span class="d-none d-lg-inline-block">{{ Session::get('client')->prenom }}</span>
+                      @endif
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
+                    <ul class="dropdown-menu dropdown-menu-right" style="width: 300px;">
                       <li>
                         <a class="dropdown-link-item" href="user-profile.html">
                           <i class="mdi mdi-account-outline"></i>
-                          <span class="nav-text">My Profile</span>
+                          @if(Session::get('profil') == 20)
+                          <span class="nav-text">{{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }}</span>
+                          @else
+                          <span class="nav-text">{{ Session::get('client')->prenom }} {{ Session::get('client')->nom }}</span>
+                          @endif
                         </a>
                       </li>
 
@@ -342,7 +392,7 @@
             <footer class="footer mt-auto">
                 <div class="copyright bg-white">
                 <p>
-                    &copy; <span id="copy-year"></span> Copyright Mono Dashboard Bootstrap Template by <a class="text-primary" href="http://www.iamabdus.com/" target="_blank" >Abdus</a>.
+                    &copy; <span id="copy-year"></span> Copyright | Layah-ETU-1947💜 Rota-ETU-2068💜 Haingo-2069💜</a>.
                 </p>
                 </div>
                 <script>
@@ -367,6 +417,8 @@
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill.js') }}"></script>
     <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-us-aea.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/core-4.3.1/main.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 
     <script>

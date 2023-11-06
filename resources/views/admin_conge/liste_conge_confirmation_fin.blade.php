@@ -75,14 +75,14 @@
                                                 <input type="hidden" class="form-control" name="idconge" value="{{ $demande->id }}" placeholder="Date"/>
 
                                                 <div class="form-group">
-                                                    <label for="firstName">Depart</label>
+                                                    <label for="firstName">Retour</label>
                                                     <div class="input-group mb-2">
                                                         <div class="input-group-prepend">
                                                         <span class="input-group-text py-1">
                                                             <i class="mdi mdi-calendar-range"></i>
                                                         </span>
                                                         </div>
-                                                        <input type="datetime-local" class="form-control" name="depart" value="" placeholder="Date"/>
+                                                        <input type="datetime-local" class="form-control" name="fin" value="" placeholder="Date"/>
                                                     </div>
                                                 </div>
                     

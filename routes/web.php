@@ -12,6 +12,10 @@ use App\Http\Controllers\Personnel_controller;
 use App\Http\Controllers\Conge_controller;
 use App\Http\Controllers\Tester_Qcm_Controller;
 use App\Http\Controllers\Qcm_controller;
+use App\Http\Controllers\Pointage_controller;
+use App\Http\Controllers\Paie_controller;
+use App\Http\Controllers\Etat_Paie_controller;
+use App\Http\Controllers\Entretient_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +45,8 @@ Route::post('/authentification_inscription', [Inscription_controller::class, "au
 Route::get('/inscription_client', [Inscription_controller::class, "inscription"])->name("inscription_client");
 Route::post('/authentification_inscription_client', [Inscription_controller::class, "inscription_client"])->name("authentification_inscription_client");
 
+//Accueil
+Route::get('/Accueil', [Connexion_controller::class, "accueil"])->name("accueil");
 
 // SERVICES
 Route::get('/ajout_service', [Service_controller::class, "index"])->name("ajout_service");
@@ -115,6 +121,7 @@ Route::get('/test', [Conge_controller::class, "test_date"])->name("test");
 Route::post('/insertion_conge', [Conge_controller::class, "insertion_conge"])->name("insertion_conge");
 Route::get('/insertion_Type_Conge', [Conge_controller::class, "insertion_type_conge"])->name("insertion_type_conge");
 Route::get('/insertion_confirmation_depart', [Conge_controller::class, "insertion_confirmation_depart"])->name("insertion_confirmation_depart");
+Route::get('/insertion_confirmation_fin', [Conge_controller::class, "insertion_confirmation_fin"])->name("insertion_confirmation_fin");
 
 // QCM
 Route::get('/qcm_avoaka', [Qcm_controller::class, "annonce"])->name("qcm_avoaka");
@@ -132,3 +139,26 @@ Route::get('/result_Qcm', [Tester_Qcm_Controller::class, "insererResultatQcm"])-
 
 // afaka qcm
 Route::get('/afaka{idqcm}', [Tester_Qcm_Controller::class, "afaka_Qcm"])->name("afaka");
+
+//Entretient
+Route::get('/entretient', [Entretient_Controller::class, "index"])->name("entretient");
+Route::post('/inserer_entretient', [Entretient_Controller::class, "insert"])->name("inserer_entretient");
+Route::get('/liste_entretient', [Entretient_Controller::class, "allEntretient"])->name("liste_entretient");
+Route::get('/inserer_Vita_Entretient', [Entretient_Controller::class, "inserer_Ok_Vita_Entretient"])->name("inserer_Vita_Entretient");
+
+
+// pointage
+Route::get('/index_pointage', [Pointage_controller::class, "index"])->name("index_pointage");
+Route::get('/insert_pointage', [Pointage_controller::class, "insert_pointage"])->name("insert_pointage");
+
+//paie
+Route::get('/voir_fiche_de_paie', [Paie_controller::class, "voir_fiche_de_paie"])->name("voir_fiche_de_paie");
+Route::post('/fiche_de_paie', [Paie_controller::class, "fiche_de_paie"])->name("fiche_de_paie");
+
+//etat de paie
+Route::get('/voir_etat_de_paie', [Etat_Paie_controller::class, "voir_etat_de_paie"])->name("voir_etat_de_paie");
+Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"])->name("etat_de_paie");
+
+
+Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
+Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");

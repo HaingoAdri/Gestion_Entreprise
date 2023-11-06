@@ -32,7 +32,7 @@ class Avantage_nature extends Model {
     }
 
     public function getListeAvanatge() {
-        $requette = "select * from Avantage_nature where id_emp = '". $this->id_emp ."' and etat = " . $this.etat . " order by date desc";
+        $requette = "select * from Avantage_nature where id_emp = '". $this->id_emp ."' and etat = " . $this->etat . " and date <= '". $this->date ."' order by date desc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

@@ -1,9 +1,9 @@
 <?php
 
-namespace Ap\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Databse\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 
 
@@ -38,5 +38,11 @@ class Etats extends Model {
             }
         }
         return $Etats;
+    }
+
+    public function getEtats() {
+        $requette = "select * from etats ";
+        $reponse = DB::select($requette);
+        return $reponse;
     }
 }

@@ -65,6 +65,10 @@ class Conge extends Model
             $nomStatut = "Approuvee";
         }elseif($statut == 41){
             $nomStatut = "Refuse";
+        }elseif($statut == 20){
+            $nomStatut = "Approuvee_Superieur";
+        }elseif($statut == 40){
+            $nomStatut = "Refuse_Superieur";
         }
 
         return $nomStatut;
@@ -123,7 +127,7 @@ class Conge extends Model
     }
 
     public function getListeCongesEnAttente() {
-        $requette = "select * from conge where statut = 1";
+        $requette = "select * from conge where statut = 20 or statut = 40";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
@@ -246,19 +250,23 @@ class Conge extends Model
     public function calculAcquis($id_emp){
         $historique_embauche = (new Historique_embauche(id_emp: $id_emp))->getDate_Embauche_Employer();
         // var_dump($historique_embauche);
-        $dateEmbauche = $historique_embauche[0]->date;
+        if(count($historique_embauche) > 0){
+            $dateEmbauche = $historique_embauche[0]->date;
 
-        // Date de fin des congés
-        $dateActuel = Carbon::now();
+            // Date de fin des congés
+            $dateActuel = Carbon::now();
 
-        // Convertir les dates en instances Carbon
-        $carbonDateEmbauche = Carbon::parse($dateEmbauche);
-        $carbonDateActuel = Carbon::parse($dateActuel);
+            // Convertir les dates en instances Carbon
+            $carbonDateEmbauche = Carbon::parse($dateEmbauche);
+            $carbonDateActuel = Carbon::parse($dateActuel);
 
-        // Calculer la différence en jours
-        $monthsDifference = $carbonDateEmbauche->diffInMonths($carbonDateActuel);
+            // Calculer la différence en jours
+            $monthsDifference = $carbonDateEmbauche->diffInMonths($carbonDateActuel);
 
-        return (2.5 * $monthsDifference);
+            echo (2.5 * $monthsDifference);
+            return (2.5 * $monthsDifference);
+        }
+        return 0;
     }
 
     public function ifDebutFin($id_emp){
@@ -278,23 +286,27 @@ class Conge extends Model
     }
 
     public function calculCongePris($id_emp){
-        $requette = "SELECT id_type_conge,depart,retour,COALESCE(EXTRACT(DAY FROM AGE(retour, depart)),0) AS months_difference FROM conf_conge WHERE id_employer = '".$id_emp."'";
+        $requette = "SELECT COALESCE(
+        SUM(
+            CASE
+                WHEN conf.depart IS NULL OR conf.retour IS NULL THEN
+                    COALESCE(EXTRACT(DAY FROM AGE(conf.fin, conf.debut)), 0)
+                ELSE
+                    COALESCE(EXTRACT(DAY FROM AGE(conf.retour, conf.depart)), 0)
+            END
+        ), 0) AS total_months_difference
+        FROM conf_conge AS conf join type_conge on conf.id_type_conge = type_conge.id
+        WHERE type_conge.day_default = 0 and id_employer = '".$id_emp."'";
+
         // echo $requette;
         $reponse = DB::select($requette);
         $congePris = 0;
 
         if(count($reponse) > 0) {
-            if($reponse[0]->depart == '' || $reponse[0]->retour == ''){
-                $debutFin = $this->ifDebutFin($id_emp);
-                return $debutFin;
-            }
-
-            $congePris = $reponse[0]->months_difference;
-            $type_conge = (new Type_Conge())->getUnTypeConge($reponse[0]->id_type_conge);
-            if($type_conge->day_default > 0){
-                return $congePris;
-            }
+            $congePris = $reponse[0]->total_months_difference;
+            return $congePris;
         }
+
         return $congePris;
     }
 
@@ -317,4 +329,83 @@ class Conge extends Model
 
         return ($solde - $joursDifference);
     }
+
+    public function getListeConges_un_employe() {
+        $requette = " select * from conge where id_employer='$this->id_employer' and statut=21 and debut>='$this->debut' and fin<='$this->fin';";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $conge = new Conge();
+                $conge->id = $resultat->id;
+                $conge->id_employer = $resultat->id_employer;
+                $conge->id_type_conge = $resultat->id_type_conge;
+                $conge->raison = $resultat->raison;
+                $conge->debut = $resultat->debut;
+                $conge->fin = $resultat->fin;
+                $conge->statut = $resultat->statut;
+                $conge->justificatif = $resultat->justificatif;
+
+                $conge->nomStatut = $this->defineStatut($resultat->statut);
+                $conge->type_conge = (new Type_Conge())->getUnTypeConge($resultat->id_type_conge);
+                $conge->employer = (new Employer(id_emp: $conge->id_employer))->getDonneesEmployer();
+
+                $liste[] = $conge;
+            }
+        }
+        return $liste;
+    }
+
+    public function checkIf_Pouvoir_Demande($dateDebut , $id_emp){
+        
+        $historique_embauche = (new Historique_embauche(id_emp: $id_emp))->getDate_Embauche_Employer();
+        if(count($historique_embauche) > 0){
+            $dateEmbauche = $historique_embauche[0]->date;
+            $dateActuel = Carbon::now();
+
+            $carbonDateEmbauche = Carbon::parse($dateEmbauche);
+            $carbonDateDebutDemande = Carbon::parse($dateDebut);
+            $carbonDateActuel = Carbon::parse($dateActuel);
+
+            $monthsDifference = $carbonDateEmbauche->diffInMonths($carbonDateActuel);
+            $joursDifference = $carbonDateDebutDemande->diffInDays($carbonDateActuel);
+
+            if ($joursDifference >=15) {
+                echo "L'employé est éligible pour les demandes de conge.";
+                return 100;
+            } else {
+                echo "Pas de demande";
+            }
+
+            return 15200;
+        }
+        return 0;
+    }
+
+    public function getListeCongesEnAttente_un_employer($id_employer) {
+        $requette = "select * from conge where statut = 1 and id_employer = '".$id_employer."'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $conge = new Conge();
+                $conge->id = $resultat->id;
+                $conge->id_employer = $resultat->id_employer;
+                $conge->id_type_conge = $resultat->id_type_conge;
+                $conge->raison = $resultat->raison;
+                $conge->debut = $resultat->debut;
+                $conge->fin = $resultat->fin;
+                $conge->statut = $resultat->statut;
+                $conge->justificatif = $resultat->justificatif;
+
+                $conge->nomStatut = $this->defineStatut($resultat->statut);
+                $conge->type_conge = (new Type_Conge())->getUnTypeConge($resultat->id_type_conge);
+                $conge->employer = (new Employer(id_emp: $conge->id_employer))->getDonneesEmployer();
+
+                $liste[] = $conge;
+            }
+        }
+        return $liste;
+    }
+
 }

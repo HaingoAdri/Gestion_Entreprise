@@ -25,8 +25,9 @@ class Administrateur extends Model
         }    
     }
 
-    public function getAdministrateur($email, $mot_de_passe) {
-        $requette = "select * from Administrateur where email = '". $email . "' and mot_de_passe = '" . $mot_de_passe."'";
+    public function getAdministrateur($email, $mot_de_passe, $idModule) {
+        $requette = "select * from Administrateur where email = '". $email . "' and mot_de_passe = '" . $mot_de_passe."' and idModule = " . $idModule;
+        // echo $requette;
         $reponse = DB::select($requette);
         $administrateur = null;
         if(count($reponse) > 0){

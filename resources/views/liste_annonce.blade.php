@@ -15,7 +15,6 @@
 
             <div class="card-body px-3 px-md-5">
                 <div class="row">
-                    @for($i = 0; $i <10; $i++)
                     @foreach($listeBesoins as $besoin)
                     <div class="col-lg-6 col-xl-4">
                         <div class="card card-default p-4" style="border:solid 3px purple;">
@@ -90,10 +89,11 @@
                                 </div>
                                 <div class="card-header align-items-center px-3 px-md-5">
                                     <h2></h2>
-                    
+                                    @if(Session::get('profil') == 5)
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-contact{{ $besoin->id }}"> 
                                         Postuler
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,6 @@
                     </div>
                     
                     @endforeach
-                    @endfor
                 </div>
             </div>
 

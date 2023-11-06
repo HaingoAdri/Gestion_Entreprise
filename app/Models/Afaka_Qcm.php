@@ -74,4 +74,10 @@ class Afaka_Qcm extends Model {
         }
         return $liste;
     }
+
+    public function getAfakaByUser($id){
+        $requete = "select * from afaka_qcm where id_as = ? ";
+        $reponse = DB::select($requete, [$id]);
+        return $reponse;
+    }
 }

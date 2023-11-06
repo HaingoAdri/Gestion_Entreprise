@@ -24,11 +24,12 @@ class Connexion_controller extends Controller
         $administrateur = new Administrateur();
         $email = $request->input('email');
         $mot_de_passe = $request->input('mot_de_passe');
-        $connecteur = $administrateur->getAdministrateur($email, $mot_de_passe);
+        $idModule = $request->input('module');
+        $connecteur = $administrateur->getAdministrateur($email, $mot_de_passe, $idModule);
         if($connecteur != null){
             Session::put('administrateur_rh', $connecteur);
             Session::put('profil', 20); //profil: 20 ==> Admin
-            return view('accueil');
+            return redirect()->route('accueil');
         }
         $erreur = "Email ou Mot de passe incorrect";
         return redirect()->route('connexion')->with([
@@ -57,7 +58,7 @@ class Connexion_controller extends Controller
             }else{
                 Session::put('employer', 'null');
             }
-            return view('accueil');
+            return redirect()->route('accueil');
         }
         $erreur = "Email ou Mot de passe incorrect";
         // return view("login", compact("erreur", "email", "mot_de_passe"));
@@ -66,6 +67,10 @@ class Connexion_controller extends Controller
             'email' => $email,
             'mot_de_passe' => $mot_de_passe,
         ]);
+    }
+
+    public function accueil() {
+        return view('accueil');
     }
 
     public function deconnect(){

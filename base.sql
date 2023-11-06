@@ -471,6 +471,7 @@ create table confirmation_date(
     idconge INT,
     depart TIMESTAMP,
     retour TIMESTAMP,
+    commentaires VARCHAR(100),
     foreign key (idconge) references conge(id)
 );
 
@@ -523,7 +524,106 @@ create table cnaps (
     foreign key (etat) references Etats(id_et)
 );
 
+--pointage
+create table pointage(
+    id SERIAL PRIMARY KEY,
+    id_employer VARCHAR(100),
+    date TIMESTAMP,
+    etat INT, -- 50 : arrive && 100 : sortie
+    jour_nuit INT, -- 25 : jour && 55 : nuit
+    securite INT,
+    foreign key (id_employer) references employer(id_emp),
+    foreign key (securite) references Administrateur(id)
+);
 
+--majoration heure sup de nuit 4 iany no tokony ho majoration
+create table majoration_nuit ( 
+    id serial,
+    debut int,
+    fin int,
+    majoration double precision default 0,
+    date Date
+);
+-- insert into majoration_nuit (debut, fin, majoration, date) values 
+-- (0, 8, 50, '2023-09-01'),
+-- (8, 15, 60, '2023-09-01'),
+-- (15, 20, 70, '2023-09-01'),
+-- (20, 1000, 100, '2023-09-01');
+
+--prime
+create table type_prime (
+    id serial primary key,
+    prime varchar(25)
+);
+-- insert into type_prime(prime) values ('Prime de Rendement'), ('Prime anciennete'), ('Prime divers');
+
+create table prime (
+    id serial,
+    id_employe varchar(200),
+    type int,
+    montant double precision default 0,
+    date date,
+    foreign key (type) references type_prime(id),
+    foreign key (id_employe) references employer(id_emp)
+);
+-- insert into prime (id_employe, type, montant, date) values 
+-- ('EMP0000001', 1, 300000, '2023-10-31'),
+-- ('EMP0000002', 1, 150000, '2023-10-31');
+
+create table retenu_cnaps (
+    id serial,
+    plafond double precision default 0,
+    date date
+);
+-- insert into retenu_cnaps (plafond, date) values (20000, '2023-01-01');
+
+create table tranche_irsa (
+    id serial,
+    debut double precision default 0,
+    fin double precision default 0,
+    majoration double precision default 0,
+    date date
+);
+
+-- insert into tranche_irsa (debut, fin, majoration, date) values
+-- (1, 350000, 0, '2023-01-01'),
+-- (350001, 400000, 5, '2023-01-01'),
+-- (400001, 500000, 10, '2023-01-01'),
+-- (500001, 600000, 15, '2023-01-01'),
+-- (600001, 10000000000, 20, '2023-01-01');
+
+---Employe
+CREATE SEQUENCE seqEmploye
+    increment by 1
+    start WITH 1
+    minValue 1;
+
+create function nextSeqEmploye() returns integer
+AS
+    $$
+Declare
+retour integer;
+BEGIN
+SELECT coalesce(nextval('seqEmploye'),1) into retour;
+return retour;
+END
+$$ LANGUAGE plpgsql;
+
+--- IMPOT
+create table impot(
+    id Serial PRIMARY KEY,
+    plafond_minimum DOUBLE PRECISION,
+    plafond_maximum DOUBLE PRECISION,
+    pourcentage DOUBLE PRECISION
+);
+
+create table avance(
+    id Serial PRIMARY KEY,
+    id_employe VARCHAR(200),
+    avance DOUBLE PRECISION,
+    date DATE,
+    foreign key (id_employe) references employer(id_emp)
+);
 
 --view liste_contrat_a_renouveler
 create view liste_contrat_a_renouveler as
@@ -550,3 +650,23 @@ create view liste_personnel as
 -- select * from note_cv where id = 2;
 
 -- select * from cv where id = 17;
+
+-- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
+-- ('EMP0000003', 8, 'raison', '2023-10-03 08:00:00', '2023-10-03 17:00:00', 21, 'Justification');
+
+-- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
+-- ('EMP0000003', 8, 'raison', '2023-10-20 08:00:00', '2023-10-20 12:00:00', 21, 'Justification');
+
+-- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
+-- ('EMP0000003', 8, 'raison', '2023-10-27 08:00:00', '2023-10-29 17:00:00', 21, 'Justification');
+
+-- insert into confirmation_date (idconge, depart, retour) values
+-- (4, '2023-10-03 08:00:00', '2023-10-04 08:00:00');
+
+-- insert into confirmation_date (idconge, depart, retour) values
+-- (5, '2023-10-20 08:00:00', '2023-10-20 12:00:00');
+
+-- insert into confirmation_date (idconge, depart, retour) values
+-- (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
+
+ select * from pointage where CAST(date AS VARCHAR) like '2023-10-31%' and id_employer = 'EMP0000001' and etat = 50;

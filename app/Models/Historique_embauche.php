@@ -43,7 +43,7 @@ class Historique_embauche extends Model {
     }
 
     public function getDate_Embauche_Employer() {
-        $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and etat = 12";
+        $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and etat = 15 order by date desc";;
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
@@ -79,5 +79,19 @@ class Historique_embauche extends Model {
             }
         }
         return $historique;  
+    }
+
+    public function getPremier_Entretient_Un_Employer() {
+        $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and date <= '".$this->date."' and etat = 12 order by date asc";
+        // echo $requette;
+        $reponse = DB::select($requette);
+        $historique = null;
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $historique = new Historique_embauche($resultat->id, $resultat->id_emp, $resultat->date, $resultat->etat);
+                break;
+            }
+        }
+        return $historique;   
     }
 }
