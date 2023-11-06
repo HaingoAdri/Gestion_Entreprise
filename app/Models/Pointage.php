@@ -109,6 +109,5 @@ class Pointage extends Model
     }
 
 
-
 }
 

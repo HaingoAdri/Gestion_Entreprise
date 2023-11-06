@@ -84,7 +84,7 @@
                             <span class="nav-text">Pointages</span>
                         </a>
                     </li>
-                    
+
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
                         aria-expanded="false" aria-controls="annonce">
@@ -113,20 +113,6 @@
                 </ul>
                 @else
                 <ul class="nav sidebar-inner" id="sidebar-menu">
-                    <!-- <li class="active">
-                        <a class="sidenav-item-link" href="accueil.html">
-                            <i class="mdi mdi-briefcase-account-outline"></i>
-                            <span class="nav-text">Business Dashboard</span>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a class="sidenav-item-link" href="analytics.html">
-                            <i class="mdi mdi-chart-line"></i>
-                            <span class="nav-text">Analytics Dashboard</span>
-                        </a>
-                    </li> -->
-                
                     <li class="section-title"> Menu </li>
                         @if(session("profil") == 5 && session("employer") != 'null')
                           <li>
@@ -310,8 +296,6 @@
                                 </div>
                             </ul>
                         </li>
-
-                        
                         @endif
 
                     </li>

@@ -207,4 +207,3 @@ insert into impot VALUES    (default,0,1000000,0),
                             (default,10000000,15000000,6),
                             (default,15000000,20000000,8);
 
-

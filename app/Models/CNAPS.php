@@ -56,7 +56,6 @@ class CNAPS extends Model
 
     public function getDernier_Retenu_CNAPS() {
         $requette = "select * from retenu_cnaps where date <= '". $this->date ."'";
-        // echo $requette;
         $reponse = DB::select($requette);
         $retenu = 0;
         if(count($reponse) > 0){

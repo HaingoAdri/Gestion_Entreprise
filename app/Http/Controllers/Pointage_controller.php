@@ -71,7 +71,6 @@ class Pointage_controller extends Controller
                 $pointage->insert();
             }   
         }
-        
         return redirect()->route('index_pointage');
     }
 

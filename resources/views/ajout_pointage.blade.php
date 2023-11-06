@@ -6,14 +6,12 @@
         <div class="card card-default border-0 bg-transparent">
             <div class="card-header align-items-center p-0">
                 <h2>Faire un pointage</h2>
-
                 @if(session("erreur") != null)
                     <div class="alert alert-danger" role="alert">
                         <h6>{{ session("erreur") }}</h6>
                     </div>
                 @endif
-
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-event">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-event">
                     <i class="mdi mdi-plus mr-1"></i> Un nouveau pointage
                 </button>
             </div>

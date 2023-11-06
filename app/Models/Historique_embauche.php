@@ -83,7 +83,6 @@ class Historique_embauche extends Model {
 
     public function getPremier_Entretient_Un_Employer() {
         $requette = "select * from Historique_embauche where id_emp = '".$this->id_emp ."' and date <= '".$this->date."' and etat = 12 order by date asc";
-        // echo $requette;
         $reponse = DB::select($requette);
         $historique = null;
         if(count($reponse) > 0){

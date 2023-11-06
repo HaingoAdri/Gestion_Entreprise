@@ -146,7 +146,6 @@ Route::post('/inserer_entretient', [Entretient_Controller::class, "insert"])->na
 Route::get('/liste_entretient', [Entretient_Controller::class, "allEntretient"])->name("liste_entretient");
 Route::get('/inserer_Vita_Entretient', [Entretient_Controller::class, "inserer_Ok_Vita_Entretient"])->name("inserer_Vita_Entretient");
 
-
 // pointage
 Route::get('/index_pointage', [Pointage_controller::class, "index"])->name("index_pointage");
 Route::get('/insert_pointage', [Pointage_controller::class, "insert_pointage"])->name("insert_pointage");
@@ -162,3 +161,4 @@ Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"
 
 Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
 Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
+
