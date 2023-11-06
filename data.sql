@@ -201,4 +201,9 @@ insert into pointage(id_employer, date, etat, securite) values
 ('EMP0000002', '2023-10-31', 50, 10);
 
 
-
+// -- IMPOT
+insert into impot VALUES    (default,0,1000000,0),
+                            (default,1000000,3000000,2),
+                            (default,3000000,10000000,5),
+                            (default,10000000,15000000,6),
+                            (default,15000000,20000000,8);
