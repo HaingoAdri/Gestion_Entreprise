@@ -207,3 +207,30 @@ insert into impot VALUES    (default,0,1000000,0),
                             (default,10000000,15000000,6),
                             (default,15000000,20000000,8);
 
+
+insert into module(type) values ('Informatique'), ('Finance'), ('Achat');
+
+insert into fournisseur(nom, email, adresse, telephone, responsable) values
+('Boum', 'boum@gmail.com', 'TH 203 Alasora', 0343945881, 'Mr RANDRIAMIANTA Tiavina'),
+('TEKO', 'teko@gmail.com', 'AN 698 Anosy Avaratra', 0336987451, 'Mme FELAMANITRA Olive'),
+('Poufy', 'poufy@gmail.com', 'H 963 Analakely', 0326548917, 'Mr RAKOTOMALALA Niriko');
+
+insert into Article values
+('G0001', 'Gel main'),
+('S0001', 'Savon'),
+('P0001', 'Papier A4'),
+('E0001', 'Encre');
+
+insert into employer_module (idModule, idEmploye) values
+(6, 'EMP0000001'),
+(6, 'EMP0000002'),
+(6, 'EMP0000003');
+
+insert into etats values
+(25, 'Refuse'),
+(28, 'Non Valide'),
+(32, 'Valide'),
+(35, 'Valide RH'),
+(37, 'Valide Finance'),
+(40, 'En Attende'),
+(45, 'Termine');

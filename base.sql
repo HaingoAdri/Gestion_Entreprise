@@ -698,6 +698,41 @@ create table avance(
     foreign key (id_employe) references employer(id_emp)
 );
 
+-- ACHAT
+create table fournisseur (
+    id SERIAL PRIMARY KEY,
+    nom varchar(70),
+    email varchar(150),
+    adresse varchar(70),
+    telephone varchar(20),
+    responsable varchar(100)
+);
+
+create table article (
+    id varchar(10) primary key,
+    article varchar(50)
+);
+
+create table employer_module (
+    id serial primary key,
+    idModule int,
+    idEmploye varchar(10),
+    foreign key (idModule) references Module(id),
+    foreign key (idEmploye) references Employer(id_emp)
+);
+
+create table besoin_achat (
+    id serial primary key,
+    idModule int,
+    idArticle varchar(10),
+    nombre int,
+    date date,
+    etat int,
+    foreign key (idModule) references Module(id),
+    foreign key (idArticle) references Article(id),
+    foreign key (etat) references Etats(id_et)
+);
+
 --view liste_contrat_a_renouveler
 create view liste_contrat_a_renouveler as
 select id, ce.id_emp, lieu_travail, date_debut, date_fin , obligation, superieur, etat from contrat_essaie ce 
@@ -742,5 +777,4 @@ create view liste_personnel as
 -- insert into confirmation_date (idconge, depart, retour) values
 -- (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
 
- select * from pointage where CAST(date AS VARCHAR) like '2023-10-31%' and id_employer = 'EMP0000001' and etat = 50;
 

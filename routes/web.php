@@ -105,6 +105,7 @@ Route::get('/recherche_un_personnel', [Personnel_controller::class, "index"])->n
 Route::post('/fiche_de_poste', [Personnel_controller::class, "fiche_de_poste"])->name("fiche_de_poste");
 Route::get('/listes_personnels', [Personnel_controller::class, "listes_personnels"])->name("listes_personnels");
 Route::get('/fiche_perso', [Personnel_controller::class, "fiche_personnel"])->name("fiche_personnel");
+Route::get('/debouche', [Personnel_controller::class, "debouche"])->name("debouche");
 
 // -- CONGE
 // // -- CONGE

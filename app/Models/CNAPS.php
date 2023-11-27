@@ -30,6 +30,15 @@ class CNAPS extends Model
         }    
     }
 
+    public function updateEtat() {
+        try {
+            $requete = "update cnaps set etat = $this->etat where id_emp = '$this->id_emp'";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert client: ".$e->getMessage());
+        }    
+    }
+
     public function getNextId() {
         $requette = "select nextSeqCnaps()";
         $reponse = DB::select($requette);

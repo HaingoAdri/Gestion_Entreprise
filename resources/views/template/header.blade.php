@@ -75,15 +75,16 @@
             <!-- begin sidebar scrollbar -->
             <div class="sidebar-left" data-simplebar style="height: 100%;">
                 <!-- sidebar menu -->
-                @if(session("administrateur_rh")!=null && session("administrateur_rh")->module->id == 5)
+                @if(session("administrateur_rh")!=null && session("administrateur_rh")->module->id != 1)
                 <ul class="nav sidebar-inner" id="sidebar-menu">
-                
+                    @if(session("administrateur_rh")->module->id == 5)
                     <li class="active">
                         <a class="sidenav-item-link" href="{{ route('index_pointage') }}">
                             <i class="mdi mdi-briefcase-account-outline"></i>
                             <span class="nav-text">Pointages</span>
                         </a>
                     </li>
+                    @endif
 
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
@@ -109,6 +110,27 @@
                       </a>
                     </li>
 
+                    @if(session("administrateur_rh")->module->id == 2)
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#personnel"
+                        aria-expanded="false" aria-controls="personnel">
+                            <i class="mdi mdi-briefcase-account-outline"></i>
+                            <span class="nav-text">Personnel</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="personnel" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                            
+                                <li><a class="sidenav-item-link" href="{{ route('recherche_un_personnel') }}">
+                                    <span class="nav-text">Fiche de poste</span>
+                                </a></li>
+                                <li><a class="sidenav-item-link" href="{{ route('listes_personnels') }}">
+                                    <span class="nav-text">Listes des personnels</span>
+                                </a></li>
+                    
+                            </div>
+                        </ul>
+                    </li>
+                    @endif
                     
                 </ul>
                 @else
@@ -139,7 +161,7 @@
                             </ul>
                           </li>
                           
-                        @elseif( session("profil") == 20 )
+                        @elseif( session("profil") == 20 &&  session("administrateur_rh")->module->id == 1)
                         <li  class="has-sub" >
                             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#besoin"aria-expanded="false" aria-controls="besoin">
                                 <i class="mdi mdi-playlist-plus"></i>

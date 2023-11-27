@@ -44,9 +44,12 @@
                                         <td>{{ $employe["besoin"]->poste->type }}</td>
                                         <td>{{ $employe["capacite"] }}</td>
                                         <td>{{ $employe["retraite"] }}</td>
-                                        <td><div class="modal-footer border-top-0 px-4 pt-0">
+                                        <td>
                                             <a href="{{ route('fiche_personnel', ['idEmploye' => $employe['employe']->id_emp]) }}"><button type="button" class="btn btn-primary">Fiche</button></a>
-                                        </div></td>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('debouche', ['idEmploye' => $employe['employe']->id_emp]) }}"><button type="button" class="btn btn-primary">Virer</button></a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

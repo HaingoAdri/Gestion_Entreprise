@@ -18,6 +18,7 @@ use App\Models\Diplome;
 use App\Models\Situation_Matrimoniale;
 use App\Models\Contrat_Essaie;
 use App\Models\Proche;
+use App\Models\CNAPS;
 
 use Carbon\Carbon;
 
@@ -67,13 +68,14 @@ class Personnel_controller extends Controller
 
     public function listes_personnels() {
         $listeEmployees = (new Employer())->getListe_personnels();
+        echo count($listeEmployees);
         $liste = array();
         $dateDuSysteme = (Carbon::now())->format('Y-m-d');
         for($i = 0; $i < count($listeEmployees); $i++) {
             $employe = $listeEmployees[$i];
             $idEmploye = $employe->id_emp;
 
-            $liste[0]["employe"] = $employe;
+            $liste[$i]["employe"] = $employe;
 
             //maka an'ilay cv an'ilay olona    
             $historique_embauche = (new Historique_embauche(id_emp: $idEmploye, date: $dateDuSysteme))->getDernier_Entretient_Un_Employer();
@@ -82,11 +84,11 @@ class Personnel_controller extends Controller
             $qcm_Admis = (new Qcm_Admis(idqcm: $qcm_Result->qcm))->getUn_Qcm_Admis_par_id(); 
             $cv = (new CV(idClient: $employe->idClient, idBesoin: $qcm_Admis->id_annonce))->getUn_Cv_Par();
 
-            $liste[0]["historique_embauche"] = $historique_embauche;
+            $liste[$i]["historique_embauche"] = $historique_embauche;
 
             $besoin = (new Besoin())->getUneBesoin($cv->idBesoin);
             $experience  = $cv->experiences;
-            $liste[0]["besoin"] = $besoin;
+            $liste[$i]["besoin"] = $besoin;
 
             $dateDeNaissance = $employe->client->date_naissance;
             $dateDeNaissance = Carbon::parse($dateDeNaissance);
@@ -94,12 +96,12 @@ class Personnel_controller extends Controller
             $annees = $dateDuSysteme->diffInYears($dateDeNaissance);
 
             if($annees >= 60) 
-                $liste[0]["retraite"] = "Doit passer en retraite";
-            $liste[0]["retraite"] = "Peut Toujours Travailler";
+                $liste[$i]["retraite"] = "Doit passer en retraite";
+            $liste[$i]["retraite"] = "Peut Toujours Travailler";
 
             if($annees >= 18) 
-                $liste[0]["capacite"] = "Faible";
-            $liste[0]["capacite"] = "Normal";
+                $liste[$i]["capacite"] = "Faible";
+            $liste[$i]["capacite"] = "Normal";
         }
         return view("personnel/liste_personnels", compact("liste"));
     }
@@ -129,5 +131,23 @@ class Personnel_controller extends Controller
         // var_dump($pere);
         return view("personnel/fiche_perso", compact("employe", "liste_enfants", "mere", "pere", "conjoint"));
     }
+
+    public function debouche (Request $request) {
+        $idEmploye = $request->input('idEmploye');
+        $employe = (new Employer(id_emp: $idEmploye))->getDonneesEmployer();
+        $employe->etat = 10;
+        $employe->updateEtat();
+
+        $cnaps = new CNAPS(id_emp: $idEmploye, etat: 7);
+        $cnaps->updateEtat();
+
+        $dateDuSysteme = (Carbon::now())->format('Y-m-d');
+        $historique_embauche = (new Historique_embauche(id_emp: $idEmploye, date: $dateDuSysteme, etat: 10))->insert();
+
+
+        return redirect()->route('listes_personnels');
+        
+    }
+
     
 }
