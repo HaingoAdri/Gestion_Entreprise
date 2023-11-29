@@ -16,6 +16,8 @@ use App\Http\Controllers\Pointage_controller;
 use App\Http\Controllers\Paie_controller;
 use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
+use App\Http\Controllers\Pdf_controller;
+use App\Http\Controllers\Mail_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,3 +165,7 @@ Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"
 Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
 Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
 
+
+Route::get('/test_pdf', [Pdf_controller::class, "index"])->name("test_pdf");
+Route::get('/test_mail', [Mail_controller::class, "index"])->name("test_mail");
+Route::post('/demande_proforma', [Mail_controller::class, "demande_proforma"])->name("demande_proforma");

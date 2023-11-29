@@ -320,6 +320,20 @@
                         </li>
                         @endif
 
+                        <li>
+                            <a class="sidenav-item-link" href="{{ route('test_pdf') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">PDF</span>
+                            </a>
+                          </li>
+
+                          <li>
+                            <a class="sidenav-item-link" href="{{ route('test_mail') }}">
+                                <i class="mdi mdi-calendar-check"></i>
+                                <span class="nav-text">Email</span>
+                            </a>
+                          </li>
+
                     </li>
                 </ul>
                 @endif
