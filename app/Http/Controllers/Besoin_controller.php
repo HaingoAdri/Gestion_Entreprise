@@ -257,7 +257,7 @@ class Besoin_controller extends Controller
         return View("achat/ajout_demande", compact("listeFourisseur", "idDemande"));
     }
 
-    public function demandeProformat(Request $request) {
+    public function demandeProformat(Request $request) { //mandefa email ato
         $date = $request->input('date');
         $idDemande = $request->input('idDemande');
         $nom = $request->input('nom');
@@ -268,7 +268,7 @@ class Besoin_controller extends Controller
             $demande->insert();
         }
         (new BesoinAchat())->ajoutIdDemande($idDemande);
-        return redirect()->route('besoinAchat');
+        return redirect()->route('listeDemandeProformat');
     }
 
     public function listeDemandeProformat() {
