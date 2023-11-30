@@ -220,7 +220,11 @@
                                 <div class="sub-menu">
                                 
                                     <li><a class="sidenav-item-link" href="{{ route('ajout_besoin') }}">
-                                        <span class="nav-text">Ajouter un besoin</span>
+                                        <span class="nav-text">Ajouter un besoin service</span>
+                                    </a></li>
+
+                                    <li><a class="sidenav-item-link" href="{{ route('besoinAchat') }}">
+                                        <span class="nav-text">Ajouter un besoin Achat</span>
                                     </a></li>
                         
                                 </div>
