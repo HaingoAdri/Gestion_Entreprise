@@ -13,35 +13,49 @@
             </div>
 
             <div class="card-body">
-                <div class="collapse" id="collapse-horizontal-validation"></div>
+                <div class="accordion accordion-shadow" id="accordionShadow">
+
                     @foreach($fournisseurs as $fournisseur)
-                        <div class="form-group row mb-4">
-                            <h5>Liste du proformat pour le fournisseur: {{ $fournisseur->getNomFournisseur() }}</h5>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>ID Article</th>
-                                        <th>Article</th>
-                                        <th>Prix Unitaire HT</th>
-                                        <th>TVA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($fournisseur->listeProformat as $proformat)
-                                    <tr id="tbody-age">
-                                        <th>{{ $proformat->date }}</th>
-                                        <th>{{ $proformat->idArticle }}</th>
-                                        <td>{{ $proformat->getArticle() }}</td>
-                                        <td>{{ $proformat->prixUnitaire }}</td>
-                                        <td>{{ $proformat->TVA }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="card">
+
+                            <div class="card-header" id="headingShadowOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseShadowOne" aria-expanded="true" aria-controls="{{ $fournisseur->getNomFournisseur() }}">
+                                Liste du proformat pour le fournisseur: {{ $fournisseur->getNomFournisseur() }}
+                                </button>
+                            </h2>
+                            </div>
+
+                            <div id="{{ $fournisseur->getNomFournisseur() }}" class="collapse show" aria-labelledby="headingShadowOne" data-parent="#accordionShadow">
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>ID Article</th>
+                                            <th>Article</th>
+                                            <th>Prix Unitaire HT</th>
+                                            <th>TVA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($fournisseur->listeProformat as $proformat)
+                                        <tr id="tbody-age">
+                                            <th>{{ $proformat->date }}</th>
+                                            <th>{{ $proformat->idArticle }}</th>
+                                            <td>{{ $proformat->getArticle() }}</td>
+                                            <td>{{ $proformat->prixUnitaire }}</td>
+                                            <td>{{ $proformat->TVA }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table> 
+                            </div>
+                            </div>
+
                         </div>
-                        <hr>
                     @endforeach
+
                 </div>
             </div>
         </div>
