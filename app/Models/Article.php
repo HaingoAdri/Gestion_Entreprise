@@ -13,7 +13,7 @@ class Article extends Model
     public $id;
     public $article;
 
-    public function __construct($id = "", $aryicle = "") {
+    public function __construct($id = "", $article = "") {
         $this->id = $id;
         $this->article = $article;
     }
@@ -34,10 +34,20 @@ class Article extends Model
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
-                $article = new Besoin($resultat->id, $resultat->article);
+                $article = new Article($resultat->id, $resultat->article);
                 $liste[] = $article;
             }
         }
         return $liste;
+    }
+
+    public function getDonneesUnArticle() {
+        $requette = "select * from article where id = '$this->id'";
+        $reponse = DB::select($requette);
+        $article = null;
+        if(count($reponse) > 0){
+            $article = new Article($reponse[0]->id, $reponse[0]->article);
+        }
+        return $article;
     }
 }

@@ -727,10 +727,59 @@ create table besoin_achat (
     idArticle varchar(10),
     nombre int,
     date date,
+    idDemande varchar(10) default NULL,
     etat int,
     foreign key (idModule) references Module(id),
     foreign key (idArticle) references Article(id),
     foreign key (etat) references Etats(id_et)
+);
+
+CREATE SEQUENCE seqDemande
+increment by 1
+start WITH 1
+minValue 1;
+
+create function nextSeqDemande(prefix text, taille integer) 
+returns text AS
+$$
+    Declare
+        nextId int;
+        nextIdString text;
+        id text;
+        i integer;
+    BEGIN
+        SELECT coalesce(nextval('seqDemande'),1) into nextId;
+        nextIdString := nextId::varchar;
+        taille := taille - LENGTH(prefix) - LENGTH(nextIdString);
+        id := prefix;
+        FOR i IN 1..taille LOOP
+            id := id || '0'; 
+        END LOOP;
+        id := id || nextIdString; 
+        return id;
+    END
+$$ LANGUAGE plpgsql;
+
+create table demande (
+    id serial primary key,
+    date date,
+    nom varchar(200),
+    idDemande varchar(10),
+    idFournisseur int,
+    etat int,
+    foreign key (idFournisseur) references fournisseur(id)
+);
+
+create table proformat (
+    id serial primary key,
+    idDemande varchar(10),
+    idFournisseur int,
+    idArticle varchar(10),
+    prixUnitaire double precision default 0,
+    tva double precision default 0,
+    date date,
+    foreign key (idFournisseur) references fournisseur(id),
+    foreign key (idArticle) references Article(id)
 );
 
 --view liste_contrat_a_renouveler
@@ -745,6 +794,21 @@ select id_e, aa, dates, id_as, qcm_r, id_users from entretient e
 
 create view liste_personnel as
     select * from employer where etat = 20;
+
+create view liste_besoin_achat as
+select idArticle, sum(nombre) nombre from besoin_achat where etat = 28 group by idArticle;
+
+create view demande_proformat as
+select iddemande from besoin_achat where etat = 32 group by idDemande;
+
+create view liste_demande as
+select date, nom, idDemande from demande group by date, nom, idDemande;
+
+create view liste_demande_en_attente_proformat as
+ select l.* from demande_proformat d join liste_demande l on d.idDemande = l.idDemande;
+
+create view liste_article_par_demande as
+select idArticle, idDemande from besoin_achat group by idDemande, idArticle;
 
 -- jerena le date ny dernier entretient any
 -- select * from historique_embauche where id_emp = 'EMP0000001' and etat = 12 order by date desc;

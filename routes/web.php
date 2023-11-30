@@ -16,6 +16,7 @@ use App\Http\Controllers\Pointage_controller;
 use App\Http\Controllers\Paie_controller;
 use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
+use App\Http\Controllers\Fournisseur_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,4 +163,20 @@ Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"
 
 Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
 Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
+
+//achat
+Route::get('/besoin_achat', [Besoin_controller::class, "besoinAchat"])->name("besoinAchat");
+Route::get('/ajout_besoin_achat', [Besoin_controller::class, "ajoutBesoinAchat"])->name("ajoutBesoinAchat");
+Route::get('/liste_besoin_achat', [Besoin_controller::class, "getListeBesoinAchatNonValide"])->name("listeBesoinAchatNonValide");
+Route::get('/refuser_besoin_achat', [Besoin_controller::class, "refuserUneBesoinAchat"])->name("refuserUneBesoinAchat");
+Route::get('/details_besoin_achat', [Besoin_controller::class, "getDetailsBesoinAchatNonValide"])->name("detailsBesoinAchat");
+Route::get('/demande_de_proformat', [Besoin_controller::class, "faireUnNouveauDemande"])->name("faireUneDemande");
+Route::post('/envoyer_la_demande_de_proformat', [Besoin_controller::class, "demandeProformat"])->name("demandeProformat");
+Route::get('/liste_demande_en_attente_de_proformat', [Besoin_controller::class, "listeDemandeProformat"])->name("listeDemandeProformat");
+Route::get('/details_du_proformat_du_demande', [Besoin_controller::class, "detailsDemandeProformat"])->name("detailsProformat");
+Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProformat"])->name("ajoutProformat");
+
+//fournisseur
+Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");
+Route::post('/ajouter_un_nouveau_fournisseur', [Fournisseur_controller::class, "ajoutFournisseur"])->name("ajoutFournisseur");
 

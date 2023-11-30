@@ -28,14 +28,11 @@ class Etats extends Model {
     }
 
     public function getDonnes_Un_Etat() {
-        $requette = "select * from etats where id_e = " + $this->id_e;
+        $requette = "select * from etats where id_et = " . $this->id_e;
         $reponse = DB::select($requette);
         $Etats = null;
         if(count($reponse) > 0){
-            foreach($reponse as $resultat) {
-                $Etats = new Etats( $resultat->id_e, $resultat->nom_etats);
-                break;
-            }
+            $Etats = new Etats( $reponse[0]->id_et, $reponse[0]->nom_etats);
         }
         return $Etats;
     }

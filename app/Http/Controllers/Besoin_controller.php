@@ -25,6 +25,11 @@ use App\Models\Details_Besoin_Ville;
 use App\Models\Note_Cv;
 use App\Models\Client;
 use App\Models\Type_Contrat;
+use App\Models\Article;
+use App\Models\BesoinAchat;
+use App\Models\Fournisseur;
+use App\Models\Demande;
+use App\Models\Proformat;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
@@ -201,9 +206,96 @@ class Besoin_controller extends Controller
             echo '<br>Erreur: ' . $e->getMessage();
             return redirect()->route('liste_annonce')->with('erreur', $e->getMessage());
         }
-
-
-
-        // return Ok();
     }
+
+    public function besoinAchat() {
+        $profil = Session::get('profil');
+        $module = null;
+        if($profil == 20)
+            $module = Session::get("administrateur_rh")->module->id;
+        else {
+            $employe = Session::get('employer');
+            $module = $employe->getModule();
+        }
+        $listeArticle = (new Article())->getListeArticle();
+        $listeBesoinNonValide = (new BesoinAchat(idModule: $module))->getListeBesoinNonValideParModule();
+        return View("besoin_achat", compact("listeArticle", "listeBesoinNonValide", "module"));
+    }
+
+    public function ajoutBesoinAchat(Request $request) {
+        $date = $request->input('date');
+        $idModule = $request->input('idModule');
+        $idArticle = $request->input('idArticle');
+        $quantite = $request->input('quantite');
+        $besoinAchat = new BesoinAchat("", $idModule, $idArticle, $quantite, $date, 28);
+        $besoinAchat->insert();
+        return redirect()->route('besoinAchat');
+    }
+
+    public function getListeBesoinAchatNonValide() {
+        $listeArticle = (new Article())->getListeArticle();
+        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
+        return View("achat/liste_besoin_achat", compact("listeBesoinNonValide"));
+    }
+
+    public function getDetailsBesoinAchatNonValide() {
+        $listeArticle = (new Article())->getListeArticle();
+        $listeBesoinNonValide = (new BesoinAchat())->getDetailsBesoinNonValide();
+        return View("achat/details_liste_besoin_achat", compact("listeBesoinNonValide"));
+    }
+
+    public function refuserUneBesoinAchat(Request $request) {
+        $idBesoinAchat = $request->input('idBesoinAchat');
+        $besoinAchat = new BesoinAchat(id: $idBesoinAchat);
+        $besoinAchat->updateEtat();
+        return redirect()->route('detailsBesoinAchat');
+    }
+
+    public function faireUnNouveauDemande() {
+        $listeFourisseur = (new Fournisseur())->getListeFournisseur();
+        $idDemande = (new Demande())->getNextDemande();
+        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande"));
+    }
+
+    public function demandeProformat(Request $request) {
+        $date = $request->input('date');
+        $idDemande = $request->input('idDemande');
+        $nom = $request->input('nom');
+        $fournisseurs = $request->input('fournisseur');
+        echo count($fournisseurs);
+        foreach ($fournisseurs as $fournisseur) {
+            $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
+            $demande->insert();
+        }
+        (new BesoinAchat())->ajoutIdDemande($idDemande);
+        return redirect()->route('besoinAchat');
+    }
+
+    public function listeDemandeProformat() {
+        $listeDemande = (new Demande())->getListeDemandeEnAttenteDeProformat();
+        return View("achat/liste_demande_proformat", compact("listeDemande"));   
+    }
+
+    public function detailsDemandeProformat(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $fournisseurs = (new Demande(idDemande: $idDemande))->getListeFournisseur();
+        $articles = (new BesoinAchat())->getListeArticleParDemande($idDemande);
+        return View("achat/ajout_proformat", compact("idDemande", "fournisseurs", "articles"));   
+    }
+
+    public function ajoutProformat(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $date = $request->input('date');
+        $idFournisseur = $request->input('idFournisseur');
+        $idArticle = $request->input('idArticle');
+        $prix = $request->input('prix');
+        $TVA = $request->input('tva');
+        for($i = 0; $i < count($idArticle); $i++) {
+            $proformat = new Proformat("", $idDemande, $idFournisseur, $idArticle[$i], $prix[$i], $TVA[$i], $date);
+            $proformat->insert();
+        }
+        return redirect()->action([Besoin_controller::class, 'detailsDemandeProformat'], ['idDemande' => $idDemande]);
+    }
+
+
 }
