@@ -17,6 +17,7 @@ use App\Http\Controllers\Paie_controller;
 use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
 use App\Http\Controllers\Fournisseur_controller;
+use App\Http\Controllers\PDF_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,3 +181,5 @@ Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProforma
 Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");
 Route::post('/ajouter_un_nouveau_fournisseur', [Fournisseur_controller::class, "ajoutFournisseur"])->name("ajoutFournisseur");
 
+//pdf
+Route::get('/test_pdf', [PDF_controller::class, "demande"])->name("test_pdf");

@@ -233,7 +233,6 @@ class Besoin_controller extends Controller
     }
 
     public function getListeBesoinAchatNonValide() {
-        $listeArticle = (new Article())->getListeArticle();
         $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
         return View("achat/liste_besoin_achat", compact("listeBesoinNonValide"));
     }
