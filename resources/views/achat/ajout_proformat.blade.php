@@ -18,42 +18,42 @@
                     @foreach($fournisseurs as $fournisseur)
                         <div class="card">
 
-                            <div class="card-header" id="headingShadowOne">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseShadowOne" aria-expanded="true" aria-controls="{{ $fournisseur->getNomFournisseur() }}">
-                                Liste du proformat pour le fournisseur: {{ $fournisseur->getNomFournisseur() }}
-                                </button>
-                            </h2>
+                            <div class="card-header" id="heading{{ $fournisseur->getNomFournisseur() }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $fournisseur->getNomFournisseur() }}"
+                                    aria-expanded="true" aria-controls="collapse{{ $fournisseur->getNomFournisseur() }}">
+                                    Liste du proformat pour le fournisseur: {{ $fournisseur->getNomFournisseur() }}
+                                    </button>
+                                </h2>
                             </div>
-
-                            <div id="{{ $fournisseur->getNomFournisseur() }}" class="collapse show" aria-labelledby="headingShadowOne" data-parent="#accordionShadow">
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>ID Article</th>
-                                            <th>Article</th>
-                                            <th>Prix Unitaire HT</th>
-                                            <th>TVA</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($fournisseur->listeProformat as $proformat)
-                                        <tr id="tbody-age">
-                                            <th>{{ $proformat->date }}</th>
-                                            <th>{{ $proformat->idArticle }}</th>
-                                            <td>{{ $proformat->getArticle() }}</td>
-                                            <td>{{ $proformat->prixUnitaire }}</td>
-                                            <td>{{ $proformat->TVA }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table> 
+                            <div id="collapse{{ $fournisseur->getNomFournisseur() }}" class="collapse show" aria-labelledby="heading{{ $fournisseur->getNomFournisseur() }}" data-parent="#accordionShadow">
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>ID Article</th>
+                                                <th>Article</th>
+                                                <th>Prix Unitaire HT</th>
+                                                <th>TVA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($fournisseur->listeProformat as $proformat)
+                                            <tr id="tbody-age">
+                                                <th>{{ $proformat->date }}</th>
+                                                <th>{{ $proformat->idArticle }}</th>
+                                                <td>{{ $proformat->getArticle() }}</td>
+                                                <td>{{ $proformat->prixUnitaire }}</td>
+                                                <td>{{ $proformat->TVA }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            </div>
-
                         </div>
+
                     @endforeach
 
                 </div>
@@ -179,73 +179,3 @@
 </script>
 
 @endsection
-
-
-
-
-    
-<div class="accordion accordion-shadow" id="accordionShadow">
-      <div class="card">
-        <div class="card-header" id="headingShadowOne">
-          <h2 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseShadowOne"
-              aria-expanded="true" aria-controls="collapseShadowOne">
-              Collapsible Group Item #1
-            </button>
-          </h2>
-        </div>
-        <div id="collapseShadowOne" class="collapse show" aria-labelledby="headingShadowOne" data-parent="#accordionShadow">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-            moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3
-            wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil
-            anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur
-            butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-            probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingShadowTwo">
-          <h2 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseShadowTwo"
-              aria-expanded="false" aria-controls="collapseShadowTwo">
-              Collapsible Group Item #2
-            </button>
-          </h2>
-        </div>
-        <div id="collapseShadowTwo" class="collapse" aria-labelledby="headingShadowTwo" data-parent="#accordionShadow">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-            moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3
-            wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil
-            anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur
-            butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-            probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingShadowThree">
-          <h2 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseShadowThree"
-              aria-expanded="false" aria-controls="collapseShadowThree">
-              Collapsible Group Item #3
-            </button>
-          </h2>
-        </div>
-        <div id="collapseShadowThree" class="collapse" aria-labelledby="headingShadowThree" data-parent="#accordionShadow">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-            moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3
-            wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil
-            anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur
-            butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-            probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
-    </div>
-    
-                  
-
