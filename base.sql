@@ -841,4 +841,25 @@ select idArticle, idDemande from besoin_achat group by idDemande, idArticle;
 -- insert into confirmation_date (idconge, depart, retour) values
 -- (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
 
+create view liste_prix_proformat_min as
+SELECT idDemande, idArticle, MIN(prixunitaire) AS prix_minimum FROM proformat GROUP BY idDemande, idArticle; 
+
+SELECT
+    id,
+    f1.idDemande,
+    f1.idFournisseur,
+    f1.idArticle,
+    f2.prix_minimum prixunitaire,
+    date
+FROM
+    proformat f1
+JOIN
+    liste_prix_proformat_min f2 ON f1.idDemande = f2.idDemande
+              AND f1.idArticle = f2.idArticle
+              AND f1.prixunitaire = f2.prix_minimum;
+
+
+
+
+
 

@@ -13,7 +13,6 @@
 
   <!-- GOOGLE FONTS -->
   <link href="{{ asset('plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
-    `
     <style>
         span{
             display: block;
@@ -40,16 +39,17 @@
 </head>
 <body>
     <header>
-        <h1>Entreprise de bla bla bla </h1>
+        <h1>MONO </h1>
         <span><strong>Demandeur :</strong> {{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }}</span>
-        <span><strong>Adresse :</strong> heheheee </span>
-        <span><strong>Email :</strong> heheheee </span>
-        <span><strong>Numéro de téléphone :</strong> heheheee </span>
+        <span><strong>Adresse :</strong> Lot B IV 12 Akorondrano </span>
+        <span><strong>Email :</strong> {{ Session::get('administrateur_rh')->email }} </span>
+        <span><strong>Numéro de téléphone :</strong> +261 34 12 345 67 </span>
         <br>
-        <p><strong>Date : </strong> 29/11/2023</p>
+        <p><strong>Date : </strong> {{ $date }} </p>
 
     </header>
     <center><h1> DEMANDE DE PROFORMA </h1></center>
+    <center><h4> Pour  {{ $nom }} </h4></center>
 
     <br>
 

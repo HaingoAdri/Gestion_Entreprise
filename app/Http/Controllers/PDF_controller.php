@@ -8,17 +8,17 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\App;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-use App\Models\BesoinAchat;
+// use App\Models\BesoinAchat;
 
-// use PDF;
+// // use PDF;
 
 class PDF_controller extends Controller
 {
 
     public function index() {
 
-        $pdf = PDF::loadView('pdf_test');
-        return $pdf->download("layah.pdf");
+        // $pdf = PDF::loadView('pdf_test');
+        // return $pdf->download("layah.pdf");
 
     }
 

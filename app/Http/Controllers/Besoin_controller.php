@@ -31,8 +31,16 @@ use App\Models\Fournisseur;
 use App\Models\Demande;
 use App\Models\Proformat;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 class Besoin_controller extends Controller
 {
@@ -256,17 +264,78 @@ class Besoin_controller extends Controller
         return View("achat/ajout_demande", compact("listeFourisseur", "idDemande"));
     }
 
+    public function createPDF($date, $nom, $idDemande){
+        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
+        $pdf = PDF::loadView('pdf_test', compact("listeBesoinNonValide", "date", "nom"));
+        $pdf_name = $idDemande.'_demande_de_proforma.pdf';
+        $pdf->save(storage_path('app/public/'.$pdf_name));
+        return $pdf_name;
+    }
+
+    public function send_email($file_path, $email, $name) {
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Mailer = "smtp";
+
+        $mail->SMTPDebug  = 0;  
+        $mail->SMTPAuth   = TRUE;
+        $mail->SMTPSecure = "tls";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "layahanjaratiana877@gmail.com";
+        $mail->Password   = "myoq cybw mrhc mias";
+
+        $mail->IsHTML(true);
+        $mail->AddAddress($email, $name);
+        $mail->Subject = "Demande de proforma";
+
+        // Content of the proforma request email
+        $content = "<p>Bonjour,</p>";
+        $content .= "<p>Veuillez trouver ci-joint la demande de proforma. Les détails complets se trouvent dans le fichier PDF attaché.</p>";
+        $content .= "<p>Merci de traiter cette demande dès que possible.</p>";
+
+        $mail->MsgHTML($content);
+
+        // Attachment
+        $mail->addAttachment($file_path, "Demande_de_proforma.pdf");
+
+        if(!$mail->Send()) {
+            Session::flash("erreur", "Erreur lors de l'envoi de l'e-mail.");
+        } else {
+            Session::flash("success", "Votre e-mail a bien été envoyé! .");
+        }
+
+        return redirect()->route('listeDemandeProformat');
+    }
+
     public function demandeProformat(Request $request) { //mandefa email ato
+        set_time_limit(120);
         $date = $request->input('date');
         $idDemande = $request->input('idDemande');
         $nom = $request->input('nom');
         $fournisseurs = $request->input('fournisseur');
+
+        $pdf_name = $this->createPDF($date, $nom, $idDemande);
+
+        $path = storage_path('app/public/'.$pdf_name);
+
         echo count($fournisseurs);
-        foreach ($fournisseurs as $fournisseur) {
-            $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
-            $demande->insert();
+
+        if(File::exists($path)){
+
+            foreach ($fournisseurs as $fournisseur) {
+                $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
+                $demande->insert();
+                $fournisseur_un = (new Fournisseur(id: $fournisseur))->getDonneesUnFournisseur();
+                $this->send_email($path, $fournisseur_un->email, $fournisseur_un->nom);
+            }
+
+        }else{
+            echo "Non nonnnnnnnnnnnnnnnnnnnnnn";
         }
+            
         (new BesoinAchat())->ajoutIdDemande($idDemande);
+
         return redirect()->route('listeDemandeProformat');
     }
 
