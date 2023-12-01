@@ -14,8 +14,6 @@
   <!-- GOOGLE FONTS -->
   <link href="{{ asset('plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
   
-  <!-- MONO CSS -->
-  <!-- <link id="main-css-href" rel="stylesheet" href="{{ asset('css/style.css') }}" /> -->
     <style>
         span{
             display: block;
@@ -43,7 +41,7 @@
     <header>
         <h1>Entreprise de bla bla bla </h1>
         <span><strong>Demandeur :</strong> {{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }}</span>
-        <span><strong>Adresse :</strong> heheheee </span>
+        <span><strong>Adresse :</strong> Coucouuu bebe </span>
         <span><strong>Email :</strong> heheheee </span>
         <span><strong>Numéro de téléphone :</strong> heheheee </span>
         <br>

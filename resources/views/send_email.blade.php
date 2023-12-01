@@ -11,12 +11,12 @@
                     <i class="mdi mdi-plus mr-1"></i> Faire une demande
                 </button>
             </div>
-            @if(session("erreur") != null)
+            @if(session("erreur"))
                 <div class="alert alert-danger" role="alert">
                     <h6>{{ session("erreur") }}</h6>
                 </div>
             @endif
-            @if(session("success") != null)
+            @if(session("success"))
                 <div class="alert alert-success" role="alert">
                     <h6>{{ session("success") }}</h6>
                 </div>

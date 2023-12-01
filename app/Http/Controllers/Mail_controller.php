@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -17,43 +18,33 @@ class Mail_controller extends Controller
     // INDEX
 
     public function index(){
-        return view("send_email");
+        // Session::forget("erreur");
+        // Session::forget("success");
+        // return view("send_email");
+        $path = storage_path('app/public/demande_de_proforma1.pdf');
+
+        if(File::exists($path)){
+            echo "Coucou bebe";
+            $this->demande($path);
+        }else{
+            echo "Non nonnnnnnnnnnnnnnnnnnnnnn";
+        }
+        // $pdf = Storage::get();
+        
     }
 
-    public function demande_proforma(Request $request) {
-        try {
-            $request->validate([
-                'file_justificatif' => 'required|file|max:2048|mimes:pdf' // Max 2MB and only PDF files
-            ]);
-    
-            $file_justificatif = null;
-            $file_justificatif_name = null;
-            $file_justificatif_path = null;
+    // public function demande_proforma(Request $request) {
 
-            if ($request->hasFile('file_justificatif')) {
-                $file_justificatif = $request->file('file_justificatif');
-                $file_justificatif_name = time() . '-' . $file_justificatif->getClientOriginalName();
-                echo '<br>' . $file_justificatif_name;
-                $file_justificatif->storeAs('public', $file_justificatif_name);
-                Storage::putFileAs('public', $file_justificatif, $file_justificatif_name);
+        
 
-                $full_path = storage_path('app/public/'.$file_justificatif_name);
-
-                echo '<br>Full Path: '.$full_path;
-                $this->demande($full_path);
-            }
-        }
-        catch (Exception $e) {
-            echo '<br>Erreur: ' . $e->getMessage();
-        }
-    }
+    // }
 
     public function demande($file_path) {
         $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Mailer = "smtp";
 
-        $mail->SMTPDebug  = 1;  
+        $mail->SMTPDebug  = 0;  
         $mail->SMTPAuth   = TRUE;
         $mail->SMTPSecure = "tls";
         $mail->Port       = 587;
@@ -73,16 +64,16 @@ class Mail_controller extends Controller
         $mail->MsgHTML($content);
 
         // Attachment
-        $mail->addAttachment($file_path, "Demande_de_proforma.pdf");
+        $mail->addAttachment($file_path, "Demande_de_proforma1.pdf");
 
         if(!$mail->Send()) {
-            Session::put("erreur", "Erreur lors de l'envoi de l'e-mail.");
-            return redirect()->route('test_mail');
-            echo " Nonnnnnnnnnnnn!";
+            Session::flash("erreur", "Erreur lors de l'envoi de l'e-mail.");
+            // return redirect()->route('test_mail')->with('erreur')
         } else {
-            Session::put("success", "Votre e-mail a bien été envoyé! .");
-            echo " OK!";
-            return redirect()->route('test_mail');
+            Session::flash("success", "Votre e-mail a bien été envoyé! .");
+            // return redirect()->route('test_mail');
         }
+
+        return view("send_email");
     }
 }
