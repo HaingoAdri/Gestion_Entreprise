@@ -70,12 +70,10 @@
 <script defer>
     function maFonctionJS(montant) {
         setTimeout(function () {
-            // Afficher la réponse dans un élément de la page (par exemple, un div avec l'ID "resultat")
             document.getElementById("resultat").innerText = montant;
-        }, 1000); // Simule une opération prenant 1 seconde
+        }); 
     }
 
-    // Appeler la fonction lorsque la page est chargée
     window.onload = function () {
         var montant = <?php echo $listeProformat[count($listeProformat)-1]->prixAT; ?>;
         montant = changeNumberToLetter(Number(montant));
@@ -83,72 +81,71 @@
     };
 
     function changeNumberToLetter(nombre) {
-    console.log(nombre);
-    var units = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf'];
-    var tens = ['', 'Dix', 'Vingt', 'Trente', 'Quarante', 'Cinquante', 'Soixante', 'Soixante', 'Quatre-vingt', 'Quatre-vingt'];
-    
-    var exceptions = {
-        11: 'Onze', 12: 'Douze', 13: 'Treize', 14: 'Quatorze', 15: 'Quinze', 16: 'Seize', 70: 'Soixante-dix', 80: 'Quatre-vingts', 81: 'Quatre-vingt-un', 91: 'Quatre-vingt-onze'
-    };
+        var units = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf'];
+        var tens = ['', 'Dix', 'Vingt', 'Trente', 'Quarante', 'Cinquante', 'Soixante', 'Soixante', 'Quatre-vingt', 'Quatre-vingt'];
+        
+        var exceptions = {
+            10: 'Dix', 11: 'Onze', 12: 'Douze', 13: 'Treize', 14: 'Quatorze', 15: 'Quinze', 16: 'Seize', 70: 'Soixante-dix', 80: 'Quatre-vingts', 81: 'Quatre-vingt-un', 91: 'Quatre-vingt-onze'
+        };
 
-    var montant = '';
+        var montant = '';
 
-    if (nombre === 0) {
-        return 'Zéro';
-    }
-
-    if (exceptions[nombre]) {
-        return exceptions[nombre];
-    }
-
-    if (nombre >= 1e6) {
-        var millions = Math.floor(nombre / 1e6);
-        montant += convertNumber(millions) + ' million ';
-        nombre %= 1e6;
-    }
-
-    if (nombre >= 1e3) {
-        var thousands = Math.floor(nombre / 1e3);
-        montant += convertNumber(thousands) + ' mille ';
-        nombre %= 1e3;
-    }
-
-    // Vérifiez si le nombre restant est différent de zéro avant d'ajouter les unités
-    if (nombre > 0) {
-        montant += convertNumber(nombre);
-    }
-
-    return montant.trim();
-
-    function convertNumber(number) {
-        var spelledOut = '';
-
-        if (number >= 100) {
-            var hundreds = Math.floor(number / 100);
-            spelledOut += units[hundreds] + ' cent ';
-            number %= 100;
+        if (nombre === 0) {
+            return 'Zéro';
         }
 
-        if (number >= 10 && number <= 19) {
-            spelledOut += exceptions[number];
-        } else {
-            var tensDigit = Math.floor(number / 10);
-            spelledOut += tens[tensDigit] + ' ';
-            number %= 10;
+        if (exceptions[nombre]) {
+            return exceptions[nombre];
+        }
 
-            // Vérifiez si le nombre des unités est différent de zéro avant d'ajouter les unités
-            if (number > 0) {
-                spelledOut += units[number];
+        if (nombre >= 1e6) {
+            var millions = Math.floor(nombre / 1e6);
+            montant += convertNumber(millions) + ' million ';
+            nombre %= 1e6;
+        }
+
+        if (nombre >= 1e3) {
+            var thousands = Math.floor(nombre / 1e3);
+            montant += convertNumber(thousands) + ' mille ';
+            nombre %= 1e3;
+        }
+
+        if (nombre > 0) {
+            montant += convertNumber(nombre);
+        }
+
+        return montant.trim();
+
+        function convertNumber(number) {
+            var spelledOut = '';
+
+            if (number >= 100) {
+                var hundreds = Math.floor(number / 100);
+                spelledOut += units[hundreds] + ' cent ';
+                number %= 100;
             }
+
+            if (number >= 10 && number <= 19) {
+                spelledOut += exceptions[number];
+            } else {
+                var tensDigit = Math.floor(number / 10);
+                spelledOut += tens[tensDigit] + ' ';
+                var quotient = Math.floor(number / 10);
+                number %= 10; 
+                
+                if (number > 0) {
+                    if(quotient == 7 || quotient == 9) {
+                        spelledOut += exceptions[number + 10];
+                    }
+                    else
+                        spelledOut += units[number];
+                }
+            }
+
+            return spelledOut.trim();
         }
 
-        return spelledOut.trim();
     }
-
-}
-
-// Exemple d'utilisation
-console.log(changeNumberToLetter(676000));
 
 </script>
 
