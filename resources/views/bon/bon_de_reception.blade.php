@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="card-footer">
-                            <p>Edité le : </p>
+                            <p>Edité le : {{ $date }} </p>
                         </div>
 
                     </div>
