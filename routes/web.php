@@ -18,6 +18,7 @@ use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
 use App\Http\Controllers\Fournisseur_controller;
 use App\Http\Controllers\PDF_controller;
+use App\Http\Controllers\Bon_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -184,3 +185,9 @@ Route::post('/ajouter_un_nouveau_fournisseur', [Fournisseur_controller::class, "
 
 //pdf
 Route::get('/test_pdf', [PDF_controller::class, "demande"])->name("test_pdf");
+
+// BON
+Route::get('/bon_de_livraison_form', [Bon_controller::class, "show_bon_de_livraison"])->name("bon_de_livraison_form");
+Route::get('/bon_de_reception_form', [Bon_controller::class, "show_bon_de_reception"])->name("bon_de_reception_form");
+Route::get('/create_bon_de_livraison_form', [Bon_controller::class, "create_bon_de_livraison"])->name("create_bon_de_livraison_form");
+Route::get('/create_bon_de_reception_form', [Bon_controller::class, "create_bon_de_reception"])->name("create_bon_de_reception_form");
