@@ -851,7 +851,29 @@ JOIN
 create view liste_besoin_achat_avec_quantite as
 select idDemande, idArticle, sum(nombre) nombre from besoin_achat group by idDemande, idArticle;
 
-create view prix_minimum_proformat as
+
+
+
+
+
 select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (nombre*prixUnitaire*tva) prixAT  
     from liste_meilleur_proformat l 
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
+
+-- VIEW TEST PROFORMA
+CREATE VIEW V_details_bon_commande_avec_proforma AS
+    SELECT 
+        details_bon_commande.*, 
+        bon_commande.date AS date_bon_commande, 
+        proformat.iddemande, 
+        proformat.idfournisseur, 
+        idarticle, 
+        prixunitaire, 
+        tva, 
+        proformat.date AS date_proformat 
+    FROM bon_commande 
+        JOIN details_bon_commande ON details_bon_commande.idboncommande = bon_commande.id 
+        JOIN proformat ON details_bon_commande.idproformat = proformat.id;
+
+-- QUERY
+select * from V_details_bon_commande_avec_proforma;

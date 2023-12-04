@@ -41,6 +41,12 @@
   <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" />
 
   <script src="{{ asset('plugins/nprogress/nprogress.js') }}"></script>
+  <style>
+        span{
+            display: block;
+        }
+
+    </style>
 </head>
 
 
@@ -120,6 +126,12 @@
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('listeDemandeProformat') }}">
                                         <span class="nav-text">Listes demandes en attente proformat</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
+                                        <span class="nav-text">Bon de livraison</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
+                                        <span class="nav-text">Bon de reception</span>
                                     </a></li>
                                 @endif
                             </div>

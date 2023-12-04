@@ -36,7 +36,7 @@
 
                                 <div class="form-group mb-4">
                                     <label for="userName">Numéro de bon de commande</label>
-                                    <input type="text" class="form-control" id="numero">
+                                    <input type="text" class="form-control" id="numero" name="numero">
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-6">

@@ -32,12 +32,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <span><strong>Bon de livraison n° : </strong></span>
-                                    <span><strong>Date : </strong> {{ $date }}</span>
-                                    <span><strong>Lieu : </strong> {{ $lieu }} </span>
-                                    <span><strong>N° de commande : </strong> {{ $numero }}</span>
+                                    <span><strong>Date : </strong> {{ $resultat["date"] }}</span>
+                                    <span><strong>Lieu : </strong> {{ $resultat["lieu"] }} </span>
+                                    <span><strong>N° de commande : </strong> {{ $resultat["numero"] }} </span>
                                     <span><strong>Numéro du client : </strong></span>
                                     <span><strong>Contact du client : </strong></span>
-                                    <span><strong>Emis par : </strong> {{ $livreur }}</span>
+                                    <span><strong>Emis par : </strong> {{ $resultat["livreur"] }}</span>
                                 </div>
                                 <div class="col-md-6">
                                     <span><strong>Destinataire : </strong></span>
@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h5 class="text-secondary text-capitalize">Informations additionnelles : </h5>
-                                    <p>{{ $information }}</p>
+                                    <p>{{ $resultat["information"] }}</p>
                                     <p>Merci d'avoir choisis notre entreprise!</p>
                                 </div>
                             </div>

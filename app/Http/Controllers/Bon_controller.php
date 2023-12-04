@@ -28,6 +28,8 @@ class Bon_controller extends Controller
         $resultat["livreur"] = $request->input('livreur');
         $resultat["information"] = $request->information;
 
+        // var_dump($resultat);
+
         return view("bon/bon_de_livraison", compact("resultat"));
     }
 

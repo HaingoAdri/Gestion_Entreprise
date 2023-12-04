@@ -19,8 +19,8 @@
                                     <br>
 
                                     <span><strong>Fournisseur : </strong></span>
-                                    <span><strong>Lieu : </strong></span>
-                                    <span><strong>N° de commande : </strong></span>
+                                    <span><strong>Lieu : </strong> {{ $resultat["lieu"] }} </span>
+                                    <span><strong>N° de commande : </strong> {{ $resultat["numero"] }} </span>
                                     <span><strong>Responsable de récéption : </strong> (responsable récéption)</span>
                                 </div>
                             </div>
@@ -51,32 +51,8 @@
                                                 <td>Lucia</td>
                                                 <td>Christ</td>
                                                 <td>
-                                                <label class="switch switch-primary switch-pill form-control-label ">
-                                                    <input type="checkbox" class="switch-input form-check-input" value="on">
-                                                    <span class="switch-label"></span>
-                                                    <span class="switch-handle"></span>
-                                                </label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td scope="row">2</td>
-                                                <td>Catrin</td>
-                                                <td>Seidl</td>
-                                                <td>
-                                                <label class="switch switch-primary switch-pill form-control-label ">
-                                                    <input type="checkbox" class="switch-input form-check-input" value="on">
-                                                    <span class="switch-label"></span>
-                                                    <span class="switch-handle"></span>
-                                                </label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td scope="row">3</td>
-                                                <td>Lilli</td>
-                                                <td>Kirsh</td>
-                                                <td>
                                                     <label class="switch switch-primary switch-pill form-control-label ">
-                                                        <input type="checkbox" class="switch-input form-check-input" value="on">
+                                                        <input type="checkbox" class="switch-input form-check-input" value="on" name="produit">
                                                         <span class="switch-label"></span>
                                                         <span class="switch-handle"></span>
                                                     </label>
@@ -87,11 +63,11 @@
                                                 <td>Else</td>
                                                 <td>Voigt</td>
                                                 <td>
-                                                <label class="switch switch-primary switch-pill form-control-label ">
-                                                    <input type="checkbox" class="switch-input form-check-input" value="on">
-                                                    <span class="switch-label"></span>
-                                                    <span class="switch-handle"></span>
-                                                </label>
+                                                    <label class="switch switch-primary switch-pill form-control-label ">
+                                                        <input type="checkbox" class="switch-input form-check-input" value="on" name="produit">
+                                                        <span class="switch-label"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -99,11 +75,11 @@
                                                 <td>Ursel</td>
                                                 <td>Harms</td>
                                                 <td>
-                                                <label class="switch switch-primary switch-pill form-control-label ">
-                                                    <input type="checkbox" class="switch-input form-check-input" value="on">
-                                                    <span class="switch-label"></span>
-                                                    <span class="switch-handle"></span>
-                                                </label>
+                                                    <label class="switch switch-primary switch-pill form-control-label ">
+                                                        <input type="checkbox" class="switch-input form-check-input" value="on" name="produit">
+                                                        <span class="switch-label"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -114,7 +90,7 @@
                         </div>
 
                         <div class="card-footer">
-                            <p>Edité le : {{ $date }} </p>
+                            <p>Edité le : {{ $resultat["date"] }} </p>
                         </div>
 
                     </div>

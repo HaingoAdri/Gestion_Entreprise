@@ -234,3 +234,4 @@ insert into etats values
 (37, 'Valide Finance'),
 (40, 'En Attende'),
 (45, 'Termine');
+
