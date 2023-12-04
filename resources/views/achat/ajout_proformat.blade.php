@@ -129,6 +129,12 @@
             </div>
         </div>
     </div>
+    <a href="{{ route('listeDemandeProformat') }}"><button type="button" class="btn btn-primary">Retour</button></a>
+    
+    <a href="{{ route('tirerUneBonDeCommande', ['idDemande' => $idDemande]) }}"><button type="button" class="btn btn-primary"> 
+        Tirer un bon de commande
+    </button></a>
+
 
 </div>
 

@@ -330,8 +330,6 @@ class Besoin_controller extends Controller
                 $this->send_email($path, $fournisseur_un->email, $fournisseur_un->nom);
             }
 
-        }else{
-            echo "Non nonnnnnnnnnnnnnnnnnnnnnn";
         }
             
         (new BesoinAchat())->ajoutIdDemande($idDemande);
@@ -363,6 +361,12 @@ class Besoin_controller extends Controller
             $proformat->insert();
         }
         return redirect()->action([Besoin_controller::class, 'detailsDemandeProformat'], ['idDemande' => $idDemande]);
+    }
+
+    public function tirerUneBonDeCommande(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $listeProformat = (new Proformat(idDemande: $idDemande))->getListeMeulleurProformat();
+        return View("achat/bon_de_commande", compact("idDemande", "listeProformat"));  
     }
 
 

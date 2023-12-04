@@ -176,6 +176,7 @@ Route::post('/envoyer_la_demande_de_proformat', [Besoin_controller::class, "dema
 Route::get('/liste_demande_en_attente_de_proformat', [Besoin_controller::class, "listeDemandeProformat"])->name("listeDemandeProformat");
 Route::get('/details_du_proformat_du_demande', [Besoin_controller::class, "detailsDemandeProformat"])->name("detailsProformat");
 Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProformat"])->name("ajoutProformat");
+Route::get('/tirer_une_bon_de_commande', [Besoin_controller::class, "tirerUneBonDeCommande"])->name("tirerUneBonDeCommande");
 
 //fournisseur
 Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");

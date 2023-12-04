@@ -782,6 +782,24 @@ create table proformat (
     foreign key (idArticle) references Article(id)
 );
 
+-- bon de commande
+create table bon_commande (
+    id varchar(10) primary key,
+    date date,
+    etat int,
+    foreign key (etat) references Etats(id_et) 
+);
+
+create table details_bon_commande (
+    id serial,
+    idBonCommande varchar(10),
+    idProformat int,
+    etat int,
+    foreign key (etat) references Etats(id_et),
+    foreign key (idBonCommande) references bon_commande(id),
+    foreign key (idProformat) references proformat(id)
+);
+
 --view liste_contrat_a_renouveler
 create view liste_contrat_a_renouveler as
 select id, ce.id_emp, lieu_travail, date_debut, date_fin , obligation, superieur, etat from contrat_essaie ce 
@@ -810,46 +828,18 @@ create view liste_demande_en_attente_proformat as
 create view liste_article_par_demande as
 select idArticle, idDemande from besoin_achat group by idDemande, idArticle;
 
--- jerena le date ny dernier entretient any
--- select * from historique_embauche where id_emp = 'EMP0000001' and etat = 12 order by date desc;
-
--- select * from liste_afaka_qcm where dates <= '2023-10-20' and id_users = 1 order by dates desc;
-
--- select * from qcm_result where id_r = 1;
-
--- select * from qcm_admis where id_qcm = 1;
-
--- select * from note_cv where id = 2;
-
--- select * from cv where id = 17;
-
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-03 08:00:00', '2023-10-03 17:00:00', 21, 'Justification');
-
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-20 08:00:00', '2023-10-20 12:00:00', 21, 'Justification');
-
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-27 08:00:00', '2023-10-29 17:00:00', 21, 'Justification');
-
--- insert into confirmation_date (idconge, depart, retour) values
--- (4, '2023-10-03 08:00:00', '2023-10-04 08:00:00');
-
--- insert into confirmation_date (idconge, depart, retour) values
--- (5, '2023-10-20 08:00:00', '2023-10-20 12:00:00');
-
--- insert into confirmation_date (idconge, depart, retour) values
--- (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
 
 create view liste_prix_proformat_min as
 SELECT idDemande, idArticle, MIN(prixunitaire) AS prix_minimum FROM proformat GROUP BY idDemande, idArticle; 
 
+create view liste_meilleur_proformat as
 SELECT
     id,
     f1.idDemande,
     f1.idFournisseur,
     f1.idArticle,
     f2.prix_minimum prixunitaire,
+    f1.tva,
     date
 FROM
     proformat f1
@@ -858,8 +848,10 @@ JOIN
               AND f1.idArticle = f2.idArticle
               AND f1.prixunitaire = f2.prix_minimum;
 
+create view liste_besoin_achat_avec_quantite as
+select idDemande, idArticle, sum(nombre) nombre from besoin_achat group by idDemande, idArticle;
 
-
-
-
-
+create view prix_minimum_proformat as
+select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (nombre*prixUnitaire*tva) prixAT  
+    from liste_meilleur_proformat l 
+    join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
