@@ -136,7 +136,7 @@
             spelledOut += tens[tensDigit] + ' ';
             number %= 10;
 
-            // Vérifiez si le nombre restant est différent de zéro avant d'ajouter les unités
+            // Vérifiez si le nombre des unités est différent de zéro avant d'ajouter les unités
             if (number > 0) {
                 spelledOut += units[number];
             }
@@ -144,10 +144,11 @@
 
         return spelledOut.trim();
     }
+
 }
 
 // Exemple d'utilisation
-console.log(changeNumberToLetter(6750000));
+console.log(changeNumberToLetter(676000));
 
 </script>
 
