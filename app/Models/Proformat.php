@@ -26,7 +26,6 @@ class Proformat extends Model
     public $sommeTVA;
 
     public function __construct($id = "", $idDemande = "", $idFournisseur = "", $idArticle = "", $prixUnitaire = "", $TVA = "", $date = "") {
-        echo $idArticle;
         $this->id = $id;
         $this->idDemande = $idDemande;
         $this->idFournisseur = $idFournisseur;
@@ -96,6 +95,46 @@ class Proformat extends Model
     public function getNomFournisseur() {
         $fournisseur = (new Fournisseur(id: $this->idFournisseur))->getDonneesUnFournisseur();
         return $fournisseur->nom;
+    }
+
+    public function getListeProformatParIdBonCommande($idBonCommande) {
+        $requette = "select * from liste_details_bon_de_commande where idboncommande = '$idBonCommande' order by idArticle asc";
+        $reponse = DB::select($requette);
+        $liste = array();
+        $listeArticle = array();
+        $prixHT = 0;
+        $prixAT = 0;
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                if(!in_array($resultat->idarticle, $listeArticle)) {
+                    $listeArticle[] = $resultat->idarticle;
+                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, $resultat->tva, "");
+                    $proformat->quantite = $resultat->quantite;
+                    $proformat->prixHT = $resultat->prixht;
+                    $proformat->prixAT = $resultat->prixat;
+
+                    $prixHT += $proformat->prixHT;
+                    $prixAT += $proformat->prixAT;
+
+                    $liste[] = $proformat;
+                }
+            }
+            $proformat = new ProFormat();
+            $proformat->prixHT = $prixHT;
+            $proformat->prixAT = $prixAT;
+            $liste[] = $proformat;
+        }
+        return $liste;
+    }
+
+    public function getUnProformat() {
+        $requette = "select * from proformat where id = '$this->id'";
+        $reponse = DB::select($requette);
+        $proformat = null;
+        if(count($reponse) > 0){
+            $proformat = new Proformat($reponse[0]->id, $reponse[0]->iddemande, $reponse[0]->idfournisseur, $reponse[0]->idarticle, $reponse[0]->prixunitaire, $reponse[0]->tva, $reponse[0]->date);
+        }
+        return $proformat;
     }
 
 }

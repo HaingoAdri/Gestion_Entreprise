@@ -135,4 +135,13 @@ class BesoinAchat extends Model
         return $liste;
     }
 
+    public function updateEtatParIdDemande($idDemande) {
+        try {
+            $requete = "update besoin_achat set etat = $this->etat where idDemande = '$idDemande'";
+            DB::update($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible d'inserer Etats: ".$e->getMessage());
+        }  
+    }
+
 }

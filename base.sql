@@ -739,7 +739,7 @@ increment by 1
 start WITH 1
 minValue 1;
 
-create function nextSeqDemande(prefix text, taille integer) 
+create function nextSeqD(prefix text, taille integer) 
 returns text AS
 $$
     Declare
@@ -786,6 +786,8 @@ create table proformat (
 create table bon_commande (
     id varchar(10) primary key,
     date date,
+    idPayement int,
+    delaiLivarison double precision default 0,
     etat int,
     foreign key (etat) references Etats(id_et) 
 );
@@ -799,6 +801,33 @@ create table details_bon_commande (
     foreign key (idBonCommande) references bon_commande(id),
     foreign key (idProformat) references proformat(id)
 );
+
+CREATE SEQUENCE seqBonCommande
+increment by 1
+start WITH 1
+minValue 1;
+
+create or replace function nextID(sequence text, prefix text, taille integer) 
+returns text AS
+$$
+    Declare
+        nextId int;
+        nextIdString text;
+        id text;
+        i integer;
+    BEGIN
+        SELECT coalesce(nextval(sequence),1) into nextId;
+        nextIdString := nextId::varchar;
+        taille := taille - LENGTH(prefix) - LENGTH(nextIdString);
+        id := prefix;
+        FOR i IN 1..taille LOOP
+            id := id || '0'; 
+        END LOOP;
+        id := id || nextIdString; 
+        return id;
+    END
+$$ LANGUAGE plpgsql;
+
 
 --view liste_contrat_a_renouveler
 create view liste_contrat_a_renouveler as
@@ -819,15 +848,14 @@ select idArticle, sum(nombre) nombre from besoin_achat where etat = 28 group by 
 create view demande_proformat as
 select iddemande from besoin_achat where etat = 32 group by idDemande;
 
-create view liste_demande as
-select date, nom, idDemande from demande group by date, nom, idDemande;
+create or replace view liste_demande as
+select date, nom, idDemande, etat from demande group by date, nom, idDemande, etat;
 
-create view liste_demande_en_attente_proformat as
- select l.* from demande_proformat d join liste_demande l on d.idDemande = l.idDemande;
+create or replace view liste_demande_en_attente_proformat as
+select l.* from demande_proformat d join liste_demande l on d.idDemande = l.idDemande where etat = 1;
 
 create view liste_article_par_demande as
 select idArticle, idDemande from besoin_achat group by idDemande, idArticle;
-
 
 create view liste_prix_proformat_min as
 SELECT idDemande, idArticle, MIN(prixunitaire) AS prix_minimum FROM proformat GROUP BY idDemande, idArticle; 
@@ -855,3 +883,18 @@ create view prix_minimum_proformat as
 select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (nombre*prixUnitaire*tva) prixAT  
     from liste_meilleur_proformat l 
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
+
+create view liste_details_bon_de_commande as 
+    select d.id idDetails, idboncommande, p.*
+    from details_bon_commande d 
+    join prix_minimum_proformat p on d.idproformat = p.id
+    where etat = 8;
+
+create view liste_bon_commande_en_attente as
+select * from bon_commande where etat < 40;
+
+create view liste_bon_commande_en_cours as
+select * from bon_commande where etat = 40;
+
+create view liste_bon_commande_terminer as
+select * from bon_commande where etat = 45;

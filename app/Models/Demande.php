@@ -86,4 +86,14 @@ class Demande extends Model {
         $fournisseur = (new Fournisseur(id: $this->idFournisseur))->getDonneesUnFournisseur();
         return $fournisseur->nom;
     }
+
+    public function getDonneesUnDemande() {
+        $requette = "select * from liste_demande where idDemande = '$this->idDemande'";
+        $reponse = DB::select($requette);
+        $demande = null;
+        if(count($reponse) > 0){
+            $demande = new Demande(date: $reponse[0]->date, nom: $reponse[0]->nom, idDemande: $reponse[0]->iddemande);
+        }
+        return $demande;
+    }
 }

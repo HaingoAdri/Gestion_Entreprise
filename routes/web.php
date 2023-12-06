@@ -177,7 +177,16 @@ Route::post('/envoyer_la_demande_de_proformat', [Besoin_controller::class, "dema
 Route::get('/liste_demande_en_attente_de_proformat', [Besoin_controller::class, "listeDemandeProformat"])->name("listeDemandeProformat");
 Route::get('/details_du_proformat_du_demande', [Besoin_controller::class, "detailsDemandeProformat"])->name("detailsProformat");
 Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProformat"])->name("ajoutProformat");
-Route::get('/tirer_une_bon_de_commande', [Besoin_controller::class, "tirerUneBonDeCommande"])->name("tirerUneBonDeCommande");
+Route::get('/tirer_un_bon_de_commande', [Besoin_controller::class, "tirerUneBonDeCommande"])->name("tirerUneBonDeCommande");
+Route::post('/creation_du_bon_de_commande', [Besoin_controller::class, "genererLaBonDeCommande"])->name("creerLaBonDeCommande");
+Route::get('/voir_un_bon_de_commande', [Besoin_controller::class, "recuUnBonDeCommande"])->name("voirBonDeCommande");
+Route::get('/voir_liste_bon_de_commande_en_attente', [Besoin_controller::class, "listeBonCommandeEnAttente"])->name("listeBonCommandeEnAttente");
+Route::get('/valider_un_bon_de_commande_en_attente', [Besoin_controller::class, "validerUnBonCommande"])->name("validerUnBonCommandeEnAttente");
+Route::get('/liste_bon_de_commande_valider', [Besoin_controller::class, "listeBonCommandeApasser"])->name("listeBonCommandeApasser");
+Route::get('/faire_le_bon_de_commande', [Besoin_controller::class, "passerUnBonCommande"])->name("passerUnBonCommande");
+Route::get('/voir_liste_bon_de_commande_en_cours', [Besoin_controller::class, "listeBonCommandeEnCours"])->name("listeBonCommandeEnCours");
+
+
 
 //fournisseur
 Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");

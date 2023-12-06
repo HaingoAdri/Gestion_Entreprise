@@ -30,6 +30,7 @@ use App\Models\BesoinAchat;
 use App\Models\Fournisseur;
 use App\Models\Demande;
 use App\Models\Proformat;
+use App\Models\BonCommande;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -368,6 +369,80 @@ class Besoin_controller extends Controller
         $listeProformat = (new Proformat(idDemande: $idDemande))->getListeMeulleurProformat();
         return View("achat/bon_de_commande", compact("idDemande", "listeProformat"));  
     }
+
+    public function genererLaBonDeCommande(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $date = $request->input('date');
+        $delai = $request->input('delai');
+        $idPayement = $request->input('idPayement');
+
+        $bonCommande = new BonCommande(date: $date, idPayement: $idPayement, delaiLivarison: $delai, etat: 32);
+        $bonCommande->id = $bonCommande->getNextIDCommande();
+        $bonCommande->insertBonCommande();
+
+        $listeProformat = (new Proformat(idDemande: $idDemande))->getListeMeulleurProformat();
+        for($i = 0; $i < count($listeProformat)-1; $i++) {
+            $detailsBonCommande = new BonCommande(id: $bonCommande->id, idProformat: $listeProformat[$i]->id, etat: 8);
+            $detailsBonCommande->insertDetailsCommande();
+        }
+
+        return redirect()->action([Besoin_controller::class, 'recuUnBonDeCommande'], ['idBonCommande' => $bonCommande->id]);
+    }
+
+    public function recuUnBonDeCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $listeProformat = $bonCommande->getDetailsBonCommande();
+        return view("achat/recu_bon_de_commande", compact('bonCommande', 'listeProformat'));
+    }
+
+    public function listeBonCommandeEnAttente() {
+        $bonCommande = new BonCommande();
+        $module = Session::get("administrateur_rh")->module->id;
+        if($module == 1)
+            $bonCommande->etat = 32;
+        else if($module == 7)
+            $bonCommande->etat = 35;
+        $listeBonCommande = $bonCommande->getListeEnAttente();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+    public function validerUnBonCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $module = Session::get("administrateur_rh")->module->id;
+        if($module == 1)
+            $bonCommande->etat = 35;
+        else if($module == 7)
+            $bonCommande->etat = 37;
+        $bonCommande->valider();
+        return redirect()->route('listeBonCommandeEnAttente');        
+    }
+
+    public function listeBonCommandeApasser() {
+        $bonCommande = new BonCommande();
+        $bonCommande->etat = 37;
+        $listeBonCommande = $bonCommande->getListeEnAttente();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+    public function passerUnBonCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande, etat: 40);
+        $bonCommande->valider();
+        return redirect()->route('listeBonCommandeApasser');   
+    }
+
+    public function listeBonCommandeEnCours() {
+        $bonCommande = new BonCommande();
+        $listeBonCommande = $bonCommande->getListeEnCours();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+
+
+
 
 
 }

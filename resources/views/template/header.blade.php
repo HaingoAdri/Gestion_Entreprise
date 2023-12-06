@@ -121,6 +121,20 @@
                                     <li><a class="sidenav-item-link" href="{{ route('listeDemandeProformat') }}">
                                         <span class="nav-text">Listes demandes en attente proformat</span>
                                     </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                                        <span class="nav-text">Bon commande en attente</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeApasser') }}">
+                                        <span class="nav-text">Bon commande valider</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnCours') }}">
+                                        <span class="nav-text">Bon commande en cours</span>
+                                    </a></li>
+                                @endif
+                                @if(session("administrateur_rh")->module->id == 7)
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                                        <span class="nav-text">Bon commande a valider</span>
+                                    </a></li>
                                 @endif
                             </div>
                         </ul>
@@ -229,6 +243,13 @@
                         
                                 </div>
                             </ul>
+                        </li>
+
+                        <li>
+                          <a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                              <i class="mdi mdi-playlist-plus"></i>
+                              <span class="nav-text">Bon de commande a valider</span>
+                          </a>
                         </li>
 
                         <li  class="has-sub" >
