@@ -38,6 +38,8 @@
                                         <span style="display: block;"><strong>Titre de la commande : </strong> {{ $bonCommande->nom }} </span>
                                         <span style="display: block;"><strong>Date de la commande : </strong> {{ $bonCommande->date }} </span>
                                         <input type="hidden" name="numero" value="{{ $resultat['numero']}}">
+                                        <input type="hidden" name="date" value="{{ $resultat['date']}}">
+                                        <input type="hidden" name="lieu" value="{{ $resultat['lieu']}}">
                                         <span style="display: block;"><strong>Responsable de récéption : </strong> {{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }}</span>
                                     </div>
                                     

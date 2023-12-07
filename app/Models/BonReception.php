@@ -17,19 +17,23 @@ class BonReception extends Model
     public $etat;
 
     public $nom;
+    public $id_article;
+    public $id_fournisseur;
 
-    public function __construct($id = "", $lieu = "", $date = "", $id_bon_commande = "",  $id_recepteur = "", $etat = "") {
+    public function __construct($id = "", $lieu = "", $date = "", $id_bon_commande = "",  $id_recepteur = "", $etat = "", $id_article = "", $id_fournisseur = "") {
         $this->id = $id;
         $this->lieu = $lieu;
         $this->date = $date;
         $this->id_bon_commande = $id_bon_commande;
         $this->id_recepteur = $id_recepteur;
         $this->etat = $etat;
+        $this->id_article = $id_article;
+        $this->id_fournisseur = $id_fournisseur;
     }
 
     public function insertBonReception() {
         try {
-            $requete = "insert into bon_reception (id, lieu, date, id_bon_commande, id_recepteur, etat) values ('$this->id', '$this->lieu', $this->date, '$this->id_bon_commande','$this->id_recepteur', '$this->etat')";
+            $requete = "insert into bon_reception (id, lieu, date, id_bon_commande, id_recepteur, etat) values ('$this->id', '$this->lieu', '$this->date', '$this->id_bon_commande','$this->id_recepteur', '$this->etat')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer un nouveau bon de reception: ".$e->getMessage());
@@ -80,20 +84,17 @@ class BonReception extends Model
         return $etats->nom_etats;
     }
 
-    // public function getListeEnCours() {
-    //     $requette = "select * from liste_bon_commande_en_cours order by date desc";
-    //     $reponse = DB::select($requette);
-    //     $liste = array();
-    //     if(count($reponse) > 0){
-    //         foreach($reponse as $resultat) {
-    //             $bonCommande = new BonCommande(id: $resultat->id, date: $resultat->date, idPayement: $resultat->idpayement, delaiLivarison: $resultat->delailivarison, etat: $resultat->etat);
-    //             $idDemande = $bonCommande->getIdDemande();
-    //             $demande = (new Demande(idDemande: $idDemande))->getDonneesUnDemande();
-    //             $bonCommande->nom = $demande->nom;
-    //             $liste[] = $bonCommande;
-    //         }
-    //     }
-    //     return $liste;
-    // }
+    public function getDetailsBonReceptionValiderPourUnBonCommande() {
+        $requette = "select * from V_Details_Bon_Reception where id_bon_commande = '$this->id_bon_commande'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $bonReception = new BonReception(id: $resultat->id, lieu: $resultat->lieu, date: $resultat->date, id_bon_commande: $resultat->id_bon_commande, id_recepteur: $resultat->id_recepteur, id_article: $resultat->id_article, id_fournisseur: $resultat->id_fournisseur);
+                $liste[] = $bonReception;
+            }
+        }
+        return $liste;
+    }
 
 }

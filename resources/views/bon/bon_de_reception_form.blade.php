@@ -37,9 +37,11 @@
                                 <div class="form-group mb-4">
                                     <label for="userName">Numéro de bon de commande</label>
                                     <select name="numero" class="form-control">
-                                        @foreach($bon_commande_en_cours as $bon_commande)
-                                            <option value="{{ $bon_commande->id }}">{{ $bon_commande->id }}</option>
-                                        @endforeach
+                                        @if(count($bon_commande_en_cours) > 0)
+                                            @foreach($bon_commande_en_cours as $bon_commande)
+                                                <option value="{{ $bon_commande->id }}">{{ $bon_commande->id }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
 

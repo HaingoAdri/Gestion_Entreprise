@@ -921,20 +921,37 @@ create table bon_reception(
     foreign key (etat) references Etats(id_et)
 );
 
-$this->id_bon_reception = $id_bon_reception;
-        $this->id_article = $id_article;
-        $this->id_fournisseur = $id_fournisseur;
-        $this->date = $date;
-        $this->etat = $etat;
-
 create table details_bon_reception(
     id_bon_reception varchar(10),
     id_article VARCHAR(10),
-    id_fournisseur VARCHAR(10),
+    id_fournisseur int,
     date DATE,
     etat INT,
     foreign key (id_bon_reception) references bon_reception(id),
     foreign key (id_fournisseur) references fournisseur(id),
     foreign key (id_article) references Article(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+
+-- VIEW
+CREATE VIEW V_Details_Bon_Reception AS
+    SELECT
+        bon_reception.*,
+        details_bon_reception.id_article,
+        details_bon_reception.id_fournisseur
+    FROM
+        bon_reception JOIN details_bon_reception
+            ON bon_reception.id = details_bon_reception.id_bon_reception;
+
+create table bon_livraison(
+    id VARCHAR(10) primary key,
+    lieu VARCHAR(100),
+    date DATE,
+    id_bon_commande VARCHAR(10),
+    id_recepteur VARCHAR(10),
+    Livreur VARCHAR(250),
+    etat INT,
+    foreign key (id_bon_commande) references bon_commande(id),
     foreign key (etat) references Etats(id_et)
 );

@@ -10,16 +10,14 @@ use Illuminate\Support\Facades\DB; // Importez la classe DB
 class BonLivraison extends Model
 {
     public $id;
+    public $lieu;
     public $date;
-    public $idPayement;
-    public $delaiLivarison;
-
-    public $idProformat;
+    public $id_bon_commande;
+    public $id_recepteur;
+    public $livreur;
     public $etat;
 
-    public $nom;
-
-    public function __construct($id = "", $date = "", $idPayement = "",  $delaiLivarison = "", $idProformat = "", $etat = "") {
+    public function __construct($id = "", $lieu = "", $date = "", $id_bon_commande = "",  $id_recepteur = "", $Livreur = "", $etat = "") {
         $this->id = $id;
         $this->date = $date;
         $this->idPayement = $idPayement;
@@ -28,9 +26,9 @@ class BonLivraison extends Model
         $this->etat = $etat;
     }
 
-    public function insertBonCommande() {
+    public function insertBonLivraison() {
         try {
-            $requete = "insert into bon_commande (id, date, idPayement, delaiLivarison, etat) values ('$this->id', '$this->date', $this->idPayement, '$this->delaiLivarison', '$this->etat')";
+            $requete = "insert into bon_livraison (id, date, idPayement, delaiLivarison, etat) values ('$this->id', '$this->date', $this->idPayement, '$this->delaiLivarison', '$this->etat')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer un nouveau bon de commande: ".$e->getMessage());

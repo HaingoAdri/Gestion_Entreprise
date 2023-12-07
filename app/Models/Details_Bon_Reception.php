@@ -32,20 +32,4 @@ class Details_Bon_Reception extends Model
         }    
     }
 
-    // public function getListeEnCours() {
-    //     $requette = "select * from liste_bon_commande_en_cours order by date desc";
-    //     $reponse = DB::select($requette);
-    //     $liste = array();
-    //     if(count($reponse) > 0){
-    //         foreach($reponse as $resultat) {
-    //             $bonCommande = new BonCommande(id: $resultat->id, date: $resultat->date, idPayement: $resultat->idpayement, delaiLivarison: $resultat->delailivarison, etat: $resultat->etat);
-    //             $idDemande = $bonCommande->getIdDemande();
-    //             $demande = (new Demande(idDemande: $idDemande))->getDonneesUnDemande();
-    //             $bonCommande->nom = $demande->nom;
-    //             $liste[] = $bonCommande;
-    //         }
-    //     }
-    //     return $liste;
-    // }
-
 }
