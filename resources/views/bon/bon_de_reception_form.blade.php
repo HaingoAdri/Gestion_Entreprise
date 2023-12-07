@@ -36,7 +36,11 @@
 
                                 <div class="form-group mb-4">
                                     <label for="userName">Numéro de bon de commande</label>
-                                    <input type="text" class="form-control" id="numero">
+                                    <select name="numero" class="form-control">
+                                        @foreach($bon_commande_en_cours as $bon_commande)
+                                            <option value="{{ $bon_commande->id }}">{{ $bon_commande->id }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-6">

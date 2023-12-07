@@ -898,3 +898,43 @@ select * from bon_commande where etat = 40;
 
 create view liste_bon_commande_terminer as
 select * from bon_commande where etat = 45;
+
+CREATE SEQUENCE seqBonLivraison
+increment by 1
+start WITH 1
+minValue 1;
+
+CREATE SEQUENCE seqBonReception
+increment by 1
+start WITH 1
+minValue 1;
+
+
+create table bon_reception(
+    id varchar(10) primary key,
+    lieu VARCHAR(100),
+    date DATE,
+    id_bon_commande VARCHAR(10),
+    id_recepteur VARCHAR(10),
+    etat INT,
+    foreign key (id_bon_commande) references bon_commande(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+$this->id_bon_reception = $id_bon_reception;
+        $this->id_article = $id_article;
+        $this->id_fournisseur = $id_fournisseur;
+        $this->date = $date;
+        $this->etat = $etat;
+
+create table details_bon_reception(
+    id_bon_reception varchar(10),
+    id_article VARCHAR(10),
+    id_fournisseur VARCHAR(10),
+    date DATE,
+    etat INT,
+    foreign key (id_bon_reception) references bon_reception(id),
+    foreign key (id_fournisseur) references fournisseur(id),
+    foreign key (id_article) references Article(id),
+    foreign key (etat) references Etats(id_et)
+);

@@ -139,6 +139,25 @@
                             </div>
                         </ul>
                     </li>
+
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reception_livraison" aria-expanded="false" aria-controls="achat">
+                            <i class="mdi mdi-playlist-plus"></i>
+                            <span class="nav-text">Reception et livraison</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="reception_livraison" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                @if(session("administrateur_rh")->module->id == 8)
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
+                                        <span class="nav-text">Bon de livraison</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
+                                        <span class="nav-text">Bon de reception</span>
+                                    </a></li>
+                                @endif
+                            </div>
+                        </ul>
+                    </li>
     
                     <li>
                       <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">

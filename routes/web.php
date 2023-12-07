@@ -200,3 +200,4 @@ Route::get('/bon_de_livraison_form', [Bon_controller::class, "show_bon_de_livrai
 Route::get('/bon_de_reception_form', [Bon_controller::class, "show_bon_de_reception"])->name("bon_de_reception_form");
 Route::get('/create_bon_de_livraison_form', [Bon_controller::class, "create_bon_de_livraison"])->name("create_bon_de_livraison_form");
 Route::get('/create_bon_de_reception_form', [Bon_controller::class, "create_bon_de_reception"])->name("create_bon_de_reception_form");
+Route::get('/validation_reception',[Bon_controller::class, "validation_bon_reception"])->name("validation_reception");

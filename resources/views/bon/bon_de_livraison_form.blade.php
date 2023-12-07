@@ -38,7 +38,7 @@
 
                                 <div class="form-group mb-4">
                                     <label for="userName">Numéro de bon de commande</label>
-                                    <input type="text" class="form-control" id="numero">
+                                    <input type="text" class="form-control" id="numero" name="numero">
                                     <span class="d-block mt-1">Accusamus nobis at omnis consequuntur culpa tempore saepe animi.</span>
                                 </div>
 
