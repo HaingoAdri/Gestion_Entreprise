@@ -201,3 +201,6 @@ Route::get('/bon_de_reception_form', [Bon_controller::class, "show_bon_de_recept
 Route::get('/create_bon_de_livraison_form', [Bon_controller::class, "create_bon_de_livraison"])->name("create_bon_de_livraison_form");
 Route::get('/create_bon_de_reception_form', [Bon_controller::class, "create_bon_de_reception"])->name("create_bon_de_reception_form");
 Route::get('/validation_reception',[Bon_controller::class, "validation_bon_reception"])->name("validation_reception");
+Route::get('/create_facture_livraison/{idBonCommande?}', [Bon_controller::class, "create_facture_livraison"])->name("create_facture_livraison");
+Route::get('/fin_bon_commande/{idBonCommande?}', [Bon_controller::class, "terminerBonCommande"])->name("fin_bon_commande");
+Route::get('/export_PDF/{idBonCommande?}', [Bon_controller::class, "export_PDF"])->name("export_PDF");

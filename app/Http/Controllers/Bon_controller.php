@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -19,26 +21,13 @@ class Bon_controller extends Controller
 {
 
     public function show_bon_de_livraison(){
-        return view("bon/bon_de_livraison_form");
+        $bon_commande_en_cours = (new BonCommande())->getListeEnCours();
+        return view("bon/bon_de_livraison_form", compact("bon_commande_en_cours"));
     }
 
     public function show_bon_de_reception(){
         $bon_commande_en_cours = (new BonCommande())->getListeEnCours();
         return view("bon/bon_de_reception_form", compact("bon_commande_en_cours"));
-    }
-
-    public function create_bon_de_livraison(Request $request){
-
-        $resultat = array();
-        $resultat["date"] = $request->input('date');
-        $resultat["lieu"] = $request->input('lieu');
-        $resultat["numero"] = $request->input('numero');
-        $resultat["livreur"] = $request->input('livreur');
-        $resultat["information"] = $request->information;
-
-        // var_dump($resultat);
-
-        return view("bon/bon_de_livraison", compact("resultat"));
     }
 
     public function restesArticlesAVAliderPourCeBonCommande($numero, $bonCommande){
@@ -155,12 +144,25 @@ class Bon_controller extends Controller
         }
     }
 
-    public function terminerBonCommande($numero, $bonCommande){
+    public function terminerBonCommande($numero){
 
+        $bonCommande = new BonCommande(id: $numero);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
         $resultat = $this->restesArticlesAVAliderPourCeBonCommande($numero, $bonCommande);
         if(count($resultat) == 1){
             $bonCommande->etat = 45;
             $bonCommande->valider();
+        }
+
+        return redirect()->route('bon_de_reception_form');
+    }
+
+    public function create_facture($numero){
+        $bonCommande = new BonCommande(id: $numero);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $resultat = $this->restesArticlesAVAliderPourCeBonCommande($numero, $bonCommande);
+        if(count($resultat) == 1){
+            return redirect()->route('create_facture_livraison', ['idBonCommande' => $numero]);
         }
     }
 
@@ -188,10 +190,48 @@ class Bon_controller extends Controller
 
         $this->checkArticleNonValide($article_non_valide);
 
-        $this->terminerBonCommande($numero, $bonCommande);
+        // $this->terminerBonCommande($numero, $bonCommande);
 
+        $resultat = $this->restesArticlesAVAliderPourCeBonCommande($numero, $bonCommande);
+        if(count($resultat) == 1){
+            return redirect()->route('create_facture_livraison', ['idBonCommande' => $numero]);
+        }else{
+            return redirect()->route('bon_de_reception_form');
+        }
+
+    }
+
+    public function create_facture_livraison($idBonCommande){
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $listeProformat = $bonCommande->getDetailsBonCommande();
+        return view("bon/facture", compact('bonCommande', 'listeProformat'));
+    }
+
+    public function create_bon_de_livraison(Request $request){
+
+        $resultat = array();
+        $resultat["date"] = $request->input('date');
+        $resultat["lieu"] = $request->input('lieu');
+        $resultat["numero"] = $request->input('numero');
+        $resultat["livreur"] = $request->input('livreur');
+        $resultat["information"] = $request->information;
+
+        $bonCommande = new BonCommande(id: $resultat["numero"]);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $listeProformat = $this->restesArticlesAVAliderPourCeBonCommande($resultat["numero"], $bonCommande);
+
+        return view("bon/bon_de_livraison", compact("resultat"));
+    }
+
+    public function export_PDF($idBonCommande){
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $listeProformat = $bonCommande->getDetailsBonCommande();
+        $pdf = PDF::loadView('bon/pdf_facture', compact("bonCommande", "listeProformat"));
+        $pdf_name = $idBonCommande.'_PDF.pdf';
+        $pdf->save(storage_path('app/public/'.$pdf_name));
         return redirect()->route('bon_de_reception_form');
-
     }
 
 }

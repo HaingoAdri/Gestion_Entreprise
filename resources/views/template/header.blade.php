@@ -36,6 +36,7 @@
   
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  <link id="main-css-href" rel="stylesheet" href="{{ asset('css/facture.css') }}" />
 
   <!-- FAVICON -->
   <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" />
