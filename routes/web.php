@@ -16,6 +16,10 @@ use App\Http\Controllers\Pointage_controller;
 use App\Http\Controllers\Paie_controller;
 use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
+use App\Http\Controllers\Fournisseur_controller;
+use App\Http\Controllers\PDF_controller;
+use App\Http\Controllers\Bon_controller;
+use App\Http\Controllers\Magasinier_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,3 +167,46 @@ Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"
 Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
 Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
 
+//achat
+Route::get('/besoin_achat', [Besoin_controller::class, "besoinAchat"])->name("besoinAchat");
+Route::get('/ajout_besoin_achat', [Besoin_controller::class, "ajoutBesoinAchat"])->name("ajoutBesoinAchat");
+Route::get('/liste_besoin_achat', [Besoin_controller::class, "getListeBesoinAchatNonValide"])->name("listeBesoinAchatNonValide");
+Route::get('/refuser_besoin_achat', [Besoin_controller::class, "refuserUneBesoinAchat"])->name("refuserUneBesoinAchat");
+Route::get('/details_besoin_achat', [Besoin_controller::class, "getDetailsBesoinAchatNonValide"])->name("detailsBesoinAchat");
+Route::get('/demande_de_proformat', [Besoin_controller::class, "faireUnNouveauDemande"])->name("faireUneDemande");
+Route::post('/envoyer_la_demande_de_proformat', [Besoin_controller::class, "demandeProformat"])->name("demandeProformat");
+Route::get('/liste_demande_en_attente_de_proformat', [Besoin_controller::class, "listeDemandeProformat"])->name("listeDemandeProformat");
+Route::get('/details_du_proformat_du_demande', [Besoin_controller::class, "detailsDemandeProformat"])->name("detailsProformat");
+Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProformat"])->name("ajoutProformat");
+Route::get('/tirer_un_bon_de_commande', [Besoin_controller::class, "tirerUneBonDeCommande"])->name("tirerUneBonDeCommande");
+Route::post('/creation_du_bon_de_commande', [Besoin_controller::class, "genererLaBonDeCommande"])->name("creerLaBonDeCommande");
+Route::get('/voir_un_bon_de_commande', [Besoin_controller::class, "recuUnBonDeCommande"])->name("voirBonDeCommande");
+Route::get('/voir_liste_bon_de_commande_en_attente', [Besoin_controller::class, "listeBonCommandeEnAttente"])->name("listeBonCommandeEnAttente");
+Route::get('/valider_un_bon_de_commande_en_attente', [Besoin_controller::class, "validerUnBonCommande"])->name("validerUnBonCommandeEnAttente");
+Route::get('/liste_bon_de_commande_valider', [Besoin_controller::class, "listeBonCommandeApasser"])->name("listeBonCommandeApasser");
+Route::get('/faire_le_bon_de_commande', [Besoin_controller::class, "passerUnBonCommande"])->name("passerUnBonCommande");
+Route::get('/voir_liste_bon_de_commande_en_cours', [Besoin_controller::class, "listeBonCommandeEnCours"])->name("listeBonCommandeEnCours");
+
+
+
+//fournisseur
+Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");
+Route::post('/ajouter_un_nouveau_fournisseur', [Fournisseur_controller::class, "ajoutFournisseur"])->name("ajoutFournisseur");
+
+//pdf
+Route::get('/test_pdf', [PDF_controller::class, "demande"])->name("test_pdf");
+
+// BON
+Route::get('/bon_de_livraison_form', [Bon_controller::class, "show_bon_de_livraison"])->name("bon_de_livraison_form");
+Route::get('/bon_de_reception_form', [Bon_controller::class, "show_bon_de_reception"])->name("bon_de_reception_form");
+Route::get('/create_bon_de_livraison_form', [Bon_controller::class, "create_bon_de_livraison"])->name("create_bon_de_livraison_form");
+Route::get('/create_bon_de_reception_form', [Bon_controller::class, "create_bon_de_reception"])->name("create_bon_de_reception_form");
+Route::get('/validation_reception',[Bon_controller::class, "validation_bon_reception"])->name("validation_reception");
+Route::get('/create_facture_livraison/{idBonCommande?}', [Bon_controller::class, "create_facture_livraison"])->name("create_facture_livraison");
+Route::get('/fin_bon_commande/{idBonCommande?}', [Bon_controller::class, "terminerBonCommande"])->name("fin_bon_commande");
+Route::get('/export_PDF/{idBonCommande?}', [Bon_controller::class, "export_PDF"])->name("export_PDF");
+
+//MAGASINIER
+Route::get('/bon_entre', [Magasinier_Controller::class, "index"])->name("bon_entre");
+Route::get('/bon_de_sortie', [Magasinier_Controller::class, "bon_de_sortie"])->name("bon_de_sortie");
+Route::post('/input_sortie', [Magasinier_Controller::class, "insertSortie"])->name("input_sortie");

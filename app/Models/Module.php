@@ -13,7 +13,7 @@ class Module extends Model
     public $type;
 
     public function getListeModules() {
-        $requette = "select * from module";
+        $requette = "select * from module order by type asc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

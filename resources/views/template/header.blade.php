@@ -36,6 +36,7 @@
   
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  <link id="main-css-href" rel="stylesheet" href="{{ asset('css/facture.css') }}" />
 
   <!-- FAVICON -->
   <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" />
@@ -102,6 +103,75 @@
                             </div>
                         </ul>
                     </li>
+
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#achat" aria-expanded="false" aria-controls="achat">
+                            <i class="mdi mdi-playlist-plus"></i>
+                            <span class="nav-text">Besoin Achat</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="achat" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                            
+                                <li><a class="sidenav-item-link" href="{{ route('besoinAchat') }}">
+                                    <span class="nav-text">Ajout Nouveau Besoin</span>
+                                </a></li>
+                                @if(session("administrateur_rh")->module->id == 8)
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBesoinAchatNonValide') }}">
+                                        <span class="nav-text">Liste Besoin Non valide</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeDemandeProformat') }}">
+                                        <span class="nav-text">Listes demandes en attente proformat</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                                        <span class="nav-text">Bon commande en attente</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeApasser') }}">
+                                        <span class="nav-text">Bon commande valider</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnCours') }}">
+                                        <span class="nav-text">Bon commande en cours</span>
+                                    </a></li>
+                                @endif
+                                @if(session("administrateur_rh")->module->id == 7)
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                                        <span class="nav-text">Bon commande a valider</span>
+                                    </a></li>
+                                @endif
+                                @if(session("administrateur_rh")->module->id == 9)
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                                        <span class="nav-text">Bon commande a valider</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_entre') }}">
+                                        <span class="nav-text">Bon d'entrer magasinier</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_sortie') }}">
+                                        <span class="nav-text">Bon de sortie magasinier</span>
+                                    </a></li>
+                                @endif
+                            </div>
+                        </ul>
+                    </li>
+
+                    @if(session("administrateur_rh")->module->id == 8)
+                        <li  class="has-sub" >
+                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reception_livraison" aria-expanded="false" aria-controls="achat">
+                                <i class="mdi mdi-playlist-plus"></i>
+                                <span class="nav-text">Reception et livraison</span> <b class="caret"></b>
+                            </a>
+                            <ul  class="collapse"  id="reception_livraison" data-parent="#sidebar-menu">
+                                <div class="sub-menu">
+                                    
+                                    <!-- <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
+                                        <span class="nav-text">Bon de livraison</span>
+                                    </a></li> -->
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
+                                        <span class="nav-text">Bon de reception / livraison</span>
+                                    </a></li>
+                                    
+                                </div>
+                            </ul>
+                        </li>
+                    @endif
     
                     <li>
                       <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
@@ -109,6 +179,15 @@
                           <span class="nav-text">Conge et absence</span>
                       </a>
                     </li>
+
+                    @if(session("administrateur_rh")->module->id == 8)
+                    <li>
+                      <a class="sidenav-item-link" href="{{ route('listeFournisseur') }}">
+                          <i class="mdi mdi-playlist-plus"></i>
+                          <span class="nav-text">Fournisseur</span>
+                      </a>
+                    </li>
+                    @endif
 
                     @if(session("administrateur_rh")->module->id == 2)
                     <li  class="has-sub" >
@@ -126,7 +205,6 @@
                                 <li><a class="sidenav-item-link" href="{{ route('listes_personnels') }}">
                                     <span class="nav-text">Listes des personnels</span>
                                 </a></li>
-                    
                             </div>
                         </ul>
                     </li>
@@ -136,30 +214,48 @@
                 @else
                 <ul class="nav sidebar-inner" id="sidebar-menu">
                     <li class="section-title"> Menu </li>
-                        @if(session("profil") == 5 && session("employer") != 'null')
-                          <li>
-                            <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
-                                <i class="mdi mdi-calendar-check"></i>
-                                <span class="nav-text">Conge et absence</span>
-                            </a>
-                          </li>
+                        @if(session("profil") == 5)
+                            @if(session("employer") != 'null')
+                            <li>
+                                <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                                    <i class="mdi mdi-calendar-check"></i>
+                                    <span class="nav-text">Conge et absence</span>
+                                </a>
+                            </li>
 
-                          <li  class="has-sub" >
-                            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
-                            aria-expanded="false" aria-controls="annonce">
-                                <i class="mdi mdi-format-list-bulleted"></i>
-                                <span class="nav-text">Annonce</span> <b class="caret"></b>
-                            </a>
-                            <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
-                                <div class="sub-menu">
-                                
-                                    <li><a class="sidenav-item-link" href="{{ route('liste_annonce') }}">
-                                        <span class="nav-text">Liste des annonces</span>
-                                    </a></li>
-                        
-                                </div>
-                            </ul>
-                          </li>
+                            <li  class="has-sub" >
+                                <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#achat" aria-expanded="false" aria-controls="achat">
+                                    <i class="mdi mdi-playlist-plus"></i>
+                                    <span class="nav-text">Besoin Achat</span> <b class="caret"></b>
+                                </a>
+                                <ul  class="collapse"  id="achat" data-parent="#sidebar-menu">
+                                    <div class="sub-menu">
+                                    
+                                        <li><a class="sidenav-item-link" href="{{ route('besoinAchat') }}">
+                                            <span class="nav-text">Ajout Nouveau Besoin</span>
+                                        </a></li>
+                            
+                                    </div>
+                                </ul>
+                            </li>
+
+                            @endif
+                            <li  class="has-sub" >
+                                <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
+                                aria-expanded="false" aria-controls="annonce">
+                                    <i class="mdi mdi-format-list-bulleted"></i>
+                                    <span class="nav-text">Annonce</span> <b class="caret"></b>
+                                </a>
+                                <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
+                                    <div class="sub-menu">
+                                    
+                                        <li><a class="sidenav-item-link" href="{{ route('liste_annonce') }}">
+                                            <span class="nav-text">Liste des annonces</span>
+                                        </a></li>
+                            
+                                    </div>
+                                </ul>
+                            </li>
                           
                         @elseif( session("profil") == 20 &&  session("administrateur_rh")->module->id == 1)
                         <li  class="has-sub" >
@@ -171,11 +267,22 @@
                                 <div class="sub-menu">
                                 
                                     <li><a class="sidenav-item-link" href="{{ route('ajout_besoin') }}">
-                                        <span class="nav-text">Ajouter un besoin</span>
+                                        <span class="nav-text">Ajouter un besoin service</span>
+                                    </a></li>
+
+                                    <li><a class="sidenav-item-link" href="{{ route('besoinAchat') }}">
+                                        <span class="nav-text">Ajouter un besoin Achat</span>
                                     </a></li>
                         
                                 </div>
                             </ul>
+                        </li>
+
+                        <li>
+                          <a class="sidenav-item-link" href="{{ route('listeBonCommandeEnAttente') }}">
+                              <i class="mdi mdi-playlist-plus"></i>
+                              <span class="nav-text">Bon de commande a valider</span>
+                          </a>
                         </li>
 
                         <li  class="has-sub" >
@@ -358,6 +465,88 @@
               <div class="navbar-right" style="margin-rigth: 30px;">
 
                 <ul class="nav navbar-nav">
+
+                @if(session("administrateur_rh")->module->id == 8)
+                    <!-- Offcanvas -->
+
+                    @php
+                        $bonCommande = new \App\Models\BonCommande();
+                        $nombreBonsEnRetard = $bonCommande->getListeLivraisonEnRetard();
+                    @endphp
+                    <li class="custom-dropdown">
+                        <a class="offcanvas-toggler active custom-dropdown-toggler" data-offcanvas="contact-off" href="javascript:" >
+                        <i class="mdi mdi-contacts icon"></i>
+                        </a>
+                    </li>
+                    <li class="custom-dropdown">
+                    <button class="notify-toggler custom-dropdown-toggler">
+                        <i class="mdi mdi-bell-outline icon"></i>
+                        @if(count($nombreBonsEnRetard) > 0)
+                            <span class="badge badge-xs rounded-circle">{{ count($nombreBonsEnRetard) }}</span>
+                        @endif
+                    </button>
+                        <div class="dropdown-notify">
+
+                        <header>
+                            <div class="nav nav-underline" id="nav-tab" role="tablist">
+                            @if(count($nombreBonsEnRetard) > 0)
+                            <a class="nav-item nav-link active" id="other-tab" data-toggle="tab" href="#other" role="tab" aria-controls="nav-contact"
+                                aria-selected="true">Delais depasses {{ count($nombreBonsEnRetard) }}</a>
+                            @endif
+                            </div>
+                        </header>
+
+                        <div class="" data-simplebar style="height: 250px;">
+                            <div class="tab-content" id="myTabContent">
+
+                            <div class="tab-pane fade show active" id="other" role="tabpanel" aria-labelledby="contact-tab">
+
+                                @if(count($nombreBonsEnRetard) > 0)
+                                    @foreach($nombreBonsEnRetard as $bon)
+                                        <div class="media media-sm p-6 mb-0">
+                                        <div class="media-sm-wrapper bg-info-dark">
+                                            <a href="{{ route('voirBonDeCommande', ['idBonCommande' => $bon->id]) }}">
+                                            <i class="mdi mdi-account-multiple-check"></i>
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="{{ route('voirBonDeCommande', ['idBonCommande' => $bon->id]) }}">
+                                            <span class="title mb-0">{{ $bon->id }}</span>
+                                            <span class="discribe"> Du {{ $bon->date }}</span>
+                                            <div class="buttons">
+                                            <span class="time">
+                                                <time>Pour delai de livraison pour {{ $bon->finDelai }}</time>...
+                                            </span>
+                                            </a>
+                                        </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="media media-sm p-4 mb-0">
+                                    <div class="media-sm-wrapper bg-info">
+                                        <a href="user-profile.html">
+                                        <i class="mdi mdi-playlist-check"></i>
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="user-profile.html">
+                                        <span class="title mb-0">Les tâches sont complètes</span>
+                                        <span class="discribe">Il n'y a plus de livraison en retard actuellement!</span>
+                                        <span class="time">
+                                            <time>Actuel</time>...
+                                        </span>
+                                        </a>
+                                    </div>
+                                    </div>
+                                @endif
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </li>
+
+                @endif
 
                   <!-- User Account -->
                   <li class="dropdown user-menu">

@@ -727,11 +727,107 @@ create table besoin_achat (
     idArticle varchar(10),
     nombre int,
     date date,
+    idDemande varchar(10) default NULL,
     etat int,
     foreign key (idModule) references Module(id),
     foreign key (idArticle) references Article(id),
     foreign key (etat) references Etats(id_et)
 );
+
+CREATE SEQUENCE seqDemande
+increment by 1
+start WITH 1
+minValue 1;
+
+create function nextSeqD(prefix text, taille integer) 
+returns text AS
+$$
+    Declare
+        nextId int;
+        nextIdString text;
+        id text;
+        i integer;
+    BEGIN
+        SELECT coalesce(nextval('seqDemande'),1) into nextId;
+        nextIdString := nextId::varchar;
+        taille := taille - LENGTH(prefix) - LENGTH(nextIdString);
+        id := prefix;
+        FOR i IN 1..taille LOOP
+            id := id || '0'; 
+        END LOOP;
+        id := id || nextIdString; 
+        return id;
+    END
+$$ LANGUAGE plpgsql;
+
+create table demande (
+    id serial primary key,
+    date date,
+    nom varchar(200),
+    idDemande varchar(10),
+    idFournisseur int,
+    etat int,
+    foreign key (idFournisseur) references fournisseur(id)
+);
+
+create table proformat (
+    id serial primary key,
+    idDemande varchar(10),
+    idFournisseur int,
+    idArticle varchar(10),
+    prixUnitaire double precision default 0,
+    tva double precision default 0,
+    date date,
+    foreign key (idFournisseur) references fournisseur(id),
+    foreign key (idArticle) references Article(id)
+);
+
+-- bon de commande
+create table bon_commande (
+    id varchar(10) primary key,
+    date date,
+    idPayement int,
+    delaiLivarison double precision default 0,
+    etat int,
+    foreign key (etat) references Etats(id_et) 
+);
+
+create table details_bon_commande (
+    id serial,
+    idBonCommande varchar(10),
+    idProformat int,
+    etat int,
+    foreign key (etat) references Etats(id_et),
+    foreign key (idBonCommande) references bon_commande(id),
+    foreign key (idProformat) references proformat(id)
+);
+
+CREATE SEQUENCE seqBonCommande
+increment by 1
+start WITH 1
+minValue 1;
+
+create or replace function nextID(sequence text, prefix text, taille integer) 
+returns text AS
+$$
+    Declare
+        nextId int;
+        nextIdString text;
+        id text;
+        i integer;
+    BEGIN
+        SELECT coalesce(nextval(sequence),1) into nextId;
+        nextIdString := nextId::varchar;
+        taille := taille - LENGTH(prefix) - LENGTH(nextIdString);
+        id := prefix;
+        FOR i IN 1..taille LOOP
+            id := id || '0'; 
+        END LOOP;
+        id := id || nextIdString; 
+        return id;
+    END
+$$ LANGUAGE plpgsql;
+
 
 --view liste_contrat_a_renouveler
 create view liste_contrat_a_renouveler as
@@ -746,35 +842,112 @@ select id_e, aa, dates, id_as, qcm_r, id_users from entretient e
 create view liste_personnel as
     select * from employer where etat = 20;
 
--- jerena le date ny dernier entretient any
--- select * from historique_embauche where id_emp = 'EMP0000001' and etat = 12 order by date desc;
+create view liste_besoin_achat as
+select idArticle, sum(nombre) nombre from besoin_achat where etat = 28 group by idArticle;
 
--- select * from liste_afaka_qcm where dates <= '2023-10-20' and id_users = 1 order by dates desc;
+create view demande_proformat as
+select iddemande from besoin_achat where etat = 32 group by idDemande;
 
--- select * from qcm_result where id_r = 1;
+create or replace view liste_demande as
+select date, nom, idDemande, etat from demande group by date, nom, idDemande, etat;
 
--- select * from qcm_admis where id_qcm = 1;
+create or replace view liste_demande_en_attente_proformat as
+select l.* from demande_proformat d join liste_demande l on d.idDemande = l.idDemande where etat = 1;
 
--- select * from note_cv where id = 2;
+create view liste_article_par_demande as
+select idArticle, idDemande from besoin_achat group by idDemande, idArticle;
 
--- select * from cv where id = 17;
+create view liste_prix_proformat_min as
+SELECT idDemande, idArticle, MIN(prixunitaire) AS prix_minimum FROM proformat GROUP BY idDemande, idArticle; 
 
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-03 08:00:00', '2023-10-03 17:00:00', 21, 'Justification');
+create view liste_meilleur_proformat as
+SELECT
+    id,
+    f1.idDemande,
+    f1.idFournisseur,
+    f1.idArticle,
+    f2.prix_minimum prixunitaire,
+    f1.tva,
+    date
+FROM
+    proformat f1
+JOIN
+    liste_prix_proformat_min f2 ON f1.idDemande = f2.idDemande
+              AND f1.idArticle = f2.idArticle
+              AND f1.prixunitaire = f2.prix_minimum;
 
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-20 08:00:00', '2023-10-20 12:00:00', 21, 'Justification');
+create view liste_besoin_achat_avec_quantite as
+select idDemande, idArticle, sum(nombre) nombre from besoin_achat group by idDemande, idArticle;
 
--- insert into conge (id_employer, id_type_conge, raison, debut, fin, statut, justificatif) values
--- ('EMP0000003', 8, 'raison', '2023-10-27 08:00:00', '2023-10-29 17:00:00', 21, 'Justification');
+create view prix_minimum_proformat as
+select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (nombre*prixUnitaire*tva) prixAT  
+    from liste_meilleur_proformat l 
+    join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
 
--- insert into confirmation_date (idconge, depart, retour) values
--- (4, '2023-10-03 08:00:00', '2023-10-04 08:00:00');
+create view liste_details_bon_de_commande as 
+    select d.id idDetails, idboncommande, p.*
+    from details_bon_commande d 
+    join prix_minimum_proformat p on d.idproformat = p.id
+    where etat = 8;
 
--- insert into confirmation_date (idconge, depart, retour) values
--- (5, '2023-10-20 08:00:00', '2023-10-20 12:00:00');
+create view liste_bon_commande_en_attente as
+select * from bon_commande where etat < 40;
 
--- insert into confirmation_date (idconge, depart, retour) values
--- (6, '2023-10-27 08:00:00', '2023-10-29 17:00:00');
+create view liste_bon_commande_en_cours as
+select * from bon_commande where etat = 40;
+
+create view liste_bon_commande_terminer as
+select * from bon_commande where etat = 45;
+
+CREATE SEQUENCE seqBonLivraison
+increment by 1
+start WITH 1
+minValue 1;
+
+CREATE SEQUENCE seqBonReception
+increment by 1
+start WITH 1
+minValue 1;
+
+
+create table bon_reception(
+    id varchar(10) primary key,
+    lieu VARCHAR(100),
+    date DATE,
+    id_bon_commande VARCHAR(10),
+    id_recepteur VARCHAR(10),
+    etat INT,
+    foreign key (id_bon_commande) references bon_commande(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+create table details_bon_reception(
+    id_bon_reception varchar(10),
+    id_article VARCHAR(10),
+    id_fournisseur VARCHAR(10),
+    date DATE,
+    etat INT,
+    foreign key (id_bon_reception) references bon_reception(id),
+    foreign key (id_fournisseur) references fournisseur(id),
+    foreign key (id_article) references Article(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+SELECT *
+FROM livarison_attente
+WHERE fin_delai > NOW();
+
+
+id | date | etat | idpayement | delailivarison
+CREATE VIEW livarison_attente AS
+SELECT
+    id,
+    date,
+    etat,
+    idpayement,
+    delailivarison,
+    date + delailivarison * INTERVAL '1 day' AS fin_delai
+FROM
+    liste_bon_commande_en_cours;
 
 

@@ -25,9 +25,23 @@ use App\Models\Details_Besoin_Ville;
 use App\Models\Note_Cv;
 use App\Models\Client;
 use App\Models\Type_Contrat;
+use App\Models\Article;
+use App\Models\BesoinAchat;
+use App\Models\Fournisseur;
+use App\Models\Demande;
+use App\Models\Proformat;
+use App\Models\BonCommande;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 class Besoin_controller extends Controller
 {
@@ -201,9 +215,234 @@ class Besoin_controller extends Controller
             echo '<br>Erreur: ' . $e->getMessage();
             return redirect()->route('liste_annonce')->with('erreur', $e->getMessage());
         }
-
-
-
-        // return Ok();
     }
+
+    public function besoinAchat() {
+        $profil = Session::get('profil');
+        $module = null;
+        if($profil == 20)
+            $module = Session::get("administrateur_rh")->module->id;
+        else {
+            $employe = Session::get('employer');
+            $module = $employe->getModule();
+        }
+        $listeArticle = (new Article())->getListeArticle();
+        $listeBesoinNonValide = (new BesoinAchat(idModule: $module))->getListeBesoinNonValideParModule();
+        return View("besoin_achat", compact("listeArticle", "listeBesoinNonValide", "module"));
+    }
+
+    public function ajoutBesoinAchat(Request $request) {
+        $date = $request->input('date');
+        $idModule = $request->input('idModule');
+        $idArticle = $request->input('idArticle');
+        $quantite = $request->input('quantite');
+        $besoinAchat = new BesoinAchat("", $idModule, $idArticle, $quantite, $date, 28);
+        $besoinAchat->insert();
+        return redirect()->route('besoinAchat');
+    }
+
+    public function getListeBesoinAchatNonValide() {
+        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
+        return View("achat/liste_besoin_achat", compact("listeBesoinNonValide"));
+    }
+
+    public function getDetailsBesoinAchatNonValide() {
+        $listeArticle = (new Article())->getListeArticle();
+        $listeBesoinNonValide = (new BesoinAchat())->getDetailsBesoinNonValide();
+        return View("achat/details_liste_besoin_achat", compact("listeBesoinNonValide"));
+    }
+
+    public function refuserUneBesoinAchat(Request $request) {
+        $idBesoinAchat = $request->input('idBesoinAchat');
+        $besoinAchat = new BesoinAchat(id: $idBesoinAchat);
+        $besoinAchat->updateEtat();
+        return redirect()->route('detailsBesoinAchat');
+    }
+
+    public function faireUnNouveauDemande() {
+        $listeFourisseur = (new Fournisseur())->getListeFournisseur();
+        $idDemande = (new Demande())->getNextDemande();
+        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande"));
+    }
+
+    public function createPDF($date, $nom, $idDemande){
+        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
+        $pdf = PDF::loadView('pdf_test', compact("listeBesoinNonValide", "date", "nom"));
+        $pdf_name = $idDemande.'_demande_de_proforma.pdf';
+        $pdf->save(storage_path('app/public/'.$pdf_name));
+        return $pdf_name;
+    }
+
+    public function send_email($file_path, $email, $name) {
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Mailer = "smtp";
+
+        $mail->SMTPDebug  = 0;  
+        $mail->SMTPAuth   = TRUE;
+        $mail->SMTPSecure = "tls";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "layahanjaratiana877@gmail.com";
+        $mail->Password   = "myoq cybw mrhc mias";
+
+        $mail->IsHTML(true);
+        $mail->AddAddress($email, $name);
+        $mail->Subject = "Demande de proforma";
+
+        // Content of the proforma request email
+        $content = "<p>Bonjour,</p>";
+        $content .= "<p>Veuillez trouver ci-joint la demande de proforma. Les détails complets se trouvent dans le fichier PDF attaché.</p>";
+        $content .= "<p>Merci de traiter cette demande dès que possible.</p>";
+
+        $mail->MsgHTML($content);
+
+        // Attachment
+        $mail->addAttachment($file_path, "Demande_de_proforma.pdf");
+
+        if(!$mail->Send()) {
+            Session::flash("erreur", "Erreur lors de l'envoi de l'e-mail.");
+        } else {
+            Session::flash("success", "Votre e-mail a bien été envoyé! .");
+        }
+
+        return redirect()->route('listeDemandeProformat');
+    }
+
+    public function demandeProformat(Request $request) { //mandefa email ato
+        set_time_limit(120);
+        $date = $request->input('date');
+        $idDemande = $request->input('idDemande');
+        $nom = $request->input('nom');
+        $fournisseurs = $request->input('fournisseur');
+
+        $pdf_name = $this->createPDF($date, $nom, $idDemande);
+
+        $path = storage_path('app/public/'.$pdf_name);
+
+        echo count($fournisseurs);
+
+        if(File::exists($path)){
+
+            foreach ($fournisseurs as $fournisseur) {
+                $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
+                $demande->insert();
+                $fournisseur_un = (new Fournisseur(id: $fournisseur))->getDonneesUnFournisseur();
+                $this->send_email($path, $fournisseur_un->email, $fournisseur_un->nom);
+            }
+
+        }
+            
+        (new BesoinAchat())->ajoutIdDemande($idDemande);
+
+        return redirect()->route('listeDemandeProformat');
+    }
+
+    public function listeDemandeProformat() {
+        $listeDemande = (new Demande())->getListeDemandeEnAttenteDeProformat();
+        return View("achat/liste_demande_proformat", compact("listeDemande"));   
+    }
+
+    public function detailsDemandeProformat(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $fournisseurs = (new Demande(idDemande: $idDemande))->getListeFournisseur();
+        $articles = (new BesoinAchat())->getListeArticleParDemande($idDemande);
+        return View("achat/ajout_proformat", compact("idDemande", "fournisseurs", "articles"));   
+    }
+
+    public function ajoutProformat(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $date = $request->input('date');
+        $idFournisseur = $request->input('idFournisseur');
+        $idArticle = $request->input('idArticle');
+        $prix = $request->input('prix');
+        $TVA = $request->input('tva');
+        for($i = 0; $i < count($idArticle); $i++) {
+            $proformat = new Proformat("", $idDemande, $idFournisseur, $idArticle[$i], $prix[$i], $TVA[$i], $date);
+            $proformat->insert();
+        }
+        return redirect()->action([Besoin_controller::class, 'detailsDemandeProformat'], ['idDemande' => $idDemande]);
+    }
+
+    public function tirerUneBonDeCommande(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $listeProformat = (new Proformat(idDemande: $idDemande))->getListeMeulleurProformat();
+        return View("achat/bon_de_commande", compact("idDemande", "listeProformat"));  
+    }
+
+    public function genererLaBonDeCommande(Request $request) {
+        $idDemande = $request->input('idDemande');
+        $date = $request->input('date');
+        $delai = $request->input('delai');
+        $idPayement = $request->input('idPayement');
+
+        $bonCommande = new BonCommande(date: $date, idPayement: $idPayement, delaiLivarison: $delai, etat: 32);
+        $bonCommande->id = $bonCommande->getNextIDCommande();
+        $bonCommande->insertBonCommande();
+
+        $listeProformat = (new Proformat(idDemande: $idDemande))->getListeMeulleurProformat();
+        for($i = 0; $i < count($listeProformat)-1; $i++) {
+            $detailsBonCommande = new BonCommande(id: $bonCommande->id, idProformat: $listeProformat[$i]->id, etat: 8);
+            $detailsBonCommande->insertDetailsCommande();
+        }
+
+        return redirect()->action([Besoin_controller::class, 'recuUnBonDeCommande'], ['idBonCommande' => $bonCommande->id]);
+    }
+
+    public function recuUnBonDeCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $listeProformat = $bonCommande->getDetailsBonCommande();
+        return view("achat/recu_bon_de_commande", compact('bonCommande', 'listeProformat'));
+    }
+
+    public function listeBonCommandeEnAttente() {
+        $bonCommande = new BonCommande();
+        $module = Session::get("administrateur_rh")->module->id;
+        if($module == 1)
+            $bonCommande->etat = 32;
+        else if($module == 7)
+            $bonCommande->etat = 35;
+        $listeBonCommande = $bonCommande->getListeEnAttente();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+    public function validerUnBonCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande);
+        $module = Session::get("administrateur_rh")->module->id;
+        if($module == 1)
+            $bonCommande->etat = 35;
+        else if($module == 7)
+            $bonCommande->etat = 37;
+        $bonCommande->valider();
+        return redirect()->route('listeBonCommandeEnAttente');        
+    }
+
+    public function listeBonCommandeApasser() {
+        $bonCommande = new BonCommande();
+        $bonCommande->etat = 37;
+        $listeBonCommande = $bonCommande->getListeEnAttente();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+    public function passerUnBonCommande(Request $request) {
+        $idBonCommande = $request->input('idBonCommande');
+        $bonCommande = new BonCommande(id: $idBonCommande, etat: 40);
+        $bonCommande->valider();
+        return redirect()->route('listeBonCommandeApasser');   
+    }
+
+    public function listeBonCommandeEnCours() {
+        $bonCommande = new BonCommande();
+        $listeBonCommande = $bonCommande->getListeEnCours();
+        return view('achat/liste_bon_commande', compact('listeBonCommande'));
+    }
+
+
+
+
+
+
 }
