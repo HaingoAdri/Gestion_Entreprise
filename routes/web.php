@@ -16,6 +16,10 @@ use App\Http\Controllers\Pointage_controller;
 use App\Http\Controllers\Paie_controller;
 use App\Http\Controllers\Etat_Paie_controller;
 use App\Http\Controllers\Entretient_controller;
+use App\Http\Controllers\Fournisseur_controller;
+use App\Http\Controllers\PDF_controller;
+use App\Http\Controllers\Bon_controller;
+use App\Http\Controllers\Stock_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,3 +167,55 @@ Route::post('/etat_de_paie', [Etat_Paie_controller::class, "listes_etat_de_paie"
 Route::get('/getAll_One_Employer/{id_emp?}', [Conge_controller::class, "getAllConge_one_employer"])->name("getAll_One_Employer");
 Route::get('/changeStatut_Subordonnees/{id?}/{statut?}', [Conge_controller::class, "changeStatut_Subordonnees"])->name("changeStatut_Subordonnees");
 
+//achat
+Route::get('/besoin_achat', [Besoin_controller::class, "besoinAchat"])->name("besoinAchat");
+Route::get('/ajout_besoin_achat', [Besoin_controller::class, "ajoutBesoinAchat"])->name("ajoutBesoinAchat");
+Route::get('/liste_besoin_achat', [Besoin_controller::class, "getListeBesoinAchatNonValide"])->name("listeBesoinAchatNonValide");
+Route::get('/refuser_besoin_achat', [Besoin_controller::class, "refuserUneBesoinAchat"])->name("refuserUneBesoinAchat");
+Route::get('/details_besoin_achat', [Besoin_controller::class, "getDetailsBesoinAchatNonValide"])->name("detailsBesoinAchat");
+Route::get('/demande_de_proformat', [Besoin_controller::class, "faireUnNouveauDemande"])->name("faireUneDemande");
+Route::post('/envoyer_la_demande_de_proformat', [Besoin_controller::class, "demandeProformat"])->name("demandeProformat");
+Route::get('/liste_demande_en_attente_de_proformat', [Besoin_controller::class, "listeDemandeProformat"])->name("listeDemandeProformat");
+Route::get('/details_du_proformat_du_demande', [Besoin_controller::class, "detailsDemandeProformat"])->name("detailsProformat");
+Route::post('/ajouter_les_proformats', [Besoin_controller::class, "ajoutProformat"])->name("ajoutProformat");
+Route::get('/tirer_un_bon_de_commande', [Besoin_controller::class, "tirerUneBonDeCommande"])->name("tirerUneBonDeCommande");
+Route::post('/creation_du_bon_de_commande', [Besoin_controller::class, "genererLaBonDeCommande"])->name("creerLaBonDeCommande");
+Route::get('/voir_un_bon_de_commande', [Besoin_controller::class, "recuUnBonDeCommande"])->name("voirBonDeCommande");
+Route::get('/voir_liste_bon_de_commande_en_attente', [Besoin_controller::class, "listeBonCommandeEnAttente"])->name("listeBonCommandeEnAttente");
+Route::get('/valider_un_bon_de_commande_en_attente', [Besoin_controller::class, "validerUnBonCommande"])->name("validerUnBonCommandeEnAttente");
+Route::get('/liste_bon_de_commande_valider', [Besoin_controller::class, "listeBonCommandeApasser"])->name("listeBonCommandeApasser");
+Route::get('/faire_le_bon_de_commande', [Besoin_controller::class, "passerUnBonCommande"])->name("passerUnBonCommande");
+Route::get('/voir_liste_bon_de_commande_en_cours', [Besoin_controller::class, "listeBonCommandeEnCours"])->name("listeBonCommandeEnCours");
+
+
+
+//fournisseur
+Route::get('/liste_des_fournisseurs', [Fournisseur_controller::class, "index"])->name("listeFournisseur");
+Route::post('/ajouter_un_nouveau_fournisseur', [Fournisseur_controller::class, "ajoutFournisseur"])->name("ajoutFournisseur");
+
+//pdf
+Route::get('/test_pdf', [PDF_controller::class, "demande"])->name("test_pdf");
+
+// BON
+Route::get('/bon_de_livraison_form', [Bon_controller::class, "show_bon_de_livraison"])->name("bon_de_livraison_form");
+Route::get('/bon_de_reception_form', [Bon_controller::class, "show_bon_de_reception"])->name("bon_de_reception_form");
+Route::get('/create_bon_de_livraison_form', [Bon_controller::class, "create_bon_de_livraison"])->name("create_bon_de_livraison_form");
+Route::get('/create_bon_de_reception_form', [Bon_controller::class, "create_bon_de_reception"])->name("create_bon_de_reception_form");
+Route::get('/validation_reception',[Bon_controller::class, "validation_bon_reception"])->name("validation_reception");
+
+// Gestion de stock 
+Route::get('/entre_manuelle',[Stock_Controller::class, "show_entrer_manuelle"])->name("entre_manuelle"); //manao insertion entre tanana
+Route::get('/entre_checkBox',[Stock_Controller::class, "show_entrer_checkBox"])->name("entre_checkBox");// miditra insertion entre stock aminy alala an'i reception // manao demande d'explication
+Route::get('/histporique_liste',[Stock_Controller::class, "show_historique"])->name("histporique_liste"); // mijery historique de d'entre 
+Route::get('/liste_entre',[Stock_Controller::class, "show_liste_stock"])->name("liste_entre");// liste des entres natao
+Route::get('/recherche_stock',[Stock_Controller::class, "show_recherche_stock"])->name("recherche_stock"); // recherche de stock
+Route::get('/sortie_stock',[Stock_Controller::class,"show_sortie_stock"])->name("sortie_stock"); // sortie de stock formulaire
+Route::get('/liste_sortie_stock',[Stock_Controller::class,"show_liste_sortie_stock"])->name("liste_sortie_stock");// liste sortie de stock
+Route::get('/liste_vente',[Stock_Controller::class,"show_liste_vente"])->name("liste_vente");// liste des vente natao
+Route::get('/recherche_vente',[Stock_Controller::class,"show_recherche_vente"])->name("recherche_vente");// rechercher de vente selon une date donnes
+Route::get('/liste_stock_departement',[Stock_Controller::class, "show_liste_departement"])->name("liste_stock_departement"); // stock par departement
+Route::get('/liste_explication',[Stock_Controller::class,"liste_explication_stock"])->name("liste_explication"); // voir les explication nitranga tao anaty mouvement 1
+Route::post('/inserer_entre_check',[Stock_Controller::class,"insertion_Entre_Check_Box"])->name("inserer_entre_check");// insertion entre par checkBox
+Route::get('/rechercher_stock',[Stock_Controller::class,"trouverStock"])->name("rechercher_stock");
+Route::post('/inserer_Sortie',[Stock_Controller::class,"insertSortie"])->name("inserer_Sortie");
+Route::post('/insert_entre_manuelle',[Stock_Controller::class,"insert_Entre_Manuelle"])->name("insert_entre_manuelle");
