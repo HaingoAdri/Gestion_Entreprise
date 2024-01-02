@@ -159,4 +159,15 @@ class Employer extends Model {
         }
         return $Employer;   
     }
+
+    public function getModule() {
+        $requette = " select * from employer_module where idEmploye = '$this->id_emp'";
+        $reponse = DB::select($requette);
+        $idModule = null;
+        if(count($reponse) > 0){
+            $idModule = $reponse[0]->idmodule;
+        }
+        return $idModule;
+    }
+
 }
