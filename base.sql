@@ -990,6 +990,11 @@ increment by 1
 start with 1
 minValue 1;
 
+create sequence seqVente
+increment by 1
+start with 1
+minValue 1;
+
 
 create table entre(
     id varchar(256) default 'E' || LPAD(nextval('seqentre')::text, 4, '0') not null primary key,
@@ -1001,7 +1006,6 @@ create table entre(
     montant double precision GENERATED ALWAYS as (quantite * prix_Unitaire) stored,
     module int references module(id)
 );
-
 
 create table type_sortie(
     id serial primary key,
@@ -1031,21 +1035,18 @@ create table sortie(
     dates date,
     entre varchar(256) references entre(id),
     article varchar(10) references article(id),
-    quantite int
-);
-
-create table details_sortie(
-    id serial primary key,
-    sortie varchar(256) references sortie(id),
+    quantite int,
     types_sortie int references type_sortie(id)
 );
 
+
 CREATE TABLE sortie_Vente (
-    id SERIAL PRIMARY KEY,
+    id varchar(50) default 'V' || LPAD(nextval('seqVente')::text, 3, '0') not null primary key,
     lieu_vente varchar(200),
-    details_sortie INT REFERENCES details_sortie(id),
+    details_sortie varchar(256) REFERENCES sortie(id),
     prix_Unitaire DOUBLE PRECISION,
     tva_origine INT,
+    numero_caisse varchar(10),
     prix_TTC DOUBLE PRECISION GENERATED ALWAYS AS ((prix_Unitaire * ((tva_origine*10)/100))+prix_Unitaire) STORED,
     montantTotal DOUBLE PRECISION
 );
@@ -1053,13 +1054,26 @@ CREATE TABLE sortie_Vente (
 
 create table sortie_Departement(
     id serial primary key,
-    sortie_details int references details_sortie(id),
+    sortie_details varchar(256) references sortie(id),
     module int references module(id)
 );
 
+    alter table sortie_vente drop column prix_ttc;
+    alter table sortie_vente drop column montanttotal;
 
 -- creation de vue 
 create view V_Entre as
     select entre.* ,article.article as nom_article, module.type from entre
     join article on entre.article = article.id
     join module on entre.module = module.id;
+
+create view V_departement as 
+select s.id, s.dates, s.article, article.article as nom_article, s.quantite, module.type from sortie_Departement
+join sortie as s on sortie_Departement.sortie_details = s.id
+join module on sortie_Departement.module = Module.id
+join article on s.article = article.id;
+
+create view v_vente as 
+select v.lieu_vente, s.dates, s.article, article.article as nom_article, s.quantite, v.prix_Unitaire, v.numero_caisse from sortie_Vente as v
+join sortie as s on v.details_sortie = s.id
+join article on s.article = article.id;
