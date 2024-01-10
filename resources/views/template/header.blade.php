@@ -89,7 +89,7 @@
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
                         aria-expanded="false" aria-controls="annonce">
-                            <i class="mdi mdi-bell-ring"></i>
+                            <i class="mdi mdi-format-list-bulleted"></i>
                             <span class="nav-text">Annonce</span> <b class="caret"></b>
                         </a>
                         <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">
@@ -140,79 +140,24 @@
                         </ul>
                     </li>
 
-                    <li>
-                      <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
-                          <i class="mdi mdi-calendar-check"></i>
-                          <span class="nav-text">Conge et absence</span>
-                      </a>
-                    </li>
-
-                    @if(session("administrateur_rh")->module->id == 7)
-
-                    <li>
-                        <a class="sidenav-item-link" href="{{ route('caisse') }}">
-                            <i class="mdi mdi-credit-card-plus"></i>
-                            <span class="nav-text">Caisse</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="sidenav-item-link" href="{{ route('listeCompte') }}">
-                            <i class="mdi mdi-book-open-page-variant"></i>
-                            <span class="nav-text">Compte</span>
-                        </a>
-                    </li>
-
-                    <li  class="has-sub" >
-                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#magasin"
-                        aria-expanded="false" aria-controls="magasin">
-                            <i class="mdi mdi-home-map-marker"></i>
-                            <span class="nav-text">Magasin</span> <b class="caret"></b>
-                        </a>
-                        <ul  class="collapse"  id="magasin" data-parent="#sidebar-menu">
-                            <div class="sub-menu">
-
-                                <li><a class="sidenav-item-link" href="{{ route('magasin') }}">
-                                    <span class="nav-text">Magasin</span>
-                                </a></li>
-
-                                <li><a class="sidenav-item-link" href="{{ route('voirCaisseMagasin') }}">
-                                    <span class="nav-text">Caisse Par Magasin</span>
-                                </a></li>
-                    
-                            </div>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a class="sidenav-item-link" href="{{ route('tresorier') }}">
-                            <i class="mdi mdi-wallet"></i>
-                            <span class="nav-text">Tresorier</span>
-                        </a>
-                    </li>
-                    @endif
-
-                    @if(session("administrateur_rh")->module->id == 8 || session("administrateur_rh")->module->id == 9)
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reception_livraison" aria-expanded="false" aria-controls="achat">
-                            <i class="mdi mdi-truck-fast"></i>
+                            <i class="mdi mdi-playlist-plus"></i>
                             <span class="nav-text">Reception et livraison</span> <b class="caret"></b>
                         </a>
                         <ul  class="collapse"  id="reception_livraison" data-parent="#sidebar-menu">
                             <div class="sub-menu">
-                               
+                                @if(session("administrateur_rh")->module->id == 8 || session("administrateur_rh")->module->id == 9)
                                     <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
                                         <span class="nav-text">Bon de livraison</span>
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
                                         <span class="nav-text">Bon de reception</span>
                                     </a></li>
+                                @endif
                             </div>
                         </ul>
                     </li>
-                    @endif
-
-                    @if(session("administrateur_rh")->module->id == 9)
                     <!-- modification de haingo -->
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#stock" aria-expanded="false" aria-controls="stock">
@@ -250,12 +195,17 @@
                             </div>
                         </ul>
                     </li>
-                    @endif
+                    <li>
+                      <a class="sidenav-item-link" href="{{ route('ajout_Conge') }}">
+                          <i class="mdi mdi-calendar-check"></i>
+                          <span class="nav-text">Conge et absence</span>
+                      </a>
+                    </li>
 
                     @if(session("administrateur_rh")->module->id == 8)
                     <li>
                       <a class="sidenav-item-link" href="{{ route('listeFournisseur') }}">
-                          <i class="mdi mdi-account-group-outline"></i>
+                          <i class="mdi mdi-playlist-plus"></i>
                           <span class="nav-text">Fournisseur</span>
                       </a>
                     </li>
@@ -315,7 +265,7 @@
                             <li  class="has-sub" >
                                 <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#annonce"
                                 aria-expanded="false" aria-controls="annonce">
-                                    <i class="mdi mdi-bell-ring"></i>
+                                    <i class="mdi mdi-format-list-bulleted"></i>
                                     <span class="nav-text">Annonce</span> <b class="caret"></b>
                                 </a>
                                 <ul  class="collapse"  id="annonce" data-parent="#sidebar-menu">

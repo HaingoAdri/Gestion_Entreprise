@@ -27,6 +27,7 @@
                                     <tr>
                                         <th>Reception</th>
                                         <th>Dates</th>
+                                        <th>Demande</th>
                                         <th>Article</th>
                                         <th>Quantite</th>
                                         <th>Prix Unitaire</th>
@@ -46,6 +47,10 @@
                                         <td>
                                             {{ $entre->dates }}
                                             <input type="hidden" name="dates[]" value="{{ $entre->dates }}">
+                                        </td>
+                                        <td>
+                                            {{ $entre->demande }}
+                                            <input type="hidden" name="demande[]" value="{{ $entre->demande }}">
                                         </td>
                                         <td>
                                             {{ $entre->article }}
@@ -90,9 +95,12 @@
                                                         <div class="modal-content">
                                                             <div class="card">
                                                                 <div class="card-body">
-                                                                    <h6 class="mb-5">Demande d'explication pour produits {{ $entre->article }}. </h6>
+                                                                    <h6 class="mb-5">Demande d'explication pour produits {{ $entre->article }}. Departement {{ $entre->module }}</h6>
+                                                                    
                                                                     <h6 class="mb-5">Quantite insuffisant {{ $entre->quantite }}. </h6>
-                                                                    <form action="">
+                                                                    <form action="insert_explication" method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="module" value="{{ $entre->module }}">
                                                                         <div class="row mb-2">
                                                                             <div class="col-lg-6">
                                                                                 <div class="form-group">
@@ -120,14 +128,14 @@
                                                                             <div class="col-lg-6">
                                                                                 <div class="form-group">
                                                                                     <label for="lastName">Quantite : {{ $entre->quantite }}</label>
-                                                                                    <input type="hidden" name="quantite[]" value="{{ $entre->quantite }}">
+                                                                                    <input type="hidden" name="quantite" value="{{ $entre->quantite }}">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="form-group mb-4">
                                                                             <label for="userName">Motif</label>
-                                                                            <textarea class="form-control" placeholder="Ecrire motif" name="" required></textarea>
+                                                                            <textarea class="form-control" placeholder="Ecrire motif" name="motif" required></textarea>
                                                                         </div>
 
                                                                         <div class="d-flex justify-content-end mt-6">
