@@ -55,6 +55,9 @@ class Magasin_controller extends Controller
         if(!$caisse->caisseExisteDeja()) {
             return redirect()->route('voirCaisseMagasin', ['idMagasin' => $idMagasin])->with('erreur', "Le numero de caisse: $idCaisse n'existe pas!");
         }
+        if($caisse->caisseAppartientMagasin()) {
+            return redirect()->route('voirCaisseMagasin', ['idMagasin' => $idMagasin])->with('erreur', "Le numero de caisse: $idCaisse est deja occupe!");
+        }
         (new Magasin(id: $idMagasin))->ajoutCaisse($idCaisse);
         return redirect()->route('voirCaisseMagasin', ['idMagasin' => $idMagasin]);
 

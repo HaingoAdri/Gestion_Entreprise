@@ -21,6 +21,9 @@ use App\Models\Sortie_Vente;
 use App\Models\Sortie_Departement;
 use App\Models\Historique;
 use App\Models\BesoinAchat;
+use App\Models\Magasin;
+use App\Models\Caisse;
+use App\Models\Finance;
 
 class Stock_Controller extends Controller
 {
@@ -57,7 +60,8 @@ class Stock_Controller extends Controller
     public function show_sortie_stock(){
         $listeArticle = (new Article)->getListeArticle();
         $listeType = (new Sortie())->getTypesSortie();
-        return view("stock/sortie_simple",compact("listeArticle","listeType"));
+        $listeMagasin = (new Magasin())->getListeMagasin();
+        return view("stock/sortie_simple",compact("listeArticle","listeType", "listeMagasin"));
     }
 
     public function show_liste_sortie_stock(){
@@ -105,25 +109,25 @@ class Stock_Controller extends Controller
         $demandearray =$request->input('demande');
 
         foreach($check as $index => $valeur) {
-            // Utilisez les tableaux correspondants pour accéder aux valeurs des champs hidden
-            $id = $idArray[$index];
-            $dates = $datesArray[$index];
-            $article = $articleArray[$index];
-            $quantite = $quantiteArray[$index];
-            $prixUnitaire = $prixUnitaireArray[$index];
-            $module = $moduleArray[$index];
-            $demande = $demandearray[$index];
+            // echo "value: " . $check[$index];
+            $indice = $check[$index];
+            $id = $idArray[$indice];
+            $dates = $datesArray[$indice];
+            $article = $articleArray[$indice];
+            $quantite = $quantiteArray[$indice];
+            $prixUnitaire = $prixUnitaireArray[$indice];
+            $module = $moduleArray[$indice];
+            $demande = $demandearray[$indice];
 
             $entre = new Entre(dates: $dates,reception: $id,article: $article,quantite: $quantite,prix_unitaire: $prixUnitaire, module: $module);
             $besoin_achat = new BesoinAchat(etat: 50);
             $besoin_achat->updateEtatBesoin_Achat($module,$article,$demande);
             $entre->insertEntre();
-            //echo $id." , ".$dates." , ".$article." , ".$quantite." , ".$prixUnitaire." , ".$module."<br>";
+            // echo $id." , ".$dates." , ".$article." , ".$quantite." , ".$prixUnitaire." , ".$module."<br>";
             
             // Faites le traitement nécessaire avec les données
         }
         try {
-            $entre->insertEntre(); 
             return redirect()->route('entre_checkBox')->with('success','Insertion finit avec succes !');
         } catch (Exception $e) {
             return redirect()->route('entre_checkBox')->with('error','Erreur pour insertion entre '.$e->getMessage());
@@ -155,106 +159,93 @@ class Stock_Controller extends Controller
         $lieu = $request->input('lieu');
         $sortie_caisse = $request->input('numero');
         $articleSafidy = (new Article())->getArticleMethod($article);
-        if($articleSafidy[0]->method == 1){
-            if($type == 1){
-                $listeEntres = (new Entre())->getEntreMethodFifo($article);
-                foreach($listeEntres as $listeEntre){
-                    if($listeEntre->quantite < $quantite){
-                        return redirect()->route('sortie_stock')->with('error', 'La quantité est insuffisante.');
-                    }else{
+        $listeEntres = array();
 
-                            $quantites = $listeEntre->quantite - $quantite;
-                            $sortie = new Sortie(dates:$date,entre:$listeEntre->id,article:$article,quantite:$quantite,types:$type);
-                            $sortie->insertSortie();
-                            $historique = (new Historique(dates:$listeEntre->dates,entre:$listeEntre->id,article:$listeEntre->article,quantite:$listeEntre->quantite))->insertHistorique();
-                            $entre = (new Entre())->updateEntre($quantites,$listeEntre->id,$date);
-                            $sortieMety = (new Sortie())->makaSortie($listeEntre->id);
-                            foreach($sortieMety as $sorties){
-                                $sortieDepartement = (new Sortie_Departement(sortie_details: $sorties->id, module: $listeEntre->module))->insertSotrieDepartement();
-                                return redirect()->route('sortie_stock')->with('success', 'Sortie departement finit');
-                            }
-                    }
-                }
-            }
-            else if($type == 2){
-                $listeEntreAchat = (new Entre())->getEntreMethodFifoAchat($article);
-                if(count($listeEntreAchat) == 0){
-                    return redirect()->route('sortie_stock')->with('error', 'Le produits que vous inserer n appartient pas aux departement achat le produits doit etre aux departement achat.');
-                }else{
-                
-                    foreach($listeEntreAchat as $achat){
-                        if($achat->quantite < $quantite){
-                            return redirect()->route('sortie_stock')->with('error', 'La quantité est insuffisante.');
-                        }else{
-                            
-                                $quantites = $achat->quantite - $quantite;
-                                $sortie = new Sortie(dates:$date,entre:$achat->id,article:$article,quantite:$quantite,types:$type);
-                                $sortie->insertSortie();
-                                $historique = (new Historique(dates:$achat->dates,entre:$achat->id,article:$achat->article,quantite:$achat->quantite))->insertHistorique();
-                                $entre = (new Entre())->updateEntre($quantites,$achat->id,$date);
-                                $tva = 2;
-                                $sortieMety = (new Sortie())->makaSortie($achat->id);
-                                foreach($sortieMety as $sorties){
-                                    $sortieVente = (new Sortie_Vente(sortieDetails:$sorties->id, prix_unitaire:$achat->prix_unitaire, tva:$tva,lieu_vente:$lieu,numero:$sortie_caisse))->insertSortieVente();
-                                    return redirect()->route('sortie_stock')->with('success', 'Sortie vente finit');
-                                }
-                            
-                        }
-                    }
-                }
-            }
-            // var_dump($listeEntres);
-        }else if($articleSafidy[0]->method == 2){
-            if($type == 1){
-                $listeEntres = (new Entre())->getEntreMethodLifo($article);
-                foreach($listeEntres as $listeEntre){
-                    if($listeEntre->quantite < $quantite){
-                        return redirect()->route('sortie_stock')->with('error', 'La quantité est insuffisante.');
-                    }else{
+        $entre = new Entre(article: $article);
+        $resteEnStock = 0;
 
-                            $quantites = $listeEntre->quantite - $quantite;
-                            $sortie = new Sortie(dates:$date,entre:$listeEntre->id,article:$article,quantite:$quantite,types:$type);
-                            $sortie->insertSortie();
-                            $historique = (new Historique(dates:$listeEntre->dates,entre:$listeEntre->id,article:$listeEntre->article,quantite:$listeEntre->quantite))->insertHistorique();
-                            $entre = (new Entre())->updateEntre($quantites,$listeEntre->id,$date);
-                            $sortieMety = (new Sortie())->makaSortie($listeEntre->id);
-                            foreach($sortieMety as $sorties){
-                                $sortieDepartement = (new Sortie_Departement(sortie_details: $sorties->id, module: $listeEntre->module))->insertSotrieDepartement();
-                                return redirect()->route('sortie_stock')->with('success', 'Sortie departement finit');
-                            }
-                    }
-                }
-            }
-            else if($type == 2){
-                $listeEntreAchat = (new Entre())->getEntreMethodLifoAchat($article);
-                if(count($listeEntreAchat) == 0){
-                    return redirect()->route('sortie_stock')->with('error', 'Le produits que vous inserer n appartient pas aux departement achat le produits doit etre aux departement achat.');
-                }else{
-                
-                    foreach($listeEntreAchat as $achat){
-                        if($achat->quantite < $quantite){
-                            return redirect()->route('sortie_stock')->with('error', 'La quantité est insuffisante.');
-                        }else{
-                            
-                                $quantites = $achat->quantite - $quantite;
-                                $sortie = new Sortie(dates:$date,entre:$achat->id,article:$article,quantite:$quantite,types:$type);
-                                $sortie->insertSortie();
-                                $historique = (new Historique(dates:$achat->dates,entre:$achat->id,article:$achat->article,quantite:$achat->quantite))->insertHistorique();
-                                $entre = (new Entre())->updateEntre($quantites,$achat->id,$date);
-                                $tva = 2;
-                                $sortieMety = (new Sortie())->makaSortie($achat->id);
-                                foreach($sortieMety as $sorties){
-                                    $sortieVente = (new Sortie_Vente(sortieDetails:$sorties->id, prix_unitaire:$achat->prix_unitaire, tva:$tva,lieu_vente:$lieu,numero:$sortie_caisse))->insertSortieVente();
-                                    return redirect()->route('sortie_stock')->with('success', 'Sortie vente finit');
-                                }
-                            
-                        }
-                    }
-                }
-            }
-            
-            // var_dump($listeEntres);
+        if($articleSafidy[0]->method == 1) {
+            $listeEntres = $entre->getEntreMethodFifo($article);
+            $resteEnStock = $entre->resteStockDepartement();
         }
+        else {
+            $listeEntres = $entre->getEntreMethodLifo($article);
+            $listeEntreAchat = $entre->getEntreMethodLifoAchat($article);
+            $resteEnStock = $entre->resteStockDepartement();
+        }
+            
+        if($resteEnStock < $quantite)
+            return redirect()->route('sortie_stock')->with('error', "La quantité est insuffisante, le reste en stock est de $resteEnStock pour le produit $article");
+        
+        if($type == 1){
+            foreach($listeEntres as $listeEntre){
+                $quantite_sortie = 0;
+                $quantites = 0;
+                if($listeEntre->quantite <= $quantite) {
+                    $quantite -= $listeEntre->quantite;
+                    $quantite_sortie = $quantite;
+                } else if($listeEntre->quantite > $quantite){
+                    $quantites = $listeEntre->quantite - $quantite;
+                    $quantite_sortie = $quantite;
+                    $quantite = 0;
+                }
+                $sortie = new Sortie(dates:$date,entre:$listeEntre->id,article:$article,quantite:$quantite_sortie,types:$type);
+                $sortie->insertSortie();
+                $historique = (new Historique(dates:$listeEntre->dates,entre:$listeEntre->id,article:$listeEntre->article,quantite:$listeEntre->quantite))->insertHistorique();
+                $entre->updateEntre($quantites,$listeEntre->id,$date);
+                
+                (new Sortie_Departement(sortie_details: $sortie->id, module: $listeEntre->module))->insertSotrieDepartement();
+
+                if($quantite == 0) 
+                    break;
+            }
+            return redirect()->route('sortie_stock')->with('success', 'Sortie departement finit');
+
+        } else if($type == 2){
+
+            $caisse = new Caisse(id: $sortie_caisse);
+            if(!$caisse->caisseExisteDeja())
+                return redirect()->route('sortie_stock')->with('error', "L'ID Caisse $sortie_caisse n'existe pas!");
+    
+            if(!$caisse->caisseExisteDansUnMagasin($lieu)) 
+                return redirect()->route('sortie_stock')->with('error', "L'ID Caisse $sortie_caisse n'existe pas dans le magasin selectionne!");
+            
+            if(count($listeEntreAchat) == 0){
+                return redirect()->route('sortie_stock')->with('error', 'Le produits que vous inserer n appartient pas aux departement achat le produits doit etre aux departement achat.');
+            }else{
+                $quantite_vente = $quantite;
+                foreach($listeEntreAchat as $achat){
+                    $quantites = 0;
+                    $quantite_sortie = 0;
+                    if($achat->quantite <= $quantite) {
+                        $quantite -= $achat->quantite;
+                        $quantite_sortie = $quantite;
+                    } else if($achat->quantite > $quantite){
+                        $quantites = $achat->quantite - $quantite;
+                        $quantite_sortie = $quantite;
+                        $quantite = 0;
+                    }
+                    $sortie = new Sortie(dates:$date,entre:$achat->id,article:$article,quantite:$quantite_sortie,types:$type);
+                    $sortie->insertSortie();
+                    $historique = (new Historique(dates:$achat->dates,entre:$achat->id,article:$achat->article,quantite:$achat->quantite))->insertHistorique();
+                    $entre->updateEntre($quantites,$achat->id,$date);
+                    
+                    if($quantite == 0) 
+                        break;
+                }
+                
+                $tva = 20;
+                $sortie_vente = new Sortie_Vente(prix_unitaire:$achat->prix_unitaire, tva:$tva,lieu_vente:$lieu,numero:$sortie_caisse, date: $date, article: $article, quantite: $quantite_vente);
+                $sortie_vente->insertSortieVente();
+
+                $caisse = $caisse->getListeCaisse()[0];
+                $finance = new Finance(idCompte: $caisse->idCompte, entre: $sortie_vente->montant_Total, explication: "Payement du vente numero $sortie_vente->id", date: $date);
+                $finance->insert();
+
+                return redirect()->route('sortie_stock')->with('success', 'Sortie vente finit');
+            }
+        }
+            
     }
     public function insertExplication(Request $request){
         $dates = $request->input('dates');

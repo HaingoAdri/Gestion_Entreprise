@@ -21,26 +21,21 @@
 
                         <div class="card-body">
                             @if(session('error'))
-                                <div class="alert alert-primary">
-                                    <strong>Erreur:</strong> {{ session('error') }}
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
                                 </div>
                             @endif
 
-                            @if(session('success'))
-                                <div class="alert alert-success">
-                                    <strong>Reponse:</strong> {{ session('success') }}
-                                </div>
-                            @endif
                             <form action="inserer_Sortie" method="POST">
                                 @csrf
                                 <div class="form-group mb-4">
                                     <label for="userName">Date</label>
-                                    <input type="date" class="form-control" id="numero" name="dates">
+                                    <input type="date" class="form-control" id="numero" name="dates" required>
                                 </div>
 
                                 <div class="form-group mb-4">
                                     <label for="email">Article</label>
-                                    <select name="article" id="" class="form-control">
+                                    <select name="article" id="" class="form-control" required>
                                         @foreach($listeArticle as $article)
                                             <option value="{{ $article->id }}">{{ $article->article }}</option>
                                         @endforeach
@@ -49,30 +44,36 @@
 
                                 <div class="form-group mb-4">
                                     <label for="userName">Quantite</label>
-                                    <input type="number" class="form-control" id="numero" name="quantite">
+                                    <input type="number" class="form-control" id="numero" name="quantite" placeholder="Quantite a sortir" required>
                                 </div>
 
                                 <div class="form-group mb-4">
                                     <label for="email">Types de sortie :</label>
-                                    <select name="sortie_type" id="" class="form-control">
+                                    <select name="sortie_type" id="" class="form-control" required>
+                                        <option value="">Type</option>
                                         @foreach($listeType as $type)
                                             <option value="{{ $type->id }}">{{ $type->types}}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
-                                <div class="form-group mb-4">
-                                    <label for="userName">Lieu de vente (si types de sortie vente)</label>
-                                    <input type="number="text" class="form-control" id="numero" name="lieu">
+                                <div class="form-group">
+                                    <label for="lastName">Lieu de vente (si types de sortie vente)</label>
+                                    <select name="lieu" class="form-control">
+                                        <option value="">Magasin</option>
+                                        @foreach($listeMagasin as $m)
+                                        <option value="{{ $m->id }}">{{ $m->nom }} : {{ $m->lieu }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group mb-4">
                                     <label for="userName">N° de caisse (si types de sortie vente)</label>
-                                    <input type="text" class="form-control" id="numero" name="numero">
+                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Numero de Caisse">
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-6">
-                                    <button type="submit" class="btn btn-primary mb-2 btn-pill">Inserer sortie</button>
+                                    <button type="submit" class="btn btn-primary mb-2">Inserer sortie</button>
                                 </div>
 
                             </form>

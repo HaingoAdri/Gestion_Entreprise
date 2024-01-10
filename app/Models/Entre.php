@@ -46,9 +46,10 @@ class Entre extends Model
 
     public function insertEntre(){
         try {
-        $requette = "insert into entre (dates, reception, article, quantite, prix_unitaire, module) values('".$this->dates."', '".$this->reception."','".$this->article."',".$this->quantite.",".$this->prix_unitaire.",".$this->module.")";
-        DB::insert($requette);
-        echo $requette;
+            $montant = $this->prix_unitaire*$this->quantite;
+            $requette = "insert into entre (dates, reception, article, quantite, prix_unitaire, montant, module) values('".$this->dates."', '".$this->reception."','".$this->article."',".$this->quantite.",".$this->prix_unitaire.", ".$montant.", ".$this->module.")";
+            DB::insert($requette);
+            echo $requette;
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer Entre: ".$e->getMessage());
         }
@@ -67,13 +68,13 @@ class Entre extends Model
     }
 
     public function getEntreMethodFifo($article){
-        $requette = "select * from entre where article = '".$article."' order by dates  asc";
+        $requette = "select * from entre where article = '".$article."' and module != 8 order by dates asc, id asc";
         $reponse = DB::select($requette);
         return $reponse;
     }
 
     public function getEntreMethodLifo($article){
-        $requette = "select * from entre where article = '".$article."' order by dates desc";
+        $requette = "select * from entre where article = '".$article."' and module != 8 order by dates desc, id desc";
         $reponse = DB::select($requette);
         return $reponse;
     }
@@ -94,5 +95,35 @@ class Entre extends Model
         $sql = "update entre set quantite = ".$quantite." , dates = '".$dates."' where id = '".$entre."'";
         $reponse = DB::update($sql);
         return $reponse;
+    }
+
+    public function sommeEntreAchat() {
+        $requette = "select * from liste_total_entre_article_achat where article = '".$this->article."'";
+        $reponse = DB::select($requette);
+        if(count($reponse)>0){
+            return $reponse[0]->quantite;
+        }
+        return 0;
+    }
+    
+    public function sommeEntreDepartement() {
+        $requette = "select * from liste_total_entre_article_departement where article = '".$this->article."'";
+        $reponse = DB::select($requette);
+        if(count($reponse)>0){
+            return $reponse[0]->quantite;
+        }
+        return 0;
+    }
+
+    public function resteStockAchat() {
+        $entre = $this->sommeEntreAchat();
+        // $sortie = (new Sortie(article: $this->article))->sommeSortieAchat();
+        return $entre;  
+    }
+
+    public function resteStockDepartement() {
+        $entre = $this->sommeEntreDepartement();
+        // $sortie = (new Sortie(article: $this->article))->sommeSortieDepartement();
+        return $entre;  
     }
 }

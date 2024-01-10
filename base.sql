@@ -1087,7 +1087,6 @@ CREATE TABLE sortie_Vente (
     montantTotal DOUBLE PRECISION
 );
 
-
 create table sortie_Departement(
     id serial primary key,
     sortie_details varchar(256) references sortie(id),
@@ -1154,3 +1153,81 @@ JOIN module ON liste_besoin_achat_avec_quantite_etats.idModule = module.id
 WHERE 
     liste_besoin_achat_avec_quantite_etats.etat = 45 
     AND proformat.idArticle = liste_besoin_achat_avec_quantite_etats.idArticle;
+
+-- finance
+create sequence seqCompte
+increment by 1
+start with 1
+minValue 1;
+
+create sequence seqMagasin
+increment by 1
+start with 1
+minValue 1;
+
+create sequence seqCaisse
+increment by 1
+start with 1
+minValue 1;
+
+create table compte (
+    id varchar(50) primary key,
+    nom varchar(150) not null,
+    etat int references etats(id_et)
+);
+
+create table finance (
+    id serial,
+    idcompte varchar(50) references compte(id),
+    entre double precision default 0,
+    sortie double precision default 0,
+    explication varchar(255),
+    date date
+);
+
+create table caisse (
+    id varchar(10) primary key,
+    nom varchar(20),
+    idcompte varchar(50) references compte(id)
+);
+
+create table magasin (
+    id varchar(10) primary key,
+    nom varchar(20) unique,
+    lieu varchar(150), 
+    date date
+);
+create table caisse_magasin (
+    id serial,
+    idMagasin varchar(10) references magasin(id),
+    idCaisse varchar(10) references caisse(id),
+    etat int default 1
+);
+
+create view reste_argents as
+select idCompte, sum(entre) entre, sum(sortie) sortie, sum(entre)-sum(sortie) as reste from finance group by idCompte;
+
+create view reste_argents_avec_nom_compte as
+select idCompte, nom, entre, sortie, reste from reste_argents r join compte c on r.idCompte = c.id;
+
+create view liste_caisse_magasin as 
+select idMagasin, ca.id, nom, idCompte, etat from caisse_magasin c join caisse ca on c.idCaisse = ca.id;
+
+ALTER TABLE sortie_Vente Add foreign key (lieu_vente) references magasin(id);
+ALTER TABLE sortie_Vente Add foreign key (numero_caisse) references caisse(id);
+ALTER TABLE sortie_Vente Add date date;
+ALTER TABLE sortie_Vente Add article varchar(10) references article(id);
+ALTER TABLE sortie_Vente Add quantite double precision default 0;
+ALTER TABLE sortie_Vente drop details_sortie;
+
+create view liste_total_entre_article_departement as
+select article, sum(quantite) quantite from entre where module != 8 group by article;
+
+create view liste_total_entre_article_achat as
+select article, sum(quantite) quantite from entre where module = 8 group by article;
+
+create view liste_total_sortie_article_departement as
+select article, sum(quantite) quantite from sortie where types_sortie = 1 group by article;
+
+create view liste_total_sortie_article_achat as
+select article, sum(quantite) quantite from sortie where types_sortie = 2 group by article;

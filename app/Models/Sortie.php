@@ -25,14 +25,26 @@ class Sortie extends Model
         $this->types = $types;
     }
 
+    public function setId() {
+        $requette = "select coalesce(nextval('seqSortie'),1)";
+        $reponse = DB::select($requette);
+        $liste = array();
+        $this->id = "S00";
+        if(count($reponse) > 0){
+            $this->id = $this->id . "" . $reponse[0]->coalesce;
+        }
+
+    }
+
     public function getTypesSortie(){
-        $request = "select * from type_sortie";
+        $request = "select * from type_sortie order by types";
         $reponse = DB::select($request);
         return $reponse;
     }
 
     public function insertSortie(){
-        $sql = "insert into sortie(dates, entre, article, quantite,types_sortie) values('".$this->dates."', '".$this->entre."','".$this->article."',".$this->quantite.",".$this->types.")";
+        $this->setId();
+        $sql = "insert into sortie(id, dates, entre, article, quantite,types_sortie) values('$this->id', '".$this->dates."', '".$this->entre."','".$this->article."',".$this->quantite.",".$this->types.")";
         $reponse = DB::insert($sql);
         return $reponse;
     }
@@ -47,5 +59,23 @@ class Sortie extends Model
         $sql = "select * from v_sortie";
         $reponse = DB::select($sql);
         return $reponse;
+    }
+
+    public function sommeSortieAchat() {
+        $requette = "select * from liste_total_sortie_article_achat where article = '".$this->article."'";
+        $reponse = DB::select($requette);
+        if(count($reponse)>0){
+            return $reponse[0]->quantite;
+        }
+        return 0;
+    }
+    
+    public function sommeSortieDepartement() {
+        $requette = "select * from liste_total_sortie_article_departement where article = '".$this->article."'";
+        $reponse = DB::select($requette);
+        if(count($reponse)>0){
+            return $reponse[0]->quantite;
+        }
+        return 0;
     }
 }

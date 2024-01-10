@@ -42,6 +42,8 @@ class Caisse extends Model
 
     public function getListeCaisse() {
         $requette = "select * from Caisse order by nom";
+        if($this->id != "")
+            $requete = "select * from Caisse where id = '$this->id'";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
@@ -95,5 +97,25 @@ class Caisse extends Model
             }
         }
         return $liste;
+    }
+
+    public function caisseAppartientMagasin() {
+        $requette = "select * from caisse_magasin where idCaisse = '$this->id'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public function caisseExisteDansUnMagasin($idMagasin) {
+        $requette = "select * from caisse_magasin where idCaisse = '$this->id' and idmagasin = '$idMagasin'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            return true;
+        }
+        return false;
     }
 }

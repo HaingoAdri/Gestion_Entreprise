@@ -20,6 +20,10 @@ use App\Http\Controllers\Fournisseur_controller;
 use App\Http\Controllers\PDF_controller;
 use App\Http\Controllers\Bon_controller;
 use App\Http\Controllers\Stock_Controller;
+use App\Http\Controllers\Compte_controller;
+use App\Http\Controllers\Tresorier_controller;
+use App\Http\Controllers\Magasin_controller;
+use App\Http\Controllers\Caisse_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -220,3 +224,22 @@ Route::get('/rechercher_stock',[Stock_Controller::class,"trouverStock"])->name("
 Route::post('/inserer_Sortie',[Stock_Controller::class,"insertSortie"])->name("inserer_Sortie");
 Route::post('/insert_entre_manuelle',[Stock_Controller::class,"insert_Entre_Manuelle"])->name("insert_entre_manuelle");
 Route::post('/insert_explication',[Stock_Controller::class,"insertExplication"])->name("insert_explication");
+
+//finance
+Route::get('/liste_compte', [Compte_controller::class, "index"])->name("listeCompte");
+Route::post('/ajout_compte', [Compte_controller::class, "ajoutCompte"])->name("ajoutCompte");
+
+//tresorier
+Route::get('/tresorier', [Tresorier_controller::class, "index"])->name("tresorier");
+Route::post('/mouvement_argent', [Tresorier_controller::class, "mouvement"])->name("mouvementArgent");
+
+
+//magasin
+Route::get('/magasin', [Magasin_controller::class, "index"])->name("magasin");
+Route::post('/nouveau_magasin', [Magasin_controller::class, "nouveauMagasin"])->name("nouveauMagasin");
+Route::get('/caisse_magasin', [Magasin_controller::class, "voirCaisseMagasin"])->name("voirCaisseMagasin");
+Route::post('/nouveau_caisse_magasin', [Magasin_controller::class, "nouveauCaisseMagasin"])->name("nouveauCaisseMagasin");
+
+//caisse
+Route::get('/caisse', [Caisse_controller::class, "index"])->name("caisse");
+Route::post('/nouveau_caisse', [Caisse_controller::class, "nouveauCaisse"])->name("nouveauCaisse");

@@ -236,11 +236,9 @@ insert into etats values
 (45, 'Termine');
 
 
+insert into type_sortie values
+(1, 'Departement'),
+(2, 'Vente');
 
-                                @foreach($magasin->listeCaisse as $caisse)
-                                <tr>
-                                    <td>{{ $caisse->id }}</td>
-                                    <td>{{ $caisse->nom }}</td>
-                                    <td>{{ $caisse->idCompte }}</td>
-                                </tr> 
-                                @endforeach
+insert into etats values
+(50, 'Recu et Confirme');
