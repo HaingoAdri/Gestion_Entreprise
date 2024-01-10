@@ -1039,7 +1039,7 @@ create table entre(
     article varchar(10) references article(id),
     quantite int,
     prix_Unitaire double precision,
-    montant double precision GENERATED ALWAYS as (quantite * prix_Unitaire) stored,
+    montant double precision,
     module int references module(id)
 );
 
@@ -1083,7 +1083,7 @@ CREATE TABLE sortie_Vente (
     prix_Unitaire DOUBLE PRECISION,
     tva_origine INT,
     numero_caisse varchar(10),
-    prix_TTC DOUBLE PRECISION GENERATED ALWAYS AS ((prix_Unitaire * ((tva_origine*10)/100))+prix_Unitaire) STORED,
+    prix_TTC DOUBLE PRECISION,
     montantTotal DOUBLE PRECISION
 );
 
