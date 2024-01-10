@@ -879,6 +879,9 @@ JOIN
 
 -- modifier par haingo
 create view liste_besoin_achat_avec_quantite as
+select idDemande, idArticle, sum(nombre) nombre from besoin_achat group by idDemande, idArticle, idModule;
+
+create view liste_besoin_achat_avec_quantite_IdModule as
 select idDemande, idArticle, sum(nombre) nombre, idModule from besoin_achat group by idDemande, idArticle, idModule;
 -- fini
 
@@ -961,7 +964,7 @@ CREATE VIEW V_Details_Bon_Reception_details AS
     proformat.idFournisseur as fournisseur, 
     proformat.idDemande as demande,
     proformat.tva,
-    liste_besoin_achat_avec_quantite.nombre as quantite_article ,
+    liste_besoin_achat_avec_quantite_IdModule.nombre as quantite_article ,
     module.id as id_module,
     module.type as module
 from 
@@ -970,9 +973,9 @@ from
     join details_bon_commande on bon_reception.id_bon_commande = details_bon_commande.idboncommande
     join proformat on details_bon_commande.idproformat = proformat.id
     join article on proformat.idArticle = article.id
-    join liste_besoin_achat_avec_quantite on proformat.idDemande = liste_besoin_achat_avec_quantite.idDemande
-    join module on liste_besoin_achat_avec_quantite.idModule = module.id
-    where proformat.idArticle = liste_besoin_achat_avec_quantite.idArticle
+    join liste_besoin_achat_avec_quantite_IdModule on proformat.idDemande = liste_besoin_achat_avec_quantite_IdModule.idDemande
+    join module on liste_besoin_achat_avec_quantite_IdModule.idModule = module.id
+    where proformat.idArticle = liste_besoin_achat_avec_quantite_IdModule.idArticle
 ;
 
 create sequence seqentre
@@ -1003,7 +1006,7 @@ create table entre(
     article varchar(10) references article(id),
     quantite int,
     prix_Unitaire double precision,
-    montant double precision GENERATED ALWAYS as (quantite * prix_Unitaire) stored,
+    montant double precision ,
     module int references module(id)
 );
 
@@ -1047,7 +1050,7 @@ CREATE TABLE sortie_Vente (
     prix_Unitaire DOUBLE PRECISION,
     tva_origine INT,
     numero_caisse varchar(10),
-    prix_TTC DOUBLE PRECISION GENERATED ALWAYS AS ((prix_Unitaire * ((tva_origine*10)/100))+prix_Unitaire) STORED,
+    prix_TTC DOUBLE PRECISION ,
     montantTotal DOUBLE PRECISION
 );
 
@@ -1077,3 +1080,89 @@ create view v_vente as
 select v.lieu_vente, s.dates, s.article, article.article as nom_article, s.quantite, v.prix_Unitaire, v.numero_caisse from sortie_Vente as v
 join sortie as s on v.details_sortie = s.id
 join article on s.article = article.id;
+
+
+-- finance
+create sequence seqCompte
+increment by 1
+start with 1
+minValue 1;
+
+create sequence seqMagasin
+increment by 1
+start with 1
+minValue 1;
+
+create sequence seqCaisse
+increment by 1
+start with 1
+minValue 1;
+
+create table compte (
+    id varchar(50) primary key,
+    nom varchar(150) not null,
+    etat int references etats(id_et)
+);
+
+create table finance (
+    id serial,
+    idcompte varchar(50) references compte(id),
+    entre double precision default 0,
+    sortie double precision default 0,
+    explication varchar(255),
+    date date
+);
+
+create table caisse (
+    id varchar(10) primary key,
+    nom varchar(20),
+    idcompte varchar(50) references compte(id)
+);
+
+create table magasin (
+    id varchar(10) primary key,
+    nom varchar(20) unique,
+    lieu varchar(150), 
+    date date
+);
+create table caisse_magasin (
+    id serial,
+    idMagasin varchar(10) references magasin(id),
+    idCaisse varchar(10) references caisse(id),
+    etat int default 1
+);
+
+create view reste_argents as
+select idCompte, sum(entre) entre, sum(sortie) sortie, sum(entre)-sum(sortie) as reste from finance group by idCompte;
+
+create view reste_argents_avec_nom_compte as
+select idCompte, nom, entre, sortie, reste from reste_argents r join compte c on r.idCompte = c.id;
+
+create view liste_caisse_magasin as 
+select idMagasin, ca.id, nom, idCompte, etat from caisse_magasin c join caisse ca on c.idCaisse = ca.id;
+
+$(document).ready(function () {
+    $("#votreBoutonOuElement").click(function () {
+        // Créez un objet JavaScript contenant vos données
+        var donnees = {
+            parametre1: "valeur1",
+            parametre2: "valeur2"
+            // Ajoutez d'autres paramètres selon vos besoins
+        };
+
+        $.ajax({
+            type: "POST", // ou "GET" selon votre servlet
+            url: "/votre-servlet-url", // Remplacez par le chemin de votre servlet
+            contentType: "application/json", // Spécifiez le type de contenu JSON si vous envoyez des données JSON
+            data: JSON.stringify(donnees), // Convertissez votre objet en chaîne JSON si nécessaire
+            success: function (data) {
+                // Gérez la réponse de la servlet ici
+                console.log(data);
+            },
+            error: function (error) {
+                // Gérez les erreurs ici
+                console.error("Erreur lors de l'appel de la servlet", error);
+            }
+        });
+    });
+});

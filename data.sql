@@ -234,3 +234,13 @@ insert into etats values
 (37, 'Valide Finance'),
 (40, 'En Attende'),
 (45, 'Termine');
+
+
+
+                                @foreach($magasin->listeCaisse as $caisse)
+                                <tr>
+                                    <td>{{ $caisse->id }}</td>
+                                    <td>{{ $caisse->nom }}</td>
+                                    <td>{{ $caisse->idCompte }}</td>
+                                </tr> 
+                                @endforeach
