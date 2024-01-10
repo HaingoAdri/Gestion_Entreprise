@@ -20,6 +20,7 @@ use App\Models\Sortie;
 use App\Models\Sortie_Vente;
 use App\Models\Sortie_Departement;
 use App\Models\Historique;
+use App\Models\BesoinAchat;
 
 class Stock_Controller extends Controller
 {
@@ -101,6 +102,7 @@ class Stock_Controller extends Controller
         $quantiteArray = $request->input('quantite');
         $prixUnitaireArray = $request->input('prix_unitaire');
         $moduleArray = $request->input('module');
+        $demandearray =$request->input('demande');
 
         foreach($check as $index => $valeur) {
             // Utilisez les tableaux correspondants pour accéder aux valeurs des champs hidden
@@ -110,8 +112,11 @@ class Stock_Controller extends Controller
             $quantite = $quantiteArray[$index];
             $prixUnitaire = $prixUnitaireArray[$index];
             $module = $moduleArray[$index];
-            
+            $demande = $demandearray[$index];
+
             $entre = new Entre(dates: $dates,reception: $id,article: $article,quantite: $quantite,prix_unitaire: $prixUnitaire, module: $module);
+            $besoin_achat = new BesoinAchat(etat: 50);
+            $besoin_achat->updateEtatBesoin_Achat($module,$article,$demande);
             $entre->insertEntre();
             //echo $id." , ".$dates." , ".$article." , ".$quantite." , ".$prixUnitaire." , ".$module."<br>";
             
@@ -250,5 +255,22 @@ class Stock_Controller extends Controller
             
             // var_dump($listeEntres);
         }
+    }
+    public function insertExplication(Request $request){
+        $dates = $request->input('dates');
+        $reception = $request->input('id');
+        $article = $request->input('article');
+        $quantite = $request->input('quantite');
+        $motif = $request->input('motif');
+        $module = $request->input('module');
+
+        $explication = (new Explication(motif:$motif,module:$module,dates:$dates, reception:$reception,article : $article, quantite:$quantite));
+        try {
+            $explication->insertExplications();
+            return redirect()->route('entre_checkBox')->with('success','Insertion finit avec succes !');
+        } catch (Exception $e) {
+            return redirect()->route('entre_checkBox')->with('error','Erreur pour insertion entre '.$e->getMessage());
+        }
+        
     }
 }
