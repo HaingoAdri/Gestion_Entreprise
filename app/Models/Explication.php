@@ -39,4 +39,15 @@ class Explication extends Model
         }
         return $liste;
     }
+
+    public function insertExplications(){
+        try {
+            $sql = "insert into explication(dates,motif,reception,module,article,quantite) values('$this->dates', '$this->motif', '$this->reception', $this->module,'$this->article',$this->quantite)";
+            DB::insert($sql);
+            echo $sql;
+        } catch (Exception $e) {
+            throw new Exception("Impossible d'inserer Entre: ".$e->getMessage());
+        }
+       
+    }
 }

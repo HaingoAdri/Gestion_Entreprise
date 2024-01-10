@@ -17,8 +17,9 @@ class Entre extends Model
     public $prix_unitaire;
     public $montant;
     public $module;
+    public $demande;
 
-    public function __construct($id="",$dates="",$reception="",$article="",$quantite="",$prix_unitaire="",$montant="",$module=""){
+    public function __construct($id="",$dates="",$reception="",$article="",$quantite="",$prix_unitaire="",$montant="",$module="",$demande=""){
         $this->id = $id;
         $this->dates = $dates;
         $this->reception = $reception;
@@ -27,15 +28,16 @@ class Entre extends Model
         $this->prix_unitaire = $prix_unitaire;
         $this->montant = $montant;
         $this->module = $module;
+        $this->demande = $demande;
     }
 
     public function getReceptionDetails(){
-        $requette = "select id,date_reception, article, quantite_article, prixunitaire, id_module, module from V_Details_Bon_Reception_details";
+        $requette = "select id,date_reception, article, quantite_article, prixunitaire, id_module,demande, module from details_bon";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse)>0){
             foreach($reponse as $result){
-                $entre = new Entre(id:$result->id, dates:$result->date_reception, reception:$result->module, article:$result->article, quantite:$result->quantite_article, prix_unitaire:$result->prixunitaire,module:$result->id_module);
+                $entre = new Entre(id:$result->id, dates:$result->date_reception, reception:$result->module, article:$result->article, quantite:$result->quantite_article, prix_unitaire:$result->prixunitaire,module:$result->id_module,demande:$result->demande);
                 $liste[] = $entre;
             }
         }

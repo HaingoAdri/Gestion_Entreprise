@@ -144,4 +144,10 @@ class BesoinAchat extends Model
         }  
     }
 
+    public function updateEtatBesoin_Achat($idModule,$idarticle, $iddemande){
+        $requete = "update besoin_achat set etat= $this->etat where idmodule = '$idModule' and idarticle = '$idarticle' and iddemande = '$iddemande'";
+        DB::update($requete);
+        
+    }
+
 }
