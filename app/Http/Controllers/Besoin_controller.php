@@ -31,6 +31,9 @@ use App\Models\Fournisseur;
 use App\Models\Demande;
 use App\Models\Proformat;
 use App\Models\BonCommande;
+use App\Models\Compte;
+use App\Models\Finance;
+use Carbon\Carbon;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -266,11 +269,11 @@ class Besoin_controller extends Controller
     }
 
     public function createPDF($date, $nom, $idDemande){
-        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
-        $pdf = PDF::loadView('pdf_test', compact("listeBesoinNonValide", "date", "nom"));
-        $pdf_name = $idDemande.'_demande_de_proforma.pdf';
-        $pdf->save(storage_path('app/public/'.$pdf_name));
-        return $pdf_name;
+        // $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
+        // $pdf = PDF::loadView('pdf_test', compact("listeBesoinNonValide", "date", "nom"));
+        // $pdf_name = $idDemande.'_demande_de_proforma.pdf';
+        // $pdf->save(storage_path('app/public/'.$pdf_name));
+        // return $pdf_name;
     }
 
     public function send_email($file_path, $email, $name) {
@@ -410,13 +413,29 @@ class Besoin_controller extends Controller
 
     public function validerUnBonCommande(Request $request) {
         $idBonCommande = $request->input('idBonCommande');
-        $bonCommande = new BonCommande(id: $idBonCommande);
+        $date = $request->input('date');
+        $etat = $request->input('etat');
+        $bonCommande = new BonCommande(id: $idBonCommande, date: $date);
+        $nouveauDate = Carbon::now();
+        
         $module = Session::get("administrateur_rh")->module->id;
         if($module == 1)
             $bonCommande->etat = 35;
-        else if($module == 7)
+        else if($module == 7) {
             $bonCommande->etat = 37;
-        $bonCommande->valider();
+            $idCompte = $request->input('idCompte');
+            $compte =new Compte(id: $idCompte);
+            if(!$compte->numeroCompteExisteDeja())
+                return redirect()->route('listeBonCommandeEnAttente')->with('erreur', "Le numero de compte $idCompte n'existe pas");
+            $resteEnCompte = $compte->getResteEnCompte();
+            $listeProformat = (new BonCommande(id: $idBonCommande))->getDetailsBonCommande();
+            $montant = $listeProformat[count($listeProformat)-1]->prixAT;
+            if($resteEnCompte < $montant)
+                return redirect()->route('listeBonCommandeEnAttente')->with('erreur', "L'argent dans le compte est insufisant pour cette retrait, le reste en compte est de $resteEnCompte Ar");                
+            $finance = new Finance(idCompte: $idCompte, sortie: $montant, explication: "Payement du bon de commande numero $idBonCommande", date: $nouveauDate);
+            $finance->insert();
+        }
+        $bonCommande->valider($nouveauDate, $etat);
         return redirect()->route('listeBonCommandeEnAttente');        
     }
 
@@ -429,8 +448,11 @@ class Besoin_controller extends Controller
 
     public function passerUnBonCommande(Request $request) {
         $idBonCommande = $request->input('idBonCommande');
-        $bonCommande = new BonCommande(id: $idBonCommande, etat: 40);
-        $bonCommande->valider();
+        $date = $request->input('date');
+        $etat = $request->input('etat');
+        $bonCommande = new BonCommande(id: $idBonCommande, date: $date, etat: 40);
+        $nouveauDate = Carbon::now();
+        $bonCommande->valider($nouveauDate, $etat);
         return redirect()->route('listeBonCommandeApasser');   
     }
 

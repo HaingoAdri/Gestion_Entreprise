@@ -46,10 +46,20 @@ class BonCommande extends Model
         }    
     }
 
-    public function updateEtat() {
+    public function updateEtat($date) {
         try {
-            $requete = "update bon_commande set etat = $this->etat where id = '$this->id'";
+            $requete = "update bon_commande set etat = $this->etat , date = '$date'  where id = '$this->id'";
             DB::update($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible de changer l'etat du bon de commande: ".$e->getMessage());
+        }    
+    }
+
+    public function ajoutHistorique($date, $etat) {
+        try {
+            $this->updateEtat($date);
+            $requete = "insert into historique_bon_commande (idboncommande, etat, date) values ('$this->id','$etat', '$this->date')";
+            DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible de changer l'etat du bon de commande: ".$e->getMessage());
         }    
@@ -125,8 +135,8 @@ class BonCommande extends Model
         return $etats->nom_etats;
     }
 
-    public function valider() {
-        $this->updateEtat();
+    public function valider($date, $etat) {
+        $this->ajoutHistorique($date, $etat);
         $idDemande = $this->getIdDemande();
         (new BesoinAchat(etat: $this->etat))->updateEtatParIdDemande($idDemande);
     }

@@ -67,7 +67,7 @@
                                     <th>{{ $listeProformat[$i]->idArticle }}</th>
                                     <td>{{ $listeProformat[$i]->getArticle() }}</td>
                                     <td>{{ $listeProformat[$i]->quantite }}</td>
-                                    <td>{{ $listeProformat[$i]->TVA }}</td>
+                                    <td>{{ $listeProformat[$i]->TVA }}%</td>
                                     <td>{{ $listeProformat[$i]->prixHT }} Ar</td>
                                     <td>{{ $listeProformat[$i]->prixAT }} Ar</td>
                                     <td>{{ $listeProformat[$i]->getNomFournisseur() }}</td>

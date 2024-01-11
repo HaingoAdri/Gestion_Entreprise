@@ -108,7 +108,7 @@ class Proformat extends Model
             foreach($reponse as $resultat) {
                 if(!in_array($resultat->idarticle, $listeArticle)) {
                     $listeArticle[] = $resultat->idarticle;
-                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, $resultat->tva, "");
+                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, ($resultat->tva*100), "");
                     $proformat->quantite = $resultat->quantite;
                     $proformat->prixHT = $resultat->prixht;
                     $proformat->prixAT = $resultat->prixat;

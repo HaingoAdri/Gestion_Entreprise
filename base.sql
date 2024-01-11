@@ -886,8 +886,8 @@ select idDemande, idArticle, sum(nombre) nombre, idModule, etat from besoin_acha
 -- fini
 
 
-create view prix_minimum_proformat as
-select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (nombre*prixUnitaire*tva) prixAT  
+create or replace view prix_minimum_proformat as
+select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (prixUnitaire*(((tva*100)+100)/100)*nombre) prixAT  
     from liste_meilleur_proformat l 
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
 
@@ -1197,11 +1197,19 @@ create table magasin (
     lieu varchar(150), 
     date date
 );
+
 create table caisse_magasin (
     id serial,
     idMagasin varchar(10) references magasin(id),
     idCaisse varchar(10) references caisse(id),
     etat int default 1
+);
+
+create table historique_bon_commande (
+    id serial,
+    idBonCommande varchar(10) references bon_commande(id),
+    etat int references etats(id_et),
+    date date
 );
 
 create view reste_argents as

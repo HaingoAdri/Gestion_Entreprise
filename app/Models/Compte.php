@@ -52,4 +52,14 @@ class Compte extends Model
         return false;
     }
 
+    public function getResteEnCompte() {
+        $requette = "select * from reste_argents_avec_nom_compte where idCompte = '$this->id'";
+        $reponse = DB::select($requette);
+        $reste = 0;
+        if(count($reponse) > 0){
+            $reste = $reponse[0]->reste;
+        }
+        return $reste;
+    }
+
 }
