@@ -62,4 +62,33 @@ class Compte extends Model
         return $reste;
     }
 
+    public function getListeTypeImmobilisation() {
+        $requette = "select * from type_immobilisation order by nom";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $compte = new Compte($resultat->id, $resultat->nom, $resultat->etat);
+                $liste[] = $compte;
+            }
+        }
+        return $liste;
+    }
+
+    public function getNextSeqTypeImmobilisation() {
+        $requette = "select * from compte where id like '$this->id%'";
+        $reponse = DB::select($requette);
+        return count($reponse);
+    }
+
+    public function getCompte() {
+        $requette = "select * from compte where id = '$this->id'";
+        $reponse = DB::select($requette);
+        $compte = null;
+        if(count($reponse) > 0){
+            $compte = new Compte($reponse[0]->id, $reponse[0]->nom, $reponse[0]->etat);
+        }
+        return $compte;
+    }
+
 }

@@ -15,6 +15,7 @@ class BesoinAchat extends Model
     public $nombre;
     public $date;
     public $etat;
+    public $description = "";
 
     public $article;
 
@@ -29,7 +30,16 @@ class BesoinAchat extends Model
 
     public function insert() {
         try {
-            $requete = "insert into besoin_achat(idmodule, idarticle, nombre, date, etat) values (".$this->idModule.",'".$this->idArticle."', '".$this->nombre."', '".$this->date."', '".$this->etat."')";
+            $requete = "insert into besoin_achat(idmodule, idarticle, nombre, date, etat, description) values (".$this->idModule.",'".$this->idArticle."', '".$this->nombre."', '".$this->date."', '".$this->etat."', '".$this->description."')";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin: ".$e->getMessage());
+        }    
+    }
+
+    public function insertImmobilisation() {
+        try {
+            $requete = "insert into besoin_immobilisation(idmodule, idimmobilisation, nombre, date, etat, description) values (".$this->idModule.",'".$this->idArticle."', '".$this->nombre."', '".$this->date."', '".$this->etat."', '".$this->description."')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert Besoin: ".$e->getMessage());
@@ -45,6 +55,16 @@ class BesoinAchat extends Model
         }    
     }
 
+    public function ajoutIdDemandeImmobilier($idDemande) {
+        try {
+            $requete = "update besoin_immobilisation set idDemande = '$idDemande', etat = 32 where etat = 28";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible d'inserer Etats: ".$e->getMessage());
+        }    
+    }
+    
+
     public function getListeBesoinNonValide() {
         $requette = "select * from liste_besoin_achat order by idArticle asc";
         $reponse = DB::select($requette);
@@ -52,7 +72,8 @@ class BesoinAchat extends Model
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $besoin = new BesoinAchat(idArticle: $resultat->idarticle, nombre: $resultat->nombre);
-                $besoin->article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $besoin->article = $article;
                 $liste[] = $besoin;
             }
         }
@@ -60,13 +81,32 @@ class BesoinAchat extends Model
     }
 
     public function getDetailsBesoinNonValide() {
-        $requette = "select * from besoin_achat where etat = 28 order by date asc";
+        $requette = "select * from besoin_achat where etat = 28 order by date asc, idArticle asc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $besoin = new BesoinAchat($resultat->id, $resultat->idmodule, $resultat->idarticle, $resultat->nombre, $resultat->date, $resultat->etat);
-                $besoin->article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $besoin->description = $resultat->description;
+                $article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $besoin->article = $article;
+                $liste[] = $besoin;
+            }
+        }
+        return $liste;
+    }
+
+    public function getDetailsBesoinImmobilierNonValide() {
+        $requette = "select * from liste_besoin_immobilisation_non_valide order by date asc, idArticle asc";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $besoin = new BesoinAchat($resultat->id, $resultat->idmodule, $resultat->idarticle, $resultat->nombre, $resultat->date, $resultat->etat);
+                $besoin->description = $resultat->description;
+                $compte = (new Compte(id: $resultat->idarticle))->getCompte();
+                $article = new Article(id: $compte->id, article: $compte->nom);
+                $besoin->article = $article;
                 $liste[] = $besoin;
             }
         }
@@ -74,13 +114,19 @@ class BesoinAchat extends Model
     }
 
     public function getListeBesoinNonValideParModule() {
-        $requette = "select * from besoin_achat where (etat != 45) and idModule = ". $this->idModule ." order by date desc, idArticle asc";
+        $requette = "select * from liste_besoin_achat_par_module where etat != 45 AND idModule = ". $this->idModule ." order by date asc, idArticle asc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $besoin = new BesoinAchat($resultat->id, $resultat->idmodule, $resultat->idarticle, $resultat->nombre, $resultat->date, $resultat->etat);
-                $besoin->article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $besoin->description = $resultat->description;
+                $article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                if($article == null) {
+                    $compte = (new Compte(id: $resultat->idarticle))->getCompte();
+                    $article = new Article(id: $compte->id, article: $compte->nom);
+                }
+                $besoin->article = $article;
                 $liste[] = $besoin;
             }
         }
@@ -101,6 +147,15 @@ class BesoinAchat extends Model
     public function updateEtat() {
         try {
             $requete = "update besoin_achat set etat = 25 where id = $this->id";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible to insert Besoin: ".$e->getMessage());
+        }    
+    }
+
+    public function updateEtatImmobilier() {
+        try {
+            $requete = "update besoin_immobilisation set etat = $this->etat where id = $this->id";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert Besoin: ".$e->getMessage());
@@ -128,7 +183,12 @@ class BesoinAchat extends Model
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
                 $besoin = new BesoinAchat(idArticle: $resultat->idarticle);
-                $besoin->article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                $article = (new Article(id: $resultat->idarticle))->getDonneesUnArticle();
+                if($article == null) {
+                    $compte = (new Compte(id: $resultat->idarticle))->getCompte();
+                    $article = new Article(id: $compte->id, article: $compte->nom);
+                }
+                $besoin->article = $article;
                 $liste[] = $besoin;
             }
         }
@@ -148,6 +208,27 @@ class BesoinAchat extends Model
         $requete = "update besoin_achat set etat= $this->etat where idmodule = '$idModule' and idarticle = '$idarticle' and iddemande = '$iddemande'";
         DB::update($requete);
         
+    }
+
+    public function getDescription($idDemande) {
+        $requette = "select * from besoin_achat where idDemande = '$idDemande' and idArticle = '$this->idArticle'";
+        $reponse = DB::select($requette);
+        $description = "";
+        if(count($reponse) > 0) {
+            if(count($reponse) == 1){
+                $description = $reponse[0]->description;
+            }
+            else if(count($reponse) > 1){
+                $description = "Achat $this->idArticle";
+            }
+        } else {
+            $requette = "select * from besoin_immobilisation where idDemande = '$idDemande' and idimmobilisation = '$this->idArticle'";
+            $reponse = DB::select($requette);
+            if(count($reponse) > 0) 
+                $description = $reponse[0]->description;
+        }
+
+        return $description;
     }
 
 }

@@ -25,6 +25,8 @@ class Proformat extends Model
     public $sommePrixAT;
     public $sommeTVA;
 
+    public $description;
+
     public function __construct($id = "", $idDemande = "", $idFournisseur = "", $idArticle = "", $prixUnitaire = "", $TVA = "", $date = "") {
         $this->id = $id;
         $this->idDemande = $idDemande;
@@ -59,6 +61,10 @@ class Proformat extends Model
 
     public function getArticle() {
         $article = (new Article(id: $this->idArticle))->getDonneesUnArticle();
+        if($article == null) {
+            $compte = (new Compte(id: $this->idArticle))->getCompte();
+            $article = new Article(id: $compte->id, article: $compte->nom);
+        }
         return $article->article;
     }
 
@@ -108,13 +114,14 @@ class Proformat extends Model
             foreach($reponse as $resultat) {
                 if(!in_array($resultat->idarticle, $listeArticle)) {
                     $listeArticle[] = $resultat->idarticle;
-                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, ($resultat->tva*100), "");
+                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, $resultat->tva, "");
                     $proformat->quantite = $resultat->quantite;
                     $proformat->prixHT = $resultat->prixht;
                     $proformat->prixAT = $resultat->prixat;
 
                     $prixHT += $proformat->prixHT;
                     $prixAT += $proformat->prixAT;
+                    $proformat->description = (new BesoinAchat(idArticle: $resultat->idarticle))->getDescription($resultat->iddemande);
 
                     $liste[] = $proformat;
                 }

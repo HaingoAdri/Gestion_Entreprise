@@ -18,6 +18,7 @@
                                     <th>ID Article</th>
                                     <th>Article</th>
                                     <th>Quantite</th>
+                                    <th>Description</th>
                                     <th>Module</th>
                                 </tr>
                             </thead>
@@ -28,6 +29,7 @@
                                     <th>{{ $besoin->idArticle }}</th>
                                     <td>{{ $besoin->article->article }}</td>
                                     <td>{{ $besoin->nombre }}</td>
+                                    <td>{{ $besoin->description }}</td>
                                     <td>{{ $besoin->getModule() }}</td>
                                     <td><a href="{{ route('refuserUneBesoinAchat', ['idBesoinAchat' => $besoin->id]) }}"><button type="submit" class="btn btn-primary">Refuser</button></a></td>
                                 </tr>

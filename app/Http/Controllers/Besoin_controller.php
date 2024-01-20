@@ -230,8 +230,9 @@ class Besoin_controller extends Controller
             $module = $employe->getModule();
         }
         $listeArticle = (new Article())->getListeArticle();
+        $typeImmobisation = (new Compte())->getListeTypeImmobilisation();
         $listeBesoinNonValide = (new BesoinAchat(idModule: $module))->getListeBesoinNonValideParModule();
-        return View("besoin_achat", compact("listeArticle", "listeBesoinNonValide", "module"));
+        return View("besoin_achat", compact("listeArticle", "listeBesoinNonValide", "module", "typeImmobisation"));
     }
 
     public function ajoutBesoinAchat(Request $request) {
@@ -239,14 +240,30 @@ class Besoin_controller extends Controller
         $idModule = $request->input('idModule');
         $idArticle = $request->input('idArticle');
         $quantite = $request->input('quantite');
+        $description = $request->input('description');
         $besoinAchat = new BesoinAchat("", $idModule, $idArticle, $quantite, $date, 28);
+        $besoinAchat->description = $description;
         $besoinAchat->insert();
         return redirect()->route('besoinAchat');
     }
 
+    public function ajoutBesoinImmobilisation(Request $request) {
+        $date = $request->input('date');
+        $idModule = $request->input('idModule');
+        $idArticle = $request->input('idArticle');
+        $quantite = $request->input('quantite');
+        $description = $request->input('description');
+        $besoinAchat = new BesoinAchat("", $idModule, $idArticle, $quantite, $date, 28);
+        $besoinAchat->description = $description;
+        $besoinAchat->insertImmobilisation();
+        return redirect()->route('besoinAchat');
+    }
+
     public function getListeBesoinAchatNonValide() {
-        $listeBesoinNonValide = (new BesoinAchat())->getListeBesoinNonValide();
-        return View("achat/liste_besoin_achat", compact("listeBesoinNonValide"));
+        $besoin = new BesoinAchat();
+        $listeBesoinNonValide = $besoin->getListeBesoinNonValide();
+        $listeBesoinImmobilierNonValide = $besoin->getDetailsBesoinImmobilierNonValide();
+        return View("achat/liste_besoin_achat", compact("listeBesoinNonValide", "listeBesoinImmobilierNonValide"));
     }
 
     public function getDetailsBesoinAchatNonValide() {
@@ -262,10 +279,18 @@ class Besoin_controller extends Controller
         return redirect()->route('detailsBesoinAchat');
     }
 
-    public function faireUnNouveauDemande() {
+    public function refuserUneBesoinImmobilier(Request $request) {
+        $idBesoinAchat = $request->input('idBesoinImmobilier');
+        $besoinAchat = new BesoinAchat(id: $idBesoinAchat, etat: 32);
+        $besoinAchat->updateEtatImmobilier();
+        return redirect()->route('listeBesoinAchatNonValide');
+    }
+
+    public function faireUnNouveauDemande(Request $request) {
+        $isImmobilier = $request->input('isImmobilier');
         $listeFourisseur = (new Fournisseur())->getListeFournisseur();
         $idDemande = (new Demande())->getNextDemande();
-        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande"));
+        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande", "isImmobilier"));
     }
 
     public function createPDF($date, $nom, $idDemande){
@@ -277,47 +302,48 @@ class Besoin_controller extends Controller
     }
 
     public function send_email($file_path, $email, $name) {
-        $mail = new PHPMailer();
-        $mail->IsSMTP();
-        $mail->Mailer = "smtp";
+        // $mail = new PHPMailer();
+        // $mail->IsSMTP();
+        // $mail->Mailer = "smtp";
 
-        $mail->SMTPDebug  = 0;  
-        $mail->SMTPAuth   = TRUE;
-        $mail->SMTPSecure = "tls";
-        $mail->Port       = 587;
-        $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "layahanjaratiana877@gmail.com";
-        $mail->Password   = "myoq cybw mrhc mias";
+        // $mail->SMTPDebug  = 0;  
+        // $mail->SMTPAuth   = TRUE;
+        // $mail->SMTPSecure = "tls";
+        // $mail->Port       = 587;
+        // $mail->Host       = "smtp.gmail.com";
+        // $mail->Username   = "layahanjaratiana877@gmail.com";
+        // $mail->Password   = "myoq cybw mrhc mias";
 
-        $mail->IsHTML(true);
-        $mail->AddAddress($email, $name);
-        $mail->Subject = "Demande de proforma";
+        // $mail->IsHTML(true);
+        // $mail->AddAddress($email, $name);
+        // $mail->Subject = "Demande de proforma";
 
-        // Content of the proforma request email
-        $content = "<p>Bonjour,</p>";
-        $content .= "<p>Veuillez trouver ci-joint la demande de proforma. Les détails complets se trouvent dans le fichier PDF attaché.</p>";
-        $content .= "<p>Merci de traiter cette demande dès que possible.</p>";
+        // // Content of the proforma request email
+        // $content = "<p>Bonjour,</p>";
+        // $content .= "<p>Veuillez trouver ci-joint la demande de proforma. Les détails complets se trouvent dans le fichier PDF attaché.</p>";
+        // $content .= "<p>Merci de traiter cette demande dès que possible.</p>";
 
-        $mail->MsgHTML($content);
+        // $mail->MsgHTML($content);
 
-        // Attachment
-        $mail->addAttachment($file_path, "Demande_de_proforma.pdf");
+        // // Attachment
+        // $mail->addAttachment($file_path, "Demande_de_proforma.pdf");
 
-        if(!$mail->Send()) {
-            Session::flash("erreur", "Erreur lors de l'envoi de l'e-mail.");
-        } else {
-            Session::flash("success", "Votre e-mail a bien été envoyé! .");
-        }
+        // if(!$mail->Send()) {
+        //     Session::flash("erreur", "Erreur lors de l'envoi de l'e-mail.");
+        // } else {
+        //     Session::flash("success", "Votre e-mail a bien été envoyé! .");
+        // }
 
-        return redirect()->route('listeDemandeProformat');
+        // return redirect()->route('listeDemandeProformat');
     }
 
     public function demandeProformat(Request $request) { //mandefa email ato
-        set_time_limit(120);
+        // set_time_limit(120);
         $date = $request->input('date');
         $idDemande = $request->input('idDemande');
         $nom = $request->input('nom');
         $fournisseurs = $request->input('fournisseur');
+        $isImmobilier = $request->input('isImmobilier');
 
         $pdf_name = $this->createPDF($date, $nom, $idDemande);
 
@@ -325,7 +351,7 @@ class Besoin_controller extends Controller
 
         echo count($fournisseurs);
 
-        if(File::exists($path)){
+        // if(File::exists($path)){
 
             foreach ($fournisseurs as $fournisseur) {
                 $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
@@ -334,9 +360,12 @@ class Besoin_controller extends Controller
                 $this->send_email($path, $fournisseur_un->email, $fournisseur_un->nom);
             }
 
-        }
-            
-        (new BesoinAchat())->ajoutIdDemande($idDemande);
+        // }
+        
+        if($isImmobilier == 1)
+            (new BesoinAchat())->ajoutIdDemandeImmobilier($idDemande);
+        else 
+            (new BesoinAchat())->ajoutIdDemande($idDemande);
 
         return redirect()->route('listeDemandeProformat');
     }

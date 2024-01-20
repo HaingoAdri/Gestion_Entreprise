@@ -55,6 +55,7 @@
                                     <th>ID Article</th>
                                     <th>Article</th>
                                     <th>Quantite</th>
+                                    <th>Description</th>
                                     <th>TVA</th>
                                     <th>Prix HT</th>
                                     <th>Prix AT</th>
@@ -67,6 +68,7 @@
                                     <th>{{ $listeProformat[$i]->idArticle }}</th>
                                     <td>{{ $listeProformat[$i]->getArticle() }}</td>
                                     <td>{{ $listeProformat[$i]->quantite }}</td>
+                                    <td>{{ $listeProformat[$i]->description }}</td>
                                     <td>{{ $listeProformat[$i]->TVA }}%</td>
                                     <td>{{ $listeProformat[$i]->prixHT }} Ar</td>
                                     <td>{{ $listeProformat[$i]->prixAT }} Ar</td>

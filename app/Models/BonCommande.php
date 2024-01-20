@@ -87,7 +87,6 @@ class BonCommande extends Model
 
     public function getDetailsBonCommande() {
         $liste = (new Proformat())->getListeProformatParIdBonCommande($this->id);
-
         if(count($liste) > 0)
             $this->nom = ((new Demande(idDemande: $liste[0]->idDemande))->getDonneesUnDemande())->nom;
         return $liste;

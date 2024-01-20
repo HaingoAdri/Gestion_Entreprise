@@ -42,6 +42,8 @@
                             </div>
                         </div>
 
+                        <input type="text" class="form-control" name="isImmobilier" value="{{ $isImmobilier }}" hidden>
+
                         <div class="form-group row mb-4">
                             <table class="table table-striped">
                                 <thead>

@@ -246,3 +246,7 @@ Route::post('/nouveau_caisse_magasin', [Magasin_controller::class, "nouveauCaiss
 //caisse
 Route::get('/caisse', [Caisse_controller::class, "index"])->name("caisse");
 Route::post('/nouveau_caisse', [Caisse_controller::class, "nouveauCaisse"])->name("nouveauCaisse");
+
+//Immobilisation
+Route::get('/ajout_besoin_immobilisation', [Besoin_controller::class, "ajoutBesoinImmobilisation"])->name("ajoutBesoinImmobilisation");
+Route::get('/refuser_besoin_immobilier', [Besoin_controller::class, "refuserUneBesoinImmobilier"])->name("refuserUneBesoinImmobilier");

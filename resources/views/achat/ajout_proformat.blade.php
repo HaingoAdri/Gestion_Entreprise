@@ -111,7 +111,7 @@
                                             </select>
                                         </td>
                                         <td><input type="text" class="form-control" id="prix[]" name="prix[]" placeholder="Prix unitaire"></td>
-                                        <td><input type="text" class="form-control" id="tva[]" name="tva[]" placeholder="TVA du Produit"></td>
+                                        <td><input type="text" class="form-control" id="tva[]" name="tva[]" placeholder="TVA en % du Produit"></td>
                                     </tr>
                                 </tbody>
                             </table>

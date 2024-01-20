@@ -879,7 +879,7 @@ JOIN
 
 -- modifier par haingo
 create view liste_besoin_achat_avec_quantite as
-select idDemande, idArticle, sum(nombre) nombre, idModule, etats from besoin_achat group by idDemande, idArticle, idModule;
+select idDemande, idArticle, sum(nombre) nombre, idModule from besoin_achat group by idDemande, idArticle, idModule;
 
 create view liste_besoin_achat_avec_quantite_etats as
 select idDemande, idArticle, sum(nombre) nombre, idModule, etat from besoin_achat group by idDemande, idArticle, idModule,etat;
@@ -887,7 +887,7 @@ select idDemande, idArticle, sum(nombre) nombre, idModule, etat from besoin_acha
 
 
 create or replace view prix_minimum_proformat as
-select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (prixUnitaire*(((tva*100)+100)/100)*nombre) prixAT  
+select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (prixUnitaire*((tva+100)/100)*nombre) prixAT  
     from liste_meilleur_proformat l 
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
 
@@ -1239,3 +1239,65 @@ select article, sum(quantite) quantite from sortie where types_sortie = 1 group 
 
 create view liste_total_sortie_article_achat as
 select article, sum(quantite) quantite from sortie where types_sortie = 2 group by article;
+
+-- immobilisation
+create view compte_mere_immobilisation as
+select (SUBSTRING(id, 1, 2) || SUBSTRING(id, 3, 1)) as id from compte where id like '21%' group by SUBSTRING(id, 1, 2) || SUBSTRING(id, 3, 1);
+
+create view type_immobilisation as
+select c.* from compte_mere_immobilisation i join compte c on i.id = c.id;
+
+create table besoin_immobilisation (
+    id serial primary key,
+    idModule int,
+    idImmobilisation varchar(10),
+    nombre int,
+    date date,
+    idDemande varchar(10) default NULL,
+    etat int,
+    description varchar(255),
+    foreign key (idModule) references Module(id),
+    foreign key (idImmobilisation) references compte(id),
+    foreign key (etat) references Etats(id_et)
+);
+
+-- ALTER TABLE besoin_immobilisation
+-- ALTER COLUMN idImmobilisation TYPE varchar(10);
+
+-- create or replace view liste_besoin_achat as
+-- (select idArticle, sum(nombre) nombre from besoin_achat where etat = 28 group by idArticle) union (select idimmobilisation, sum(nombre) nombre from besoin_immobilisation where etat = 28 group by idimmobilisation);
+
+create view liste_besoin_achat_par_module as
+SELECT * FROM besoin_achat
+    UNION
+SELECT id, idmodule, idimmobilisation AS idArticle, nombre, date, etat, iddemande, description FROM besoin_immobilisation;
+
+create view liste_besoin_immobilisation_non_valide as
+select id, idmodule, idimmobilisation AS idArticle, nombre, date, etat, iddemande, description from besoin_immobilisation where etat = 28;
+
+create or replace view demande_proformat as
+select iddemande from besoin_achat where etat = 32 group by idDemande
+UNION
+select iddemande from besoin_immobilisation where etat = 32 group by idDemande;
+
+create or replace view liste_article_par_demande as
+select idArticle, idDemande from besoin_achat group by idDemande, idArticle
+UNION
+select idimmobilisation idArticle, idDemande from besoin_immobilisation group by idDemande, idimmobilisation;
+
+ALTER TABLE proformat DROP CONSTRAINT proformat_idarticle_fkey;
+
+create or replace view liste_besoin_achat_avec_quantite as
+select idDemande, idArticle, sum(nombre) nombre, idModule from besoin_achat group by idDemande, idArticle, idModule
+UNION
+select idDemande, idImmobilisation, sum(nombre) nombre, idModule from besoin_immobilisation group by idDemande, idImmobilisation, idModule;
+
+create or replace view liste_besoin_achat_avec_quantite_etats as
+select idDemande, idArticle, sum(nombre) nombre, idModule, etat from besoin_achat group by idDemande, idArticle, idModule, etat
+UNION
+select idDemande, idImmobilisation, sum(nombre) nombre, idModule, etat from besoin_immobilisation group by idDemande, idImmobilisation, idModule, etat;
+
+create or replace view prix_minimum_proformat as
+select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (prixUnitaire*((tva+100)/100)*nombre) prixAT  
+    from liste_meilleur_proformat l 
+    join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
