@@ -137,7 +137,9 @@ class BonCommande extends Model
     public function valider($date, $etat) {
         $this->ajoutHistorique($date, $etat);
         $idDemande = $this->getIdDemande();
-        (new BesoinAchat(etat: $this->etat))->updateEtatParIdDemande($idDemande);
+        $besoin = new BesoinAchat(etat: $this->etat);
+        $besoin->updateEtatParIdDemande($idDemande);
+        $besoin->updateEtatParIdDemandeImmobilisation($idDemande);
     }
 
     public function getListeEnCours() {

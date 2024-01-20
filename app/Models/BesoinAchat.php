@@ -204,6 +204,15 @@ class BesoinAchat extends Model
         }  
     }
 
+    public function updateEtatParIdDemandeImmobilisation($idDemande) {
+        try {
+            $requete = "update besoin_immobilisation set etat = $this->etat where idDemande = '$idDemande'";
+            DB::update($requete);
+        } catch (Exception $e) {
+            throw new Exception("Impossible d'inserer Etats: ".$e->getMessage());
+        }  
+    }
+
     public function updateEtatBesoin_Achat($idModule,$idarticle, $iddemande){
         $requete = "update besoin_achat set etat= $this->etat where idmodule = '$idModule' and idarticle = '$idarticle' and iddemande = '$iddemande'";
         DB::update($requete);
