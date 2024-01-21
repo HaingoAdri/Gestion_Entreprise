@@ -13,7 +13,7 @@
                     <button type="button" class="btn btn-primary" style="margin-left: 500px;" data-toggle="modal" data-target="#modal-add-contact"> 
                         Nouveau Caisse Magasin 
                     </button>
-                        <div class="collapse" id="collapse-horizontal-validation"></div>
+                    <div class="collapse" id="collapse-horizontal-validation"></div>
                         <form method="GET" action="{{ route('voirCaisseMagasin') }}">
                             <div class="modal-header px-4">
                                 <h5 class="modal-title" id="exampleModalCenterTitle">Voir liste caisse par Magasin</h5>

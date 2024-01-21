@@ -242,3 +242,5 @@ insert into type_sortie values
 
 insert into etats values
 (50, 'Recu et Confirme');
+
+insert into module(type) values ('Immobilier');

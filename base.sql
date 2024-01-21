@@ -1301,3 +1301,13 @@ create or replace view prix_minimum_proformat as
 select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite, prixUnitaire, tva, (nombre*prixUnitaire) prixHT, (prixUnitaire*((tva+100)/100)*nombre) prixAT  
     from liste_meilleur_proformat l 
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
+
+
+create table description (
+    id serial,
+    type varchar(50) references compte(id),
+    description varchar(200) not null
+);
+
+create view liste_description_type_immobilisation as
+select d.id, type, nom, description from description d join compte c on d.type = c.id;

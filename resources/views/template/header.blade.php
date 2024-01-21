@@ -192,6 +192,33 @@
                     </li>
                     @endif
 
+                    @if(session("administrateur_rh")->module->id == 10)
+                    <li>
+                      <a class="sidenav-item-link" href="{{ route('listeDescriptionParType') }}">
+                          <i class="mdi mdi-account-group-outline"></i>
+                          <span class="nav-text">Description</span>
+                      </a>
+                    </li>
+                    
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#immobilier" aria-expanded="false" aria-controls="achat">
+                            <i class="mdi mdi-truck-fast"></i>
+                            <span class="nav-text">Immobilisation</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="immobilier" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                               
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
+                                        <span class="nav-text">Type Immobilisation</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
+                                        <span class="nav-text">Description Immobilisation</span>
+                                    </a></li>
+                            </div>
+                        </ul>
+                    </li>
+                    @endif
+
                     @if(session("administrateur_rh")->module->id == 8 || session("administrateur_rh")->module->id == 9)
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reception_livraison" aria-expanded="false" aria-controls="achat">
@@ -213,7 +240,6 @@
                     @endif
 
                     @if(session("administrateur_rh")->module->id == 9)
-                    <!-- modification de haingo -->
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#stock" aria-expanded="false" aria-controls="stock">
                             <i class="mdi mdi-playlist-plus"></i>
@@ -223,11 +249,9 @@
                             <div class="sub-menu">
                                 @if(session("administrateur_rh")->module->id == 9)
                                     <li><a class="sidenav-item-link" href="{{ route('entre_manuelle') }}">
-                                        <!-- choix d'insertion par check box ou insertion manuelle  mais aussi demande s'explication envoyer aux departement d'achat-->
                                         <span class="nav-text">Entrer de stock</span>
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('liste_explication') }}">
-                                        <!-- choix d'insertion par check box ou insertion manuelle  mais aussi demande s'explication envoyer aux departement d'achat-->
                                         <span class="nav-text">Explication</span>
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('histporique_liste') }}">

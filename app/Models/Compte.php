@@ -14,10 +14,15 @@ class Compte extends Model
     public $nom;
     public $etat;
 
-    public function __construct($id = "", $nom = "", $etat = "") {
+    public $idDescription;
+    public $description;
+
+    public function __construct($id = "", $nom = "", $etat = "", $idDescription = "", $description = "") {
         $this->id = $id;
         $this->nom = $nom;
         $this->etat = $etat;
+        $this->idDescription = $idDescription;
+        $this->description = $description;
     }
 
     public function insert() {
@@ -89,6 +94,28 @@ class Compte extends Model
             $compte = new Compte($reponse[0]->id, $reponse[0]->nom, $reponse[0]->etat);
         }
         return $compte;
+    }
+
+    public function ajoutDescription() {
+        try {
+            $requete = "insert into description(type, description) values ('".$this->id."','".$this->description."')";
+            DB::insert($requete);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }  
+    }
+
+    public function getListeDescription() {
+        $requette = "select * from liste_description_type_immobilisation where type = '$this->id'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $compte = new Compte(id: $resultat->type, nom: $resultat->nom, idDescription: $resultat->id, description: $resultat->description);
+                $liste[] = $compte;
+            }
+        }
+        return $liste;    
     }
 
 }

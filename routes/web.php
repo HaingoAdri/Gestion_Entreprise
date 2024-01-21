@@ -24,6 +24,8 @@ use App\Http\Controllers\Compte_controller;
 use App\Http\Controllers\Tresorier_controller;
 use App\Http\Controllers\Magasin_controller;
 use App\Http\Controllers\Caisse_controller;
+use App\Http\Controllers\Immobilier_controller;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -250,3 +252,5 @@ Route::post('/nouveau_caisse', [Caisse_controller::class, "nouveauCaisse"])->nam
 //Immobilisation
 Route::get('/ajout_besoin_immobilisation', [Besoin_controller::class, "ajoutBesoinImmobilisation"])->name("ajoutBesoinImmobilisation");
 Route::get('/refuser_besoin_immobilier', [Besoin_controller::class, "refuserUneBesoinImmobilier"])->name("refuserUneBesoinImmobilier");
+Route::get('/liste_description_par_type_immobilisation', [Immobilier_controller::class, "index"])->name("listeDescriptionParType");
+Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripcion"])->name("ajoutDescripcion");
