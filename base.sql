@@ -1311,3 +1311,35 @@ create table description (
 
 create view liste_description_type_immobilisation as
 select d.id, type, nom, description from description d join compte c on d.type = c.id;
+
+-- PV de reception
+CREATE TABLE Lieu(
+    id VARCHAR(10) PRIMARY KEY,
+    nom VARCHAR(100),
+    id_etat INT,
+    foreign key (id_etat) references Etats(id_et)
+);
+
+CREATE TABLE etat_immobilisation(
+    id SERIAL PRIMARYB KEY,
+    nom VARCHAR(255)
+);
+
+create sequence seqNumero increment by 1 start with 1 minValue 1;
+
+CREATE TABLE pv_reception(
+    id VARCHAR(10) PRIMARY KEY,
+    date DATE,
+    code VARCHAR(255),
+    id_etat_immobilisation INT,
+    id_receptionneur VARCHAR(10),
+    id_livreur VARCHAR(10)
+);
+
+CREATE TABLE livreur(
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(255),
+    contact VARCHAR(255),
+    id_fournisseur INT,
+    foreign key (id_fournisseur) references fournisseur(id)
+);

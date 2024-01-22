@@ -25,7 +25,7 @@ use App\Http\Controllers\Tresorier_controller;
 use App\Http\Controllers\Magasin_controller;
 use App\Http\Controllers\Caisse_controller;
 use App\Http\Controllers\Immobilier_controller;
-
+use App\Http\Controllers\Pv_Reception_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -254,3 +254,11 @@ Route::get('/ajout_besoin_immobilisation', [Besoin_controller::class, "ajoutBeso
 Route::get('/refuser_besoin_immobilier', [Besoin_controller::class, "refuserUneBesoinImmobilier"])->name("refuserUneBesoinImmobilier");
 Route::get('/liste_description_par_type_immobilisation', [Immobilier_controller::class, "index"])->name("listeDescriptionParType");
 Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripcion"])->name("ajoutDescripcion");
+Route::get('/ajout_lieu_immobilisation', [Pv_Reception_controller::class, "nouveauLieu"])->name("ajout_lieu_immobilisation");
+Route::get('/insert_lieu_immobilisation', [Pv_Reception_controller::class, "insertLieu"])->name("insert_lieu_immobilisation");
+Route::get('/ajout_etat_immobilisation', [Pv_Reception_controller::class, "nouvelleEtat"])->name("ajout_etat_immobilisation");
+Route::get('/insert_etat_immobilisation', [Pv_Reception_controller::class, "insertEtat"])->name("insert_etat_immobilisation");
+Route::get('/ajout_livreur_immobilisation', [Pv_Reception_controller::class, "nouveauLivreur"])->name("ajout_livreur_immobilisation");
+Route::get('/insert_livreur_immobilisation', [Pv_Reception_controller::class, "insertLivreur"])->name("insert_livreur_immobilisation");
+Route::get('/ajout_pv_reception', [Pv_Reception_controller::class, "index"])->name("ajout_pv_reception");
+Route::get('/insert_pv_reception', [Pv_Reception_controller::class, "insertPvReception"])->name("insert_pv_reception");
