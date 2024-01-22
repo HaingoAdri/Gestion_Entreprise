@@ -199,6 +199,13 @@
                           <span class="nav-text">Description</span>
                       </a>
                     </li>
+
+                    <li>
+                      <a class="sidenav-item-link" href="{{ route('ajout_livreur_immobilisation') }}">
+                          <i class="mdi mdi-account-group-outline"></i>
+                          <span class="nav-text">Livreur</span>
+                      </a>
+                    </li>
                     
                     <li  class="has-sub" >
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#immobilier" aria-expanded="false" aria-controls="achat">
@@ -213,6 +220,15 @@
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
                                         <span class="nav-text">Description Immobilisation</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_etat_immobilisation') }}">
+                                        <span class="nav-text">Etat Immobilisation</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_etat_immobilisation') }}">
+                                        <span class="nav-text">Lieu Immobilisation</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_pv_reception') }}">
+                                        <span class="nav-text">Proces Verbal de reception Immobilisation</span>
                                     </a></li>
                             </div>
                         </ul>

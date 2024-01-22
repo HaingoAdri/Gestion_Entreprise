@@ -158,4 +158,20 @@ class BonCommande extends Model
         return $liste;
     }
 
+    public function getListeEnAttenteImmobilisation() {
+        $requette = "select * from liste_bon_commande_en_attente where etat = $this->etat order by date desc";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $bonCommande = new BonCommande(id: $resultat->id, date: $resultat->date, idPayement: $resultat->idpayement, delaiLivarison: $resultat->delailivarison, etat: $resultat->etat);
+                $idDemande = $bonCommande->getIdDemande();
+                $demande = (new Demande(idDemande: $idDemande))->getDonneesUnDemande();
+                $bonCommande->nom = $demande->nom;
+                $liste[] = $bonCommande;
+            }
+        }
+        return $liste;
+    }
+
 }
