@@ -9,46 +9,15 @@ use App\Models\Etat_immobilisation;
 use App\Models\Pv_Reception;
 use App\Models\Fournisseur;
 use App\Models\Livreur;
+use App\Models\BonCommande;
+use App\Models\Proformat;
+use App\Models\Article;
+use App\Models\Details_Pv_Reception;
 
 use Illuminate\Support\Facades\Session;
 
 class Pv_Reception_controller extends Controller
 {
-
-    public function index(Request $request){
-
-        $date = $request->get('date');
-        $bon_commande = (new BonCommande(id: $request->get('idBonCommande')))->getDonneesUnCommande();
-        $details_proformat = (new Proformat())->getDonnees; //// eto za zaoooo
-        $compte = new Compte();
-        $listeCompte = $compte->getListeTypeImmobilisation();
-
-        $lieu = new Lieu();
-        $listeLieu = $lieu->getListeLieu();
-
-        $etat = new Etat_immobilisation();
-        $etats = $etat->getAllEtats();
-
-        $livreur = new Livreur();
-        $listeLivreur = $livreur->getListeLivreur();
-
-        return view("immobilisation/pv_reception", compact('listeCompte', 'listeLieu', 'etats', 'listeLivreur'));
-    }
-
-    
-    public function insertPvReception(Request $request){
-        $date = $request->get('date');
-        $lieu = $request->get('lieu');
-        $compte = $request->get('compte');
-        $etat_immobilisation = $request->get('etat');
-        $id_recepteur = Session::get('administrateur_rh')->id;
-        $id_livreur = $request->get('livreur');
-        
-        $pv_reception = new Pv_Reception("", $date, "", $etat_immobilisation, $id_recepteur, $id_livreur);
-        $lieu->insert();
-        
-        return redirect()->route('ajout_lieu_immobilisation');
-    }
     
     public function nouveauLieu(){
         $lieu = new Lieu();
@@ -75,7 +44,7 @@ class Pv_Reception_controller extends Controller
     public function insertEtat(Request $request){
         $nom = $request->get('nom');
 
-        $etat_immobilisation = new Etat_immobiisation(nom: $nom);
+        $etat_immobilisation = new Etat_immobilisation(nom: $nom);
         $etat_immobilisation->insert();
 
         return redirect()->route('ajout_etat_immobilisation');
@@ -102,53 +71,79 @@ class Pv_Reception_controller extends Controller
         return redirect()->route('ajout_livreur_immobilisation');
     }
 
-    public function show_pv_de_reception(){
-        $bon_commande_en_cours = (new BonCommande())->getListeEnCours();
-        return view("immobilisation/pv_de_reception_form", compact("bon_commande_en_cours"));
+    public function show_list_bon_commande(){
+        $bonCommande = new BonCommande();
+        $listeBonCommande = $bonCommande->getListeEnAttenteImmobilisation();
+        // $listeBonCommande = array();
+        return view("immobilisation/liste_bon_commande", compact("listeBonCommande"));
     }
 
-    public function restesArticlesAVAliderPourCeBonCommande($numero, $bonCommande){
-        $resultat = array();
+    public function show_list_proformat(Request $request){
+        $date = $request->get("date");
+        $lieu = $request->get("lieu");
+        // $numeroBonCommande = $request->get("numero");
+        $numeroBonCommande = "BC00000012";
+        $liste_details_bon_commande = (new BonCommande(id: $numeroBonCommande))->getDetailsBonCommande();
+        $donnees = (new BonCommande(id: $numeroBonCommande))->getDonneesUnCommande();
+        // $listeDescription = array();
 
-        $listeProformat = $bonCommande->getDetailsBonCommande();
-        $dansBonReception = (new BonReception(id_bon_commande: $numero))->getDetailsBonReceptionValiderPourUnBonCommande();
+        // for($i=0; $i<count($bonCommande); $i++){
+        //     $description_immobilisation = (new Compte(id: $bonCommande[$i]->idArticle))->getListeDescription();
+        //     $listeDescription[] = $description_immobilisation;
+        // }
 
-        $idArticles = [];
-        foreach ($dansBonReception as $objet) {
-            $idArticles[] = $objet->id_article;
-        }
+        // var_dump($bonCommande);
 
-        for ($i=0; $i < count($listeProformat) - 1; $i++) {
-            if(count($idArticles) > 0){
-                if(!in_array($listeProformat[$i]->idArticle, $idArticles)){
-                    echo "Bebeeeeeee ".$listeProformat[$i]->idArticle."\n";
-                    $resultat[] = $listeProformat[$i];
-                }
-            }else{
-                return $listeProformat;
-            }
-        }
+        // echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ";
 
-        $resultat[] = $listeProformat[count($listeProformat)-1];
-
-        // var_dump($resultat);
-        return $resultat;
+        // var_dump($listeDescription);
+        return view("immobilisation/liste_proformat", compact("date", "lieu", "liste_details_bon_commande", "donnees"));
     }
 
-    public function create_pv_de_reception(Request $request){
-        $resultat = array();
-        $resultat["date"] = $request->input('date');
-        $resultat["lieu"] = $request->input('lieu');
-        $resultat["numero"] = $request->input('numero');
+    public function create_pv_reception(Request $request){
+        $numero = $request->get("bonCommande");
+        $article = (new Article(id: $request->get("idArticle")))->getDonneesUnArticle();
+        $compte = (new Compte(id: $request->get("idArticle")))->getCompte();
+        $listeDescription = (new Compte(id: $request->get("idArticle")))->getListeDescription();
 
-        $bonCommande = new BonCommande(id: $resultat["numero"]);
-        $bonCommande = $bonCommande->getDonneesUnCommande();
-        $listeProformat = $this->restesArticlesAVAliderPourCeBonCommande($resultat["numero"], $bonCommande);
+        $etat = new Etat_immobilisation();
+        $listeEtats = $etat->getAllEtats();
+        $listeAmmortissements = $etat->getAllAmmortissement();
 
-        // var_dump($listeProformat);
+        $lieu = new Lieu();
+        $listeLieu = $lieu->getListeLieu();
 
-        return view("bon/bon_de_reception", compact("resultat", "bonCommande","listeProformat"));
+        $livreur = new Livreur();
+        $listeLivreur = $livreur->getListeLivreur();
+
+        return view("immobilisation/pv_reception_form", compact("numero", "article", "compte", "listeDescription", "listeEtats", "listeAmmortissements", "listeLieu", "listeLivreur"));
+    }
+
+    public function insert_pv_reception(Request $request){
+        
+        $date = $request->get("date");
+        $lieu = $request->get("lieu");
+        $etat = $request->get("etat");
+        $ammortissement = $request->get("ammortissement");
+        $taux = $request->get("taux");
+        $recepteur = Session::get('administrateur_rh')->id;
+        $livreur = $request->get("livreur");
+        $numero_bon_commande = $request->get("numero_bon");
+        $id_compte = $request->get("id_compte");
+        
+        $pv_reception = new Pv_Reception(date: $date, id_etat_immobilisation: $etat, id_type_ammortissement: $ammortissement, taux: $taux, id_receptionneur: $recepteur, id_livreur: $livreur, id_bon_commande: $numero_bon_commande);
+        
+        $lastID = $pv_reception->codification($lieu, $id_compte);
+
+        $listeDescription = (new Compte(id: $id_compte))->getListeDescription();
+
+        for($i=0; $i< count($listeDescription); $i++){
+            $information = $request->get("".$listeDescription[$i]->description."_".$listeDescription[$i]->idDescription);
+            $details = new Details_Pv_Reception($lastID, $listeDescription[$i]->idDescription, $information);
+            $details->insert();
+        }
+
+        return redirect()->route('show_list_bon_commande');
     }
     
-
 }

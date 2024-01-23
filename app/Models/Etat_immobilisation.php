@@ -42,4 +42,10 @@ class Etat_immobilisation extends Model {
         $reponse = DB::select($requette);
         return $reponse;
     }
+
+    public function getAllAmmortissement() {
+        $requette = "select * from type_ammortissement ";
+        $reponse = DB::select($requette);
+        return $reponse;
+    }
 }

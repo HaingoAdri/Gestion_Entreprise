@@ -260,9 +260,8 @@ Route::get('/ajout_etat_immobilisation', [Pv_Reception_controller::class, "nouve
 Route::get('/insert_etat_immobilisation', [Pv_Reception_controller::class, "insertEtat"])->name("insert_etat_immobilisation");
 Route::get('/ajout_livreur_immobilisation', [Pv_Reception_controller::class, "nouveauLivreur"])->name("ajout_livreur_immobilisation");
 Route::get('/insert_livreur_immobilisation', [Pv_Reception_controller::class, "insertLivreur"])->name("insert_livreur_immobilisation");
-Route::get('/ajout_pv_reception', [Pv_Reception_controller::class, "index"])->name("ajout_pv_reception");
-Route::get('/insert_pv_reception', [Pv_Reception_controller::class, "insertPvReception"])->name("insert_pv_reception");
 
-Route::get('/show_pv_de_reception', [Pv_Reception_controller::class, "show_pv_de_reception"])->name("show_pv_de_reception");
-Route::get('/create_pv_de_reception', [Pv_Reception_controller::class, "create_pv_de_reception"])->name("create_pv_de_reception");
-
+Route::get('/show_list_bon_commande', [Pv_Reception_controller::class, "show_list_bon_commande"])->name("show_list_bon_commande");
+Route::get('/show_list_proformat', [Pv_Reception_controller::class, "show_list_proformat"])->name("show_list_proformat");
+Route::get('/create_pv_reception', [Pv_Reception_controller::class, "create_pv_reception"])->name("create_pv_reception");
+Route::get('/insert_pv_reception', [Pv_Reception_controller::class, "insert_pv_reception"])->name("insert_pv_reception");

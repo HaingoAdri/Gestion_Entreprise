@@ -63,6 +63,7 @@ class Proformat extends Model
         $article = (new Article(id: $this->idArticle))->getDonneesUnArticle();
         if($article == null) {
             $compte = (new Compte(id: $this->idArticle))->getCompte();
+            // var_dump($compte);
             $article = new Article(id: $compte->id, article: $compte->nom);
         }
         return $article->article;
@@ -105,6 +106,7 @@ class Proformat extends Model
 
     public function getListeProformatParIdBonCommande($idBonCommande) {
         $requette = "select * from liste_details_bon_de_commande where idboncommande = '$idBonCommande' order by idArticle asc";
+        echo $requette;
         $reponse = DB::select($requette);
         $liste = array();
         $listeArticle = array();

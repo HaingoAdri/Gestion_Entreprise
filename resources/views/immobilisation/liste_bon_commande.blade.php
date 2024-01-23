@@ -17,7 +17,7 @@
 
                         <div class="card-body">
 
-                            <form action="{{ route('create_pv_de_reception_form') }}">
+                            <form action="{{ route('show_list_proformat') }}">
                                 <div class="row mb-2">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -36,12 +36,12 @@
 
                                 <div class="form-group mb-4">
                                     <label for="userName">Numéro de bon de commande</label>
-                                    <select name="numero" class="form-control">
-                                        @if(count($bon_commande_en_cours) > 0)
-                                            @foreach($bon_commande_en_cours as $bon_commande)
-                                                <option value="{{ $bon_commande->id }}">{{ $bon_commande->id }}</option>
-                                            @endforeach
-                                        @endif
+                                    <select class="form-control" name="numero">
+                                    @if(count($listeBonCommande) > 0)
+                                        @foreach($listeBonCommande as $bon_commande)
+                                            <option value="{{ $bon_commande->id }}">{{ $bon_commande->id }}</option>
+                                        @endforeach
+                                    @endif
                                     </select>
                                 </div>
 

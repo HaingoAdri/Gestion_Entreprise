@@ -244,3 +244,11 @@ insert into etats values
 (50, 'Recu et Confirme');
 
 insert into module(type) values ('Immobilier');
+
+insert into etat_immobilisation values  (default, 'Neuf'),
+                                        (default, 'Occasion'),
+                                        (default, 'Inutilisable'),
+                                        (default, 'Utilisable');
+
+    insert into type_ammortissement values  (1, 'Ammortissement Lineaire'),
+                                            (10, 'Ammortissement Degressif');

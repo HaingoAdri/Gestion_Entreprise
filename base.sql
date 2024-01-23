@@ -1313,6 +1313,11 @@ create view liste_description_type_immobilisation as
 select d.id, type, nom, description from description d join compte c on d.type = c.id;
 
 -- PV de reception
+CREATE TABLE type_ammortissement(
+    id INT PRIMARY KEY,
+    nom VARCHAR(155)
+);
+
 CREATE TABLE Lieu(
     id VARCHAR(10) PRIMARY KEY,
     nom VARCHAR(100),
@@ -1321,19 +1326,43 @@ CREATE TABLE Lieu(
 );
 
 CREATE TABLE etat_immobilisation(
-    id SERIAL PRIMARYB KEY,
+    id SERIAL PRIMARY KEY,
     nom VARCHAR(255)
 );
 
 create sequence seqNumero increment by 1 start with 1 minValue 1;
+create sequence seqPvReception increment by 1 start with 1 minValue 1;
+
+create function nextSeqNumero() returns integer
+AS
+    $$
+Declare
+retour integer;
+BEGIN
+SELECT coalesce(nextval('seqNumero'),1) into retour;
+return retour;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE pv_reception(
     id VARCHAR(10) PRIMARY KEY,
     date DATE,
     code VARCHAR(255),
     id_etat_immobilisation INT,
+    id_type_ammortissement INT,
+    taux DOUBLE PRECISION,
     id_receptionneur VARCHAR(10),
-    id_livreur VARCHAR(10)
+    id_livreur VARCHAR(10),
+    id_bon_commande VARCHAR(10),
+    foreign key (id_bon_commande) references bon_commande(id),
+    foreign key (id_type_ammortissement) references type_ammortissement(id)
+);
+
+CREATE TABLE details_pv_reception(
+    id_pv_reception VARCHAR(10),
+    id_description INT,
+    information VARCHAR(255),
+    foreign key (id_pv_reception) references pv_reception(id)
 );
 
 CREATE TABLE livreur(

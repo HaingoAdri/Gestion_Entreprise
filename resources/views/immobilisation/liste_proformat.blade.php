@@ -29,18 +29,15 @@
 
                         <div class="card-body">
 
-                            <form action="{{ route('validation_reception') }}">
+                            <form action="#">
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <span style="display: block;"><strong>Lieu : </strong> {{ $resultat["lieu"] }} </span>
-                                        <span style="display: block;"><strong>N° de commande : </strong> {{ $bonCommande->id }} </span>
-                                        <span style="display: block;"><strong>Titre de la commande : </strong> {{ $bonCommande->nom }} </span>
-                                        <span style="display: block;"><strong>Date de la commande : </strong> {{ $bonCommande->date }} </span>
-                                        <input type="hidden" name="numero" value="{{ $resultat['numero']}}">
-                                        <input type="hidden" name="date" value="{{ $resultat['date']}}">
-                                        <input type="hidden" name="lieu" value="{{ $resultat['lieu']}}">
-                                        <span style="display: block;"><strong>Responsable de récéption : </strong> {{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }}</span>
+                                        <span style="display: block;"><strong>Lieu : </strong> {{ $lieu }} </span>
+                                        <span style="display: block;"><strong>N° de commande : </strong> {{ $donnees->id }} </span>
+                                        <span style="display: block;"><strong>Titre de la commande : </strong> {{ $donnees->nom }} </span>
+                                        <span style="display: block;"><strong>Date de la commande : </strong> {{ $donnees->date }} </span>
+                                        <span style="display: block;"><strong>Responsable de récéption : </strong> {{ Session::get('administrateur_rh')->prenom }} {{ Session::get('administrateur_rh')->nom }} </span>
                                     </div>
                                     
                                 </div>
@@ -61,20 +58,20 @@
                                                             <th scope="col">Désignation</th>
                                                             <th scope="col">Quantités</th>
                                                             <th scope="col">Fournisseur</th>
+                                                            <th scope="col">Description</th>
                                                             <th scope="col">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @for($i=0; $i<count($listeProformat)-1; $i++)
+                                                        @for($i=0; $i<count($liste_details_bon_commande) - 1; $i++)
                                                             <tr>
-                                                                <td scope="row">{{ $i }}</td>
-                                                                <td>{{ $listeProformat[$i]->idArticle }} || {{ $listeProformat[$i]->getArticle() }}</td>
-                                                                <td>{{ $listeProformat[$i]->quantite }}</td>
-                                                                <td>{{ $listeProformat[$i]->getNomFournisseur() }}</td>
+                                                                <td scope="row"> {{ $liste_details_bon_commande[$i]->idArticle }} </td>
+                                                                <td> {{ $liste_details_bon_commande[$i]->getArticle() }} </td>
+                                                                <td> {{ $liste_details_bon_commande[$i]->quantite }} </td>
+                                                                <td> {{ $liste_details_bon_commande[$i]->getNomFournisseur() }} </td>
+                                                                <td> {{ $liste_details_bon_commande[$i]->description }} </td>
                                                                 <td>
-                                                                    <label class="switch switch-primary switch-pill form-control-label ">
-                                                                        <a href="{{ route('ajout_pv_reception', ['idBonCommande' => $bon->id, 'date' => $resultat['date'], 'idProformat' => $listeProformat[$i]->id ]) }}"><button type="button" class="btn btn-primary">Faire un PV</button></a>    
-                                                                    </label>
+                                                                    <a href="{{ route('create_pv_reception', ['idArticle' => $liste_details_bon_commande[$i]->idArticle, 'bonCommande' => $donnees->id ]) }}"><button type="button" class="btn btn-primary">Faire un PV</button></a>    
                                                                 </td>
                                                             </tr>
                                                         @endfor
@@ -88,7 +85,7 @@
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <p>Edité le : {{ $resultat["date"] }} </p>
+                                            <p>Edité le :  {{ $date }}</p>
                                         </div>
                                         <div class="col-md-4">
                                             <button type="submit" class="btn btn-primary btn-pill">Valider</button>

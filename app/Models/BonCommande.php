@@ -159,7 +159,7 @@ class BonCommande extends Model
     }
 
     public function getListeEnAttenteImmobilisation() {
-        $requette = "select * from liste_bon_commande_en_attente where etat = $this->etat order by date desc";
+        $requette = "select * from liste_bon_commande_en_cours where etat = $this->etat order by date desc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

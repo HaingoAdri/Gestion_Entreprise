@@ -41,6 +41,21 @@
   <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" />
 
   <script src="{{ asset('plugins/nprogress/nprogress.js') }}"></script>
+
+  <script defer>
+    function ajoutTaux() {
+        console.log("Atooooooooooooo");
+        var typeSelect = document.querySelector('select[name="ammortissement"]');
+        var selectedValue = typeSelect.value;   
+        console.log("value: " + selectedValue);
+
+        if( selectedValue == 10) {
+            var kilosDiv = document.getElementById("taux");
+            kilosDiv.style.display = "block";
+        }
+    }
+</script>
+
 </head>
 
 
@@ -224,10 +239,10 @@
                                     <li><a class="sidenav-item-link" href="{{ route('ajout_etat_immobilisation') }}">
                                         <span class="nav-text">Etat Immobilisation</span>
                                     </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('ajout_etat_immobilisation') }}">
+                                    <li><a class="sidenav-item-link" href="{{ route('ajout_lieu_immobilisation') }}">
                                         <span class="nav-text">Lieu Immobilisation</span>
                                     </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('ajout_pv_reception') }}">
+                                    <li><a class="sidenav-item-link" href="{{ route('show_list_bon_commande') }}">
                                         <span class="nav-text">Proces Verbal de reception Immobilisation</span>
                                     </a></li>
                             </div>
