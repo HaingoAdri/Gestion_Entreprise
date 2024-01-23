@@ -31,7 +31,6 @@
                         </form>
                     </div>
                 </div>
-                <br>
                 <div class="card-body">
                     @if(count($descriptions) > 0)
                         <p style="color: black;">Numero de compte: {{ $descriptions[0]->id }}</p>

@@ -14,22 +14,24 @@ class Demande extends Model {
     public $idDemande;
     public $idFournisseur;
     public $etat;
-
+    public $type;
     public $listeProformat;
+
    
 
-    public function __construct($id = "", $nom = "", $date = "", $idDemande = "", $idFournisseur = "", $etat = "") {
+    public function __construct($id = "", $nom = "", $date = "", $idDemande = "", $idFournisseur = "", $etat = "", $type = "") {
         $this->id = $id;
         $this->nom = $nom;
         $this->date = $date;
         $this->idDemande = $idDemande;
         $this->idFournisseur = $idFournisseur;
         $this->etat = $etat;
+        $this->type = $type;
     }
 
     public function insert() {
         try {
-            $requete = "insert into demande (date, nom, iddemande, idfournisseur, etat) values ('$this->date','$this->nom', '$this->idDemande', $this->idFournisseur, $this->etat)";
+            $requete = "insert into demande (date, nom, iddemande, idfournisseur, etat, type) values ('$this->date','$this->nom', '$this->idDemande', $this->idFournisseur, $this->etat, $this->type)";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer un nouveau demande proformat: ".$e->getMessage());
@@ -96,4 +98,15 @@ class Demande extends Model {
         }
         return $demande;
     }
+
+    public function getTypeDemande() {
+        $requette = "select * from type_demande where idDemande = '$this->idDemande'";
+        $reponse = DB::select($requette);
+        if(count($reponse) > 0){
+            return $reponse[0]->type;
+        }
+        return 1;
+    }
+
+
 }

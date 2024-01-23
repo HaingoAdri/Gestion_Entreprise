@@ -1372,3 +1372,14 @@ CREATE TABLE livreur(
     id_fournisseur INT,
     foreign key (id_fournisseur) references fournisseur(id)
 );
+
+
+insert into etats values (100, 'Besoin achat');
+insert into etats values (110, 'Besoin immobilier');
+
+ALTER table demande add type int references etats(id_et) default 100;
+
+ALTER table bon_commande add type int references etats(id_et) default 100;
+
+create view type_demande as
+select idDemande, nom, type from demande group by idDemande, type, nom;

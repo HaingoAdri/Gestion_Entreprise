@@ -288,9 +288,10 @@ class Besoin_controller extends Controller
 
     public function faireUnNouveauDemande(Request $request) {
         $isImmobilier = $request->input('isImmobilier');
+        $type = $request->input('type');
         $listeFourisseur = (new Fournisseur())->getListeFournisseur();
         $idDemande = (new Demande())->getNextDemande();
-        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande", "isImmobilier"));
+        return View("achat/ajout_demande", compact("listeFourisseur", "idDemande", "isImmobilier", "type"));
     }
 
     public function createPDF($date, $nom, $idDemande){
@@ -344,6 +345,7 @@ class Besoin_controller extends Controller
         $nom = $request->input('nom');
         $fournisseurs = $request->input('fournisseur');
         $isImmobilier = $request->input('isImmobilier');
+        $type = $request->input('type');
 
         $pdf_name = $this->createPDF($date, $nom, $idDemande);
 
@@ -354,7 +356,7 @@ class Besoin_controller extends Controller
         // if(File::exists($path)){
 
             foreach ($fournisseurs as $fournisseur) {
-                $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1);
+                $demande = new Demande("", $nom, $date, $idDemande, $fournisseur, 1, $type);
                 $demande->insert();
                 $fournisseur_un = (new Fournisseur(id: $fournisseur))->getDonneesUnFournisseur();
                 $this->send_email($path, $fournisseur_un->email, $fournisseur_un->nom);
@@ -408,7 +410,9 @@ class Besoin_controller extends Controller
         $delai = $request->input('delai');
         $idPayement = $request->input('idPayement');
 
-        $bonCommande = new BonCommande(date: $date, idPayement: $idPayement, delaiLivarison: $delai, etat: 32);
+        $type = (new Demande(idDemande: $idDemande))->getTypeDemande();
+
+        $bonCommande = new BonCommande(date: $date, idPayement: $idPayement, delaiLivarison: $delai, etat: 32, type: $type);
         $bonCommande->id = $bonCommande->getNextIDCommande();
         $bonCommande->insertBonCommande();
 

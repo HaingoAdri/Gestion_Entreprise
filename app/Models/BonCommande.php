@@ -13,24 +13,26 @@ class BonCommande extends Model
     public $date;
     public $idPayement;
     public $delaiLivarison;
+    public $type;
 
     public $idProformat;
     public $etat;
 
     public $nom;
 
-    public function __construct($id = "", $date = "", $idPayement = "",  $delaiLivarison = "", $idProformat = "", $etat = "") {
+    public function __construct($id = "", $date = "", $idPayement = "",  $delaiLivarison = "", $idProformat = "", $etat = "", $type = "") {
         $this->id = $id;
         $this->date = $date;
         $this->idPayement = $idPayement;
         $this->delaiLivarison = $delaiLivarison;
         $this->idProformat = $idProformat;
         $this->etat = $etat;
+        $this->type = $type;
     }
 
     public function insertBonCommande() {
         try {
-            $requete = "insert into bon_commande (id, date, idPayement, delaiLivarison, etat) values ('$this->id', '$this->date', $this->idPayement, '$this->delaiLivarison', '$this->etat')";
+            $requete = "insert into bon_commande (id, date, idPayement, delaiLivarison, etat, type) values ('$this->id', '$this->date', $this->idPayement, '$this->delaiLivarison', '$this->etat', '$this->type')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer un nouveau bon de commande: ".$e->getMessage());

@@ -36,7 +36,7 @@
                     <a href="{{ route('detailsBesoinAchat') }}"><button type="button" class="btn btn-primary"> 
                         Details
                     </button></a>
-                    <a href="{{ route('faireUneDemande', ['isImmobilier' => false]) }}"><button type="button" class="btn btn-primary"> 
+                    <a href="{{ route('faireUneDemande', ['isImmobilier' => false, 'type' => 100]) }}"><button type="button" class="btn btn-primary"> 
                         Faire une demande
                     </button></a>
                 </div>
@@ -77,7 +77,7 @@
                 </div>
                 @if(count($listeBesoinImmobilierNonValide) > 0)
                 <div class="modal-footer px-4">
-                    <a href="{{ route('faireUneDemande', ['isImmobilier' => true]) }}"><button type="button" class="btn btn-primary"> 
+                    <a href="{{ route('faireUneDemande', ['isImmobilier' => true, 'type' => 110]) }}"><button type="button" class="btn btn-primary"> 
                         Faire une demande
                     </button></a>
                 </div>
