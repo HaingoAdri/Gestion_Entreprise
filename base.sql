@@ -1401,4 +1401,4 @@ ALTER table bon_commande add type int references etats(id_et) default 100;
 create view type_demande as
 select idDemande, nom, type from demande group by idDemande, type, nom;
 
-
+ALTER TABLE besoin_immobilisation add idCategorie varchar(10) references categorie(id);

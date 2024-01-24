@@ -253,8 +253,10 @@ class Besoin_controller extends Controller
         $idArticle = $request->input('idArticle');
         $quantite = $request->input('quantite');
         $description = $request->input('description');
+        $idCategorie = $request->input('idCategorie');
         $besoinAchat = new BesoinAchat("", $idModule, $idArticle, $quantite, $date, 28);
         $besoinAchat->description = $description;
+        $besoinAchat->idCategorie = $idCategorie;
         $besoinAchat->insertImmobilisation();
         return redirect()->route('besoinAchat');
     }

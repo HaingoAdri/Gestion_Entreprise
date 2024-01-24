@@ -16,6 +16,7 @@ class BesoinAchat extends Model
     public $date;
     public $etat;
     public $description = "";
+    public $idCategorie;
 
     public $article;
 
@@ -39,7 +40,7 @@ class BesoinAchat extends Model
 
     public function insertImmobilisation() {
         try {
-            $requete = "insert into besoin_immobilisation(idmodule, idimmobilisation, nombre, date, etat, description) values (".$this->idModule.",'".$this->idArticle."', '".$this->nombre."', '".$this->date."', '".$this->etat."', '".$this->description."')";
+            $requete = "insert into besoin_immobilisation(idmodule, idimmobilisation, nombre, date, etat, description, idCategorie) values (".$this->idModule.",'".$this->idArticle."', '".$this->nombre."', '".$this->date."', '".$this->etat."', '".$this->description."', '$this->idCategorie')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert Besoin: ".$e->getMessage());

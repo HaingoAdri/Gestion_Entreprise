@@ -38,7 +38,7 @@ class Immobilier_controller extends Controller
 
     public function ajoutCatgeorie(Request $request) {
         $id = $request->input('id');
-        $idCategorie = $request->input('categorie');
+        $nom = $request->input('categorie');
 
         $categorie = new Categorie($id, $nom);
         if($categorie->isCategorieExisteDeja())
@@ -79,6 +79,24 @@ class Immobilier_controller extends Controller
             return redirect()-action([Immobilier_controller::class, 'listeTypeImmobilisation'], ['idType' => $id])->with('erreur', "Le numero de compte immobilisation $id existe deja!");
         $compte->insert();
         return redirect()->action([Immobilier_controller::class, 'listeTypeImmobilisation'], ['idType' => $id]); 
+    }
+
+    public function listeSousCategorie(Request $request) {
+        try {
+            $idType = $request->input('idType');
+            $liste = (new Categorie())->getListeCategorieParType($idType);
+            $categories = array();
+            $count = 0;
+            foreach ($liste as $categorie) {
+                $categories[$count]["id"] = $categorie->id;
+                $categories[$count]["categorie"] = $categorie->categorie;
+                $count++;
+            }
+            return $categories;
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
     }
 
 }

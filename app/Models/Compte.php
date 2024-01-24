@@ -128,4 +128,12 @@ class Compte extends Model
         return false;
     }
 
+    public function getListeTypeImmobilisationAvecSousCategorie() {
+        $liste = $this->getListeTypeImmobilisation();
+        foreach($liste as $type) {
+            $type->listeSousCategorie = (new Categorie())->getListeCategorieParType($type->id);
+        }
+        return $liste;
+    }
+
 }

@@ -1,6 +1,7 @@
 @extends("template.header")
 
 @section("contenu")
+
 <div class="content-wrapper">
     <div class="content">
         <div class="card card-default">
@@ -133,10 +134,22 @@
                             <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Type Immobilisation</label>
                             <div class="col-sm-8 col-lg-10">
                                 <div class="custom-file mb-1">
-                                    <select name="idArticle" class="form-control" required>
+                                    <select name="idArticle" id="idArticle" class="form-control" required onchange="handleSelectionChange(this)">
+                                        <option value="">Type</option>
                                         @foreach($typeImmobisation as $article)
                                             <option value="{{ $article->id }}">{{ $article->nom }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-6">
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Sous categorie</label>
+                            <div class="col-sm-8 col-lg-10">
+                                <div class="custom-file mb-1">
+                                    <select name="idCategorie" class="form-control" id="categorie" required>
+                                        <option value="">Sous Categorie</option>
                                     </select>
                                 </div>
                             </div>
@@ -171,5 +184,37 @@
     </div>
 
 </div>
+<script>
+
+    function handleSelectionChange(selectElement) {
+        var selectedId = selectElement.value;
+        var select = document.getElementById("categorie");
+        console.log(select.innerHTML);
+        select.innerHTML = "";
+        var html = "<option value=''>Sous Categorie</option>";
+        select.innerHTML = html;
+        fetch('listeSousCategorie?idType=' + selectedId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Réponse du contrôleur :', data);
+            for(var i = 0; i<data.length; i++) {
+                html+="<option value="+ data[i]["id"] +">"+ data[i]["categorie"] +"</option>";
+            }
+            select.innerHTML = html;
+            console.log(select.innerHTML);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX :', error);
+        });
+
+    }
+
+
+</script>
 
 @endsection
