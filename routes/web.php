@@ -271,4 +271,5 @@ Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripci
 Route::get('/liste_type_immobilisation', [Immobilier_controller::class, "listeTypeImmobilisation"])->name("listeTypeImmobilisation");
 Route::post('/ajout_sous_categorie', [Immobilier_controller::class, "ajoutSousCategorie"])->name("ajoutSousCategorie");
 Route::post('/nouveau_type_immpobilisation', [Immobilier_controller::class, "nouveauTypeImmobilisation"])->name("nouveauTypeImmobilisation");
+
 Route::get('/listeSousCategorie', [Immobilier_controller::class, "listeSousCategorie"])->name("listeSousCategorie");

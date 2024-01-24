@@ -13,6 +13,7 @@ use App\Models\BonCommande;
 use App\Models\Proformat;
 use App\Models\Article;
 use App\Models\Details_Pv_Reception;
+use App\Models\Categorie;
 
 use Illuminate\Support\Facades\Session;
 
@@ -78,12 +79,23 @@ class Pv_Reception_controller extends Controller
         return view("immobilisation/liste_bon_commande", compact("listeBonCommande"));
     }
 
+    public function terminerBonCommande($numeroBonCommande){
+        $bonCommande = new BonCommande(id: $numeroBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $liste_details_bon_commande = $bonCommande->getDetailsRestanteBonCommande();
+        if(count($liste_details_bon_commande) <= 0){
+            $bonCommande->etat = 45;
+            $bonCommande->valider($bonCommande->date,45);
+        }
+
+        return redirect()->route('show_list_bon_commande');
+    }
+
     public function show_list_proformat(Request $request){
         $date = $request->get("date");
         $lieu = $request->get("lieu");
-        // $numeroBonCommande = $request->get("numero");
-        $numeroBonCommande = "BC00000012";
-        $liste_details_bon_commande = (new BonCommande(id: $numeroBonCommande))->getDetailsBonCommande();
+        $numeroBonCommande = $request->get("numero");
+        $liste_details_bon_commande = (new BonCommande(id: $numeroBonCommande))->getDetailsRestanteBonCommande();
         $donnees = (new BonCommande(id: $numeroBonCommande))->getDonneesUnCommande();
         // $listeDescription = array();
 
@@ -97,14 +109,26 @@ class Pv_Reception_controller extends Controller
         // echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ";
 
         // var_dump($listeDescription);
-        return view("immobilisation/liste_proformat", compact("date", "lieu", "liste_details_bon_commande", "donnees"));
+
+        $bonCommande = new BonCommande(id: $numeroBonCommande);
+        $bonCommande = $bonCommande->getDonneesUnCommande();
+        $liste_details_bon_commande = $bonCommande->getDetailsRestanteBonCommande();
+        if(count($liste_details_bon_commande) <= 0){
+            $bonCommande->etat = 45;
+            $bonCommande->valider($bonCommande->date,45);
+            return redirect()->route('show_list_bon_commande');
+        }else{
+            return view("immobilisation/liste_proformat", compact("date", "lieu", "liste_details_bon_commande", "donnees"));
+        }
+
     }
+    
 
     public function create_pv_reception(Request $request){
         $numero = $request->get("bonCommande");
         $article = (new Article(id: $request->get("idArticle")))->getDonneesUnArticle();
-        $compte = (new Compte(id: $request->get("idArticle")))->getCompte();
-        $listeDescription = (new Compte(id: $request->get("idArticle")))->getListeDescription();
+        $compte = (new Compte(id: $request->get("idArticle")))->getDonneesUnTypeImmobilisation();
+        $listeDescription = (new Categorie(id: $request->get("categorie")))->getDonneesUncategorie();
 
         $etat = new Etat_immobilisation();
         $listeEtats = $etat->getAllEtats();
@@ -130,16 +154,18 @@ class Pv_Reception_controller extends Controller
         $livreur = $request->get("livreur");
         $numero_bon_commande = $request->get("numero_bon");
         $id_compte = $request->get("id_compte");
+        $categorie = $request->get("categorie");
+        $quantite = $request->get("quantite");
         
-        $pv_reception = new Pv_Reception(date: $date, id_etat_immobilisation: $etat, id_type_ammortissement: $ammortissement, taux: $taux, id_receptionneur: $recepteur, id_livreur: $livreur, id_bon_commande: $numero_bon_commande);
+        $pv_reception = new Pv_Reception(date: $date, id_etat_immobilisation: $etat, id_type_ammortissement: $ammortissement, taux: $taux, id_receptionneur: $recepteur, id_livreur: $livreur, id_bon_commande: $numero_bon_commande, id_article: $id_compte, id_categorie: $categorie, quantite: $quantite);
         
         $lastID = $pv_reception->codification($lieu, $id_compte);
 
-        $listeDescription = (new Compte(id: $id_compte))->getListeDescription();
+        $listeDescription = (new Categorie(id: $categorie))->getDonneesUncategorie()->listeDescription;
 
         for($i=0; $i< count($listeDescription); $i++){
-            $information = $request->get("".$listeDescription[$i]->description."_".$listeDescription[$i]->idDescription);
-            $details = new Details_Pv_Reception($lastID, $listeDescription[$i]->idDescription, $information);
+            $information = $request->get("".$listeDescription[$i]->description."_".$listeDescription[$i]->id);
+            $details = new Details_Pv_Reception($lastID, $listeDescription[$i]->id, $information);
             $details->insert();
         }
 

@@ -94,6 +94,14 @@ class BonCommande extends Model
         return $liste;
     }
 
+    
+    public function getDetailsRestanteBonCommande() {
+        $liste = (new Proformat())->getListeProformatRestanteParIdBonCommande($this->id);
+        if(count($liste) > 0)
+            $this->nom = ((new Demande(idDemande: $liste[0]->idDemande))->getDonneesUnDemande())->nom;
+        return $liste;
+    }
+
     public function getModePayement() {
         if($this->idPayement == 5)
             return "Virement";
@@ -161,7 +169,7 @@ class BonCommande extends Model
     }
 
     public function getListeEnAttenteImmobilisation() {
-        $requette = "select * from liste_bon_commande_en_cours where etat = $this->etat order by date desc";
+        $requette = "select * from liste_bon_commande_en_cours where type = 110 order by date desc";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
