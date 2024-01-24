@@ -171,5 +171,16 @@ class Pv_Reception_controller extends Controller
 
         return redirect()->route('show_list_bon_commande');
     }
+
+    public function show_list_bon_commande_immobilisation_terminer(){
+        $liste_bon_commande = (new BonCommande())->getListeTerminerImmobilisation();
+        return view("immobilisation/liste_bon_commande_terminer_immobilisation", compact("liste_bon_commande"));
+    }
+
+    public function show_list_pv_reception_by_commande(Request $request){
+        $id_bon_commande = $request->get("bon_commande");
+        $liste_pv_reception = (new Pv_Reception(id_bon_commande: $id_bon_commande))->getListePvReceptionBonCommande();
+        return view("immobilisation/liste_pv_reception_par_bon_commande", compact("liste_pv_reception"));
+    }
     
 }

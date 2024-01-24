@@ -252,6 +252,9 @@
                                     <li><a class="sidenav-item-link" href="{{ route('show_list_bon_commande') }}">
                                         <span class="nav-text">Proces Verbal de reception Immobilisation</span>
                                     </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeImmobilisationTerminer') }}">
+                                        <span class="nav-text">Liste des bon de commandes terminer</span>
+                                    </a></li>
                             </div>
                         </ul>
                     </li>

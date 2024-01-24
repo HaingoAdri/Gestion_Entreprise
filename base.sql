@@ -903,7 +903,7 @@ select * from bon_commande where etat < 40;
 create or replace view liste_bon_commande_en_cours as
 select * from bon_commande where etat = 40;
 
-create view liste_bon_commande_terminer as
+create or replace view liste_bon_commande_terminer as
 select * from bon_commande where etat = 45;
 
 CREATE SEQUENCE seqBonLivraison

@@ -29,10 +29,11 @@ class Etat_immobilisation extends Model {
 
     public function getDonnes_Un_Etat() {
         $requette = "select * from etat_immobilisation where id = " . $this->id;
+        
         $reponse = DB::select($requette);
         $Etats = null;
         if(count($reponse) > 0){
-            $Etat_immobilisation = new Etat_immobilisation( $reponse[0]->id, $reponse[0]->nom);
+            $Etats = new Etat_immobilisation( $reponse[0]->id, $reponse[0]->nom);
         }
         return $Etats;
     }
