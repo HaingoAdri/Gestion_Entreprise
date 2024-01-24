@@ -241,4 +241,13 @@ class BesoinAchat extends Model
         return $description;
     }
 
+    public function getSousCategorie($idDemande) {
+        $requette = "select * from besoin_immobilisation where idDemande = '$idDemande' and idArticle = '$this->idArticle'";
+        $reponse = DB::select($requette);
+        if(count($reponse) > 0) {
+            return $reponse[0]->idcategorie;
+        }
+        return null;
+    }
+
 }
