@@ -5,21 +5,21 @@
     <div class="content">
         <div class="card card-default">
             <div class="card-header align-items-center px-3 px-md-5">
-                <h2>Voir liste description par Type</h2>
+                <h2>Voir liste description par Sous Categorie</h2>
                 
                 <button type="button" class="btn btn-primary" style="margin-left: 500px;" data-toggle="modal" data-target="#modal-add-contact"> 
                     Ajouter description
                 </button>
                 <div class="card-body">
                     <div class="collapse" id="collapse-horizontal-validation"></div>
-                        <form method="GET" action="{{ route('listeDescriptionParType') }}">
+                        <form method="GET" action="{{ route('listeDescriptionParCategorie') }}">
                             <div class="modal-body px-2">
                                 <div class="form-group">
-                                    <label for="lastName">Type</label>
-                                    <select name="type" class="form-control" required>
-                                        <option value="">Type</option>
-                                        @foreach($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->nom }}</option>
+                                    <label for="lastName">Categorie</label>
+                                    <select name="idCategorie" class="form-control" required>
+                                        <option value="">Categorie</option>
+                                        @foreach($listeCategorie as $_categorie)
+                                            <option value="{{ $_categorie->id }}">{{ $_categorie->categorie }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -32,9 +32,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if(count($descriptions) > 0)
-                        <p style="color: black;">Numero de compte: {{ $descriptions[0]->id }}</p>
-                        <p style="color: black;">Compte: {{ $descriptions[0]->nom }}</p>
+                    @if($categorie->id != "")
+                        <p style="color: black;">Numero d'identifiant: {{ $categorie->id }}</p>
+                        <p style="color: black;">Categorie: {{ $categorie->categorie }}</p>
                         <br>
                         <div class="form-group row mb-8">
                             <table class="table table-striped">
@@ -44,7 +44,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="line-container-age">
-                                    @foreach($descriptions as $description)
+                                    @foreach($categorie->listeDescription as $description)
                                     <tr>
                                         <td>{{ $description->description }}</td>
                                     </tr> 
@@ -71,12 +71,13 @@
                     <div class="modal-body px-4">  
 
                         <div class="form-group row mb-6">
-                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Type</label>
+                            <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">Categorie</label>
                             <div class="col-sm-8 col-lg-10">
                                 <div class="custom-file mb-1">
-                                    <select name="type" class="form-control" required>
-                                        @foreach($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->nom }}</option>
+                                    <select name="idCategorie" class="form-control" required>
+                                        <option value="">Categorie</option>
+                                        @foreach($listeCategorie as $categorie_)
+                                            <option value="{{ $categorie_->id }}">{{ $categorie_->categorie }}</option>
                                         @endforeach
                                     </select>
                                 </div>

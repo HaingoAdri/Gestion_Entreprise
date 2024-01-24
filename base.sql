@@ -1303,11 +1303,28 @@ select distinct l.id, l.idDemande, l.idFournisseur, l.idArticle, nombre quantite
     join liste_besoin_achat_avec_quantite b on l.idDemande = b.idDemande and l.idArticle = b.idArticle;
 
 
-create table description (
+-- ALTER TABLE description drop type;
+create table categorie (
+    id varchar(10) primary key,
+    categorie varchar(50) unique
+);
+
+create table sous_categorie_type (
     id serial,
     type varchar(50) references compte(id),
+    idCategorie varchar(10) references categorie(id),
+    etat int references etats(id_et) default 8
+);
+
+-- ALTER TABLE description add idCategorie varchar(50) references categorie(id);
+create table description (
+    id serial,
+    idCategorie varchar(50) references categorie(id)
     description varchar(200) not null
 );
+
+create view liste_sous_categorie_par_type as
+select type, idcategorie, categorie from sous_categorie_type s join categorie c on s.idcategorie = c.id;
 
 create view liste_description_type_immobilisation as
 select d.id, type, nom, description from description d join compte c on d.type = c.id;
@@ -1383,3 +1400,5 @@ ALTER table bon_commande add type int references etats(id_et) default 100;
 
 create view type_demande as
 select idDemande, nom, type from demande group by idDemande, type, nom;
+
+

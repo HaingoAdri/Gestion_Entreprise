@@ -27,12 +27,6 @@ class Compte_controller extends Controller
         $id = $request->get('id');
         $nom = $request->get('nom');
         $compte = new Compte($id, $nom, 8);
-        // try{
-        //     $compte->insert();
-        // }
-        // catch(Exception $e){
-        //     return redirect()->route('listeCompte')->with('erreur', e->getMessage());
-        // }
         if($compte->numeroCompteExisteDeja())
             return redirect()->route('listeCompte')->with('erreur', "Le numero de compte $id existe deja!");
         $compte->insert();

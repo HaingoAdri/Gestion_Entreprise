@@ -208,11 +208,21 @@
                     @endif
 
                     @if(session("administrateur_rh")->module->id == 10)
-                    <li>
-                      <a class="sidenav-item-link" href="{{ route('listeDescriptionParType') }}">
-                          <i class="mdi mdi-account-group-outline"></i>
-                          <span class="nav-text">Description</span>
-                      </a>
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#categorie" aria-expanded="false" aria-controls="achat">
+                            <i class="mdi mdi-truck-fast"></i>
+                            <span class="nav-text">Sous Categorie</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="categorie" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                    <li><a class="sidenav-item-link" href="{{ route('listeCategorie') }}">
+                                        <span class="nav-text">Liste Categorie</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeDescriptionParCategorie') }}">
+                                        <span class="nav-text">Description Categorie</span>
+                                    </a></li>
+                            </div>
+                        </ul>
                     </li>
 
                     <li>
@@ -230,11 +240,8 @@
                         <ul  class="collapse"  id="immobilier" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                
-                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_livraison_form') }}">
+                                    <li><a class="sidenav-item-link" href="{{ route('listeTypeImmobilisation') }}">
                                         <span class="nav-text">Type Immobilisation</span>
-                                    </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('bon_de_reception_form') }}">
-                                        <span class="nav-text">Description Immobilisation</span>
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('ajout_etat_immobilisation') }}">
                                         <span class="nav-text">Etat Immobilisation</span>

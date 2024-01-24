@@ -252,8 +252,6 @@ Route::post('/nouveau_caisse', [Caisse_controller::class, "nouveauCaisse"])->nam
 //Immobilisation
 Route::get('/ajout_besoin_immobilisation', [Besoin_controller::class, "ajoutBesoinImmobilisation"])->name("ajoutBesoinImmobilisation");
 Route::get('/refuser_besoin_immobilier', [Besoin_controller::class, "refuserUneBesoinImmobilier"])->name("refuserUneBesoinImmobilier");
-Route::get('/liste_description_par_type_immobilisation', [Immobilier_controller::class, "index"])->name("listeDescriptionParType");
-Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripcion"])->name("ajoutDescripcion");
 Route::get('/ajout_lieu_immobilisation', [Pv_Reception_controller::class, "nouveauLieu"])->name("ajout_lieu_immobilisation");
 Route::get('/insert_lieu_immobilisation', [Pv_Reception_controller::class, "insertLieu"])->name("insert_lieu_immobilisation");
 Route::get('/ajout_etat_immobilisation', [Pv_Reception_controller::class, "nouvelleEtat"])->name("ajout_etat_immobilisation");
@@ -265,3 +263,11 @@ Route::get('/show_list_bon_commande', [Pv_Reception_controller::class, "show_lis
 Route::get('/show_list_proformat', [Pv_Reception_controller::class, "show_list_proformat"])->name("show_list_proformat");
 Route::get('/create_pv_reception', [Pv_Reception_controller::class, "create_pv_reception"])->name("create_pv_reception");
 Route::get('/insert_pv_reception', [Pv_Reception_controller::class, "insert_pv_reception"])->name("insert_pv_reception");
+
+Route::get('/liste_categorie', [Immobilier_controller::class, "listeCategorie"])->name("listeCategorie");
+Route::post('/ajout_categorie', [Immobilier_controller::class, "ajoutCatgeorie"])->name("ajoutCatgeorie");
+Route::get('/liste_description_par_categorie_immobilisation', [Immobilier_controller::class, "index"])->name("listeDescriptionParCategorie");
+Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripcion"])->name("ajoutDescripcion");
+Route::get('/liste_type_immobilisation', [Immobilier_controller::class, "listeTypeImmobilisation"])->name("listeTypeImmobilisation");
+Route::post('/ajout_sous_categorie', [Immobilier_controller::class, "ajoutSousCategorie"])->name("ajoutSousCategorie");
+Route::post('/nouveau_type_immpobilisation', [Immobilier_controller::class, "nouveauTypeImmobilisation"])->name("nouveauTypeImmobilisation");

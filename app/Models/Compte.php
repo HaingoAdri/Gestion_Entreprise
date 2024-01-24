@@ -14,6 +14,8 @@ class Compte extends Model
     public $nom;
     public $etat;
 
+    public $listeSousCategorie = array();
+
     public $idDescription;
     public $description;
 
@@ -96,15 +98,6 @@ class Compte extends Model
         return $compte;
     }
 
-    public function ajoutDescription() {
-        try {
-            $requete = "insert into description(type, description) values ('".$this->id."','".$this->description."')";
-            DB::insert($requete);
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }  
-    }
-
     public function getListeDescription() {
         $requette = "select * from liste_description_type_immobilisation where type = '$this->id'";
         $reponse = DB::select($requette);
@@ -116,6 +109,23 @@ class Compte extends Model
             }
         }
         return $liste;    
+    }
+
+    public function getDonneesUnTypeImmobilisation() {
+        $compte = $this->getCompte();
+        if($compte != null){
+            $compte->listeSousCategorie = (new Categorie())->getListeCategorieParType($compte->id);
+        }
+        return $compte;
+    }
+
+    public function isSousCategorieExisteDeja($idCategorie) { 
+        $requette = "select * from liste_sous_categorie_par_type where type = '$this->id' and idCategorie = '$idCategorie' order by categorie";
+        $reponse = DB::select($requette);
+        if(count($reponse) > 0){
+            return true;
+        }
+        return false;
     }
 
 }
