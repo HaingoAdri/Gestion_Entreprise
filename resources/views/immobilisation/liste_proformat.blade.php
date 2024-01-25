@@ -71,7 +71,7 @@
                                                                 <td> {{ $liste_details_bon_commande[$i]->getNomFournisseur() }} </td>
                                                                 <td> {{ $liste_details_bon_commande[$i]->description }} </td>
                                                                 <td>
-                                                                    <a href="{{ route('create_pv_reception', ['idArticle' => $liste_details_bon_commande[$i]->idArticle, 'bonCommande' => $donnees->id ]) }}"><button type="button" class="btn btn-primary">Faire un PV</button></a>    
+                                                                    <a href="{{ route('create_pv_reception', ['idArticle' => $liste_details_bon_commande[$i]->idArticle, 'bonCommande' => $donnees->id, 'categorie' => $liste_details_bon_commande[$i]->sousCategorie ]) }}"><button type="button" class="btn btn-primary">Faire un PV</button></a>    
                                                                 </td>
                                                             </tr>
                                                         @endfor

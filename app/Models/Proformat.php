@@ -27,6 +27,8 @@ class Proformat extends Model
 
     public $description;
 
+    public $sousCategorie;
+
     public function __construct($id = "", $idDemande = "", $idFournisseur = "", $idArticle = "", $prixUnitaire = "", $TVA = "", $date = "") {
         $this->id = $id;
         $this->idDemande = $idDemande;
@@ -124,6 +126,41 @@ class Proformat extends Model
                     $prixHT += $proformat->prixHT;
                     $prixAT += $proformat->prixAT;
                     $proformat->description = (new BesoinAchat(idArticle: $resultat->idarticle))->getDescription($resultat->iddemande);
+
+                    $liste[] = $proformat;
+                }
+            }
+            $proformat = new ProFormat();
+            $proformat->prixHT = $prixHT;
+            $proformat->prixAT = $prixAT;
+            $liste[] = $proformat;
+        }
+        return $liste;
+    }
+
+    public function getListeProformatRestanteParIdBonCommande($idBonCommande) {
+        $requette = "select * from v_liste_details_bon_de_commande_restante where idboncommande = '$idBonCommande' and quantite_restante != 0 order by idArticle asc";
+        echo $requette;
+        $reponse = DB::select($requette);
+        $liste = array();
+        $listeArticle = array();
+        $prixHT = 0;
+        $prixAT = 0;
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                if(!in_array($resultat->idarticle, $listeArticle)) {
+                    $listeArticle[] = $resultat->idarticle;
+                    $proformat = new Proformat($resultat->id, $resultat->iddemande, $resultat->idfournisseur, $resultat->idarticle, $resultat->prixunitaire, $resultat->tva, "");
+                    $proformat->quantite = $resultat->quantite_restante;
+                    $proformat->prixHT = $resultat->prixht;
+                    $proformat->prixAT = $resultat->prixat;
+
+                    $prixHT += $proformat->prixHT;
+                    $prixAT += $proformat->prixAT;
+                    $besoinAchat = new BesoinAchat(idArticle: $resultat->idarticle);
+                    $proformat->description = $besoinAchat->getDescription($resultat->iddemande);
+
+                    $proformat->sousCategorie = $besoinAchat->getSousCategorie($proformat->idDemande);
 
                     $liste[] = $proformat;
                 }

@@ -21,25 +21,25 @@
                                 
                                 <div class="row flex flex-column">
                                     <p><span><u>Bon de commande </u> n° <strong> {{ $numero }}</strong> </span></p>
-                                    <p><span><u>Proformat </u> n° <strong> {{ $compte->id }} </strong> </span></p>
                                     <p><span><u>Categorie :</u><strong> {{ $compte->id }} </strong> </span></p>
-                                    <p><span><u>Sous-categorie :</u><strong> {{ $compte->nom }} </strong> </span></p>
+                                    <p><span><u>Sous-categorie :</u><strong> {{ $listeDescription->id }} | {{ $listeDescription->categorie }} </strong> </span></p>
                                 </div>
 
                                 <br>
 
                                 <input type="hidden" name="numero_bon" value="{{$numero}}">
                                 <input type="hidden" name="id_compte" value="{{$compte->id}}">
+                                <input type="hidden" name="categorie" value="{{$listeDescription->id}}">
 
                                 <div class="row mb-2">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <div class="form-group">
                                             <label for="firstName">Date</label>
                                             <input type="date" class="form-control" id="date" name="date">
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
 
                                         <div class="form-group">
                                             <label for="lastName">Lieu</label>
@@ -50,6 +50,13 @@
                                                 @endfor
                                             @endif
                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="firstName">Quantite</label>
+                                            <input type="text" class="form-control" id="quantite" name="quantite">
                                         </div>
                                     </div>
                                 </div>
@@ -124,12 +131,12 @@
                                         <div class="card-body">
 
                                             <div class="row mb-2">
-                                                @if(count($listeDescription) > 0)
-                                                    @for($i=0; $i<count($listeDescription); $i++)
+                                                @if(count($listeDescription->listeDescription) > 0)
+                                                    @for($i=0; $i<count($listeDescription->listeDescription); $i++)
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
-                                                            <label for="firstName">{{ $listeDescription[$i]->description}}</label>
-                                                            <input type="text" class="form-control" id="taille" name="{{$listeDescription[$i]->description}}_{{$listeDescription[$i]->idDescription}}">
+                                                            <label for="firstName">{{ $listeDescription->listeDescription[$i]->description}}</label>
+                                                            <input type="text" class="form-control" id="taille" name="{{$listeDescription->listeDescription[$i]->description}}_{{$listeDescription->listeDescription[$i]->id}}">
                                                         </div>
                                                     </div>
                                                     @endfor
@@ -159,4 +166,6 @@
     </div>
 
 </div>
+
+
 @endsection

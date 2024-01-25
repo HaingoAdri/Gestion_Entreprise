@@ -900,10 +900,10 @@ create view liste_details_bon_de_commande as
 create view liste_bon_commande_en_attente as
 select * from bon_commande where etat < 40;
 
-create view liste_bon_commande_en_cours as
+create or replace view liste_bon_commande_en_cours as
 select * from bon_commande where etat = 40;
 
-create view liste_bon_commande_terminer as
+create or replace view liste_bon_commande_terminer as
 select * from bon_commande where etat = 45;
 
 CREATE SEQUENCE seqBonLivraison
@@ -1371,6 +1371,11 @@ CREATE TABLE pv_reception(
     id_receptionneur VARCHAR(10),
     id_livreur VARCHAR(10),
     id_bon_commande VARCHAR(10),
+    id_article VARCHAR(50),
+    id_categorie VARCHAR(50),
+    quantite DOUBLE PRECISION,
+    foreign key (id_article) references compte(id),
+    foreign key (id_categorie) references categorie(id),
     foreign key (id_bon_commande) references bon_commande(id),
     foreign key (id_type_ammortissement) references type_ammortissement(id)
 );
@@ -1392,7 +1397,7 @@ CREATE TABLE livreur(
 
 
 insert into etats values (100, 'Besoin achat');
-insert into etats values (110, 'Besoin immobilier');
+insert into etats values (110, 'Besoin immobilier');    
 
 ALTER table demande add type int references etats(id_et) default 100;
 
@@ -1402,3 +1407,24 @@ create view type_demande as
 select idDemande, nom, type from demande group by idDemande, type, nom;
 
 ALTER TABLE besoin_immobilisation add idCategorie varchar(10) references categorie(id);
+
+-- Check quantite reception et demande
+CREATE OR REPLACE VIEW v_liste_details_bon_de_commande_restante AS
+    SELECT 
+        ld.*, 
+        COALESCE(qr.quantite_recue, 0) AS quantite_recue, 
+        ld.quantite - COALESCE(qr.quantite_recue, 0) AS quantite_restante
+    FROM 
+        liste_details_bon_de_commande AS ld
+    LEFT JOIN 
+        (SELECT 
+            id_bon_commande, 
+            id_article, 
+            SUM(quantite) AS quantite_recue
+        FROM 
+            pv_reception
+        GROUP BY 
+            id_bon_commande, 
+            id_article) AS qr
+    ON 
+        ld.idboncommande = qr.id_bon_commande AND ld.idarticle = qr.id_article;

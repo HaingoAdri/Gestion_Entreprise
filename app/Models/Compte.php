@@ -98,18 +98,18 @@ class Compte extends Model
         return $compte;
     }
 
-    public function getListeDescription() {
-        $requette = "select * from liste_description_type_immobilisation where type = '$this->id'";
-        $reponse = DB::select($requette);
-        $liste = array();
-        if(count($reponse) > 0){
-            foreach($reponse as $resultat) {
-                $compte = new Compte(id: $resultat->type, nom: $resultat->nom, idDescription: $resultat->id, description: $resultat->description);
-                $liste[] = $compte;
-            }
-        }
-        return $liste;    
-    }
+    // public function getListeDescription() {
+    //     $requette = "select * from liste_description_type_immobilisation where type = '$this->id'";
+    //     $reponse = DB::select($requette);
+    //     $liste = array();
+    //     if(count($reponse) > 0){
+    //         foreach($reponse as $resultat) {
+    //             $compte = new Compte(id: $resultat->type, nom: $resultat->nom, idDescription: $resultat->id, description: $resultat->description);
+    //             $liste[] = $compte;
+    //         }
+    //     }
+    //     return $liste;    
+    // }
 
     public function getDonneesUnTypeImmobilisation() {
         $compte = $this->getCompte();

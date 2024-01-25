@@ -271,4 +271,8 @@ Route::post('/ajout_descripcion', [Immobilier_controller::class, "ajoutDescripci
 Route::get('/liste_type_immobilisation', [Immobilier_controller::class, "listeTypeImmobilisation"])->name("listeTypeImmobilisation");
 Route::post('/ajout_sous_categorie', [Immobilier_controller::class, "ajoutSousCategorie"])->name("ajoutSousCategorie");
 Route::post('/nouveau_type_immpobilisation', [Immobilier_controller::class, "nouveauTypeImmobilisation"])->name("nouveauTypeImmobilisation");
+
 Route::get('/listeSousCategorie', [Immobilier_controller::class, "listeSousCategorie"])->name("listeSousCategorie");
+
+Route::get('/listeBonCommandeImmobilisationTerminer', [Pv_Reception_controller::class, "show_list_bon_commande_immobilisation_terminer"])->name("listeBonCommandeImmobilisationTerminer");
+Route::get('/voirPvReception', [Pv_Reception_controller::class, "show_list_pv_reception_by_commande"])->name("voirPvReception");
