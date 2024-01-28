@@ -14,6 +14,7 @@ use App\Models\Proformat;
 use App\Models\Article;
 use App\Models\Details_Pv_Reception;
 use App\Models\Categorie;
+use App\Models\Immobilisation_reception;
 
 use Illuminate\Support\Facades\Session;
 
@@ -162,6 +163,11 @@ class Pv_Reception_controller extends Controller
         $lastID = $pv_reception->codification($lieu, $id_compte);
 
         $listeDescription = (new Categorie(id: $categorie))->getDonneesUncategorie()->listeDescription;
+
+        for($j = 0; $j < quantite; $j++){
+            $immobilisation_reception = new Immobilisation_reception(id_pv_reception: $lastID, id_etat_immobilisation: $etat);
+            $immobilisation_reception->insert();
+        }
 
         for($i=0; $i< count($listeDescription); $i++){
             $information = $request->get("".$listeDescription[$i]->description."_".$listeDescription[$i]->id);

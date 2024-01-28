@@ -1428,3 +1428,18 @@ CREATE OR REPLACE VIEW v_liste_details_bon_de_commande_restante AS
             id_article) AS qr
     ON 
         ld.idboncommande = qr.id_bon_commande AND ld.idarticle = qr.id_article;
+
+create sequence seqImmobilisation_reception
+increment by 1
+start with 1
+minValue 1;
+
+
+CREATE TABLE Immobilisation_reception(
+    id_immobilisation VARCHAR(10) PRIMARY KEY,
+    id_pv_reception VARCHAR(10),
+    id_etat_immobilisation INT,
+    foreign key (id_pv_reception) references pv_reception(id),
+    foreign key (id_etat_immobilisation) references etat_immobilisation(id)
+    
+);
