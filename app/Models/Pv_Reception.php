@@ -162,4 +162,65 @@ class Pv_Reception extends Model {
         return $liste;
     }
 
+    public function getListeReception(){
+        $requette = "select * from detail_pv_rec";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $pv = new Pv_Reception();
+                $pv->id = $resultat->id;
+                $pv->date = $resultat->date;
+                $pv->code = $resultat->code;
+                $pv->id_etat_immobilisation = $resultat->id_etat_immobilisation;
+                $pv->id_type_ammortissement = $resultat->article;
+                $pv->taux = $resultat->taux;
+                $pv->id_receptionneur = $resultat->id_receptionneur;
+                $pv->id_livreur = $resultat->id_livreur;
+                $pv->id_bon_commande = $resultat->id_bon_commande;
+                $pv->id_article = $resultat->id_article;
+                $pv->id_categorie = $resultat->id_categorie;
+                $pv->quantite = $resultat->quantite;
+
+                $etat = (new Etat_immobilisation(id: $pv->id_etat_immobilisation))->getDonnes_Un_Etat();
+                $pv->nom_immobilisation = $etat->nom;
+                $pv->nom_ammortissement = $this->getAmmortissement($resultat->id_type_ammortissement);
+                
+                $pv->livreur = (new Livreur(id: $pv->id_livreur))->getUnLivreur();
+                $liste[] = $pv;
+            }
+        }
+        return $liste;
+    }
+
+    public function getReception(){
+        $requette = "select * from pv_reception where id = '". $this->id ."'";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $pv = new Pv_Reception();
+                $pv->id = $resultat->id;
+                $pv->date = $resultat->date;
+                $pv->code = $resultat->code;
+                $pv->id_etat_immobilisation = $resultat->id_etat_immobilisation;
+                $pv->id_type_ammortissement = $resultat->id_type_ammortissement;
+                $pv->taux = $resultat->taux;
+                $pv->id_receptionneur = $resultat->id_receptionneur;
+                $pv->id_livreur = $resultat->id_livreur;
+                $pv->id_bon_commande = $resultat->id_bon_commande;
+                $pv->id_article = $resultat->id_article;
+                $pv->id_categorie = $resultat->id_categorie;
+                $pv->quantite = $resultat->quantite;
+
+                $etat = (new Etat_immobilisation(id: $pv->id_etat_immobilisation))->getDonnes_Un_Etat();
+                $pv->nom_immobilisation = $etat->nom;
+                $pv->nom_ammortissement = $this->getAmmortissement($resultat->id_type_ammortissement);
+                
+                $pv->livreur = (new Livreur(id: $pv->id_livreur))->getUnLivreur();
+                $liste[] = $pv;
+            }
+        }
+        return $liste;
+    }
 }
