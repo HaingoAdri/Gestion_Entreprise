@@ -26,6 +26,7 @@ use App\Http\Controllers\Magasin_controller;
 use App\Http\Controllers\Caisse_controller;
 use App\Http\Controllers\Immobilier_controller;
 use App\Http\Controllers\Pv_Reception_controller;
+use App\Http\Controllers\Gestion_Immobilisation_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -276,3 +277,8 @@ Route::get('/listeSousCategorie', [Immobilier_controller::class, "listeSousCateg
 
 Route::get('/listeBonCommandeImmobilisationTerminer', [Pv_Reception_controller::class, "show_list_bon_commande_immobilisation_terminer"])->name("listeBonCommandeImmobilisationTerminer");
 Route::get('/voirPvReception', [Pv_Reception_controller::class, "show_list_pv_reception_by_commande"])->name("voirPvReception");
+
+//pv utilisation
+Route::get('/demande_pv_utilisation', [Gestion_Immobilisation_Controller::class, "show_pv_utilisation"])->name("demande_pv_utilisation");
+Route::get('/pv_utilisation_validation', [Gestion_Immobilisation_Controller::class, "pv_besoin_de_validation"])->name("pv_utilisation_validation");
+Route::post('/insert_pv_utilisation', [Gestion_Immobilisation_Controller::class, "insert_demande_pv_utlisation"])->name("insert_pv_utilisation");
