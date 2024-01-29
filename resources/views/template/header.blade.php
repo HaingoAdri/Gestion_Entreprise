@@ -123,6 +123,7 @@
                             <i class="mdi mdi-playlist-plus"></i>
                             <span class="nav-text">Besoin Achat</span> <b class="caret"></b>
                         </a>
+                        
                         <ul  class="collapse"  id="achat" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                             
@@ -153,6 +154,10 @@
                                 @endif
                             </div>
                         </ul>
+                        <a class="sidenav-item-link" href="{{ route('demande_pv_utilisation') }}">
+                            <i class="mdi mdi-book-plus"></i>
+                            <span class="nav-text">Demande d'utilisation</span></b>
+                        </a>
                     </li>
 
                     <li>
@@ -254,6 +259,12 @@
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeImmobilisationTerminer') }}">
                                         <span class="nav-text">Liste des bon de commandes terminer</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('pv_utilisation_validation') }}">
+                                        <span class="nav-text">Proces Verbal validation</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeImmobilisationTerminer') }}">
+                                        <span class="nav-text">Inventaire</span>
                                     </a></li>
                             </div>
                         </ul>
