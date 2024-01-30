@@ -252,3 +252,65 @@ insert into etat_immobilisation values  (default, 'Neuf'),
 
     insert into type_ammortissement values  (1, 'Ammortissement Lineaire'),
                                             (10, 'Ammortissement Degressif');
+create view detail_pv_rec as 
+select pv_reception.* , c.nom as article from pv_reception join compte as c on pv_reception.id_article = c.id;
+
+create sequence seq_Pv_Utilisation
+start with 1
+increment by 1;
+
+create sequence seq_Inventaire
+start with 1
+increment by 1;
+
+CREATE TABLE Immobilisation_reception(
+    id_immobilisation VARCHAR(10) PRIMARY KEY,
+    id_pv_reception VARCHAR(10),
+    id_etat_immobilisation INT,
+    foreign key (id_pv_reception) references pv_reception(id),
+    foreign key (id_etat_immobilisation) references etat_immobilisation(id)
+);
+
+insert into immobilisation_reception values
+('I_R0001','PR00000009',4),
+('I_R0002','PR00000010',1),
+('I_R0003','PR00000010',1),
+('I_R0004','PR00000010',1),
+('I_R0005','PR00000010',1);
+
+create table pv_utilisation(
+    id varchar(10) primary key,
+    reception varchar(10) REFERENCES pv_reception(id),
+    module int REFERENCES module(id),
+    date date
+);
+
+create sequence seq_Details_utilisation
+start with 1
+increment by 1;
+
+create table details_utilisation(
+    idDU varchar(10) default 'DU' || LPAD(nextval('seq_Details_utilisation')::text, 5, '0') not null primary key,
+    pv_utilisation varchar(10) references pv_utilisation(id),
+    immobilisation varchar(10) references immobilisation_reception(id_immobilisation),
+    description varchar(60),
+    etat_immobilisation int references etat_immobilisation(id),
+    etat int default 40
+);
+
+create table inventaire(
+    id varchar(10) default 'IV' || LPAD(nextval('seq_Inventaire')::text, 5, '0') not null primary key,
+    date date,
+    immobilisation varchar(10) references immobilisation_reception(id_immobilisation),
+    etat_immobilisation int references etat_immobilisation(id),
+    description varchar(50)
+);
+
+create view view_pv_utilisation_valider as 
+select pv_utilisation.* , details_utilisation.* from pv_utilisation
+join details_utilisation on pv_utilisation.id = details_utilisation.pv_utilisation;
+
+create view view_detail_utilisation as
+select view_pv_utilisation_valider.* , module.type, etat_immobilisation.nom as type_etat from
+view_pv_utilisation_valider join module on view_pv_utilisation_valider.module = module.id
+join etat_immobilisation on view_pv_utilisation_valider.etat_immobilisation = etat_immobilisation.id ;
