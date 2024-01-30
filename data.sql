@@ -303,6 +303,10 @@ create table inventaire(
     date date,
     immobilisation varchar(10) references immobilisation_reception(id_immobilisation),
     etat_immobilisation int references etat_immobilisation(id),
+    taux int,
+    ammortissement int references type_ammortissement(id),
+    type_inventaire varchar(60),
+    libeller varchar(60),
     description varchar(50)
 );
 
