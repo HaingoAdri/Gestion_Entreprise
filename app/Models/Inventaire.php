@@ -17,8 +17,10 @@ class Inventaire extends Model
     public $description;
     public $taux;
     public $ammortissement;
+    public $type_inventaire;
+    public $libeller;
 
-    public function __construct($id = "", $date="", $immobisation="", $etat_immobilisation="", $description="", $taux="", $ammortissement) {
+    public function __construct($id = "", $date="", $immobisation="", $etat_immobilisation="", $description="", $taux="", $ammortissement="", $type_inventaire="", $libele="") {
         $this->id = $id;
         $this->date = $date;
         $this->immobilisation = $immobisation;
@@ -26,11 +28,13 @@ class Inventaire extends Model
         $this->description = $description;
         $this->taux = $taux;
         $this->ammortissement = $ammortissement;
+        $this->type_inventaire = $type_inventaire;
+        $this->libeller = $libele;
     }
 
     public function insert() {
         try {
-            $requete = "insert into inventaire(id, date, immobilisation, etat_immobilisation, description, taux, ammortissement) values ('$this->id', '$this->date', '$this->immobilisation', '$this->etat_immobilisation', '$this->description', $this->taux, $this->ammortissement)";
+            $requete = "insert into inventaire(date, immobilisation, etat_immobilisation, description, taux, ammortissement,type_inventaire,libeller) values ('$this->id', '$this->date', '$this->immobilisation', '$this->etat_immobilisation', '$this->description', $this->taux, $this->ammortissement,'$this->type_inventaire','$this->libeller')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert inventaire: ".$e->getMessage());
