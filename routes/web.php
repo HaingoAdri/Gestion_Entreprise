@@ -280,5 +280,7 @@ Route::get('/voirPvReception', [Pv_Reception_controller::class, "show_list_pv_re
 
 //pv utilisation
 Route::get('/demande_pv_utilisation', [Gestion_Immobilisation_Controller::class, "show_pv_utilisation"])->name("demande_pv_utilisation");
-Route::get('/pv_utilisation_validation', [Gestion_Immobilisation_Controller::class, "pv_besoin_de_validation"])->name("pv_utilisation_validation");
 Route::post('/insert_pv_utilisation', [Gestion_Immobilisation_Controller::class, "insert_demande_pv_utlisation"])->name("insert_pv_utilisation");
+Route::post('/insert_details_utilisation', [Gestion_Immobilisation_Controller::class, "insert_Details_demande_utilisation"])->name("insert_details_utilisation");
+Route::get('/liste_demande_pv_utilisation', [Gestion_Immobilisation_Controller::class, "liste_Demande"])->name("liste_demande_pv_utilisation");
+Route::post('/insert_valider_details_utilisation', [Gestion_Immobilisation_Controller::class, "valider_demande"])->name("insert_valider_details_utilisation");
