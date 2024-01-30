@@ -260,8 +260,8 @@
                                     <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeImmobilisationTerminer') }}">
                                         <span class="nav-text">Liste des bon de commandes terminer</span>
                                     </a></li>
-                                    <li><a class="sidenav-item-link" href="{{ route('pv_utilisation_validation') }}">
-                                        <span class="nav-text">Proces Verbal validation</span>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_demande_pv_utilisation') }}">
+                                        <span class="nav-text"> Validation de demande d'utilisation</span>
                                     </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('listeBonCommandeImmobilisationTerminer') }}">
                                         <span class="nav-text">Inventaire</span>
