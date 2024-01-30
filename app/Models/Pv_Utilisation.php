@@ -23,15 +23,32 @@ class Pv_Utilisation extends Model
 
     public function insert_Pv_utilisation() {
         try {
-            $requete = "insert into pv_utilisation(date, reception, module) values ('".$this->dates."', '".$this->reception."', ".$this->module.")";
-            DB::insert($requete);
+            $requete = "insert into pv_utilisation(id, date, reception, module) values ('$this->id','".$this->dates."', '".$this->reception."', ".$this->module.") returning id";
+            $reponse = DB::insert($requete);
+            return $reponse;
         } catch (Exception $e) {
             throw new Exception("Impossible to insert pv_utilisation: " . $e->getMessage());
         }    
     }
 
-    public function get_Pv_utilisation() {
-        $requette = "select * from pv_utilisation";
+    public function getNextIDPvUtilsation() {
+        $requette = "select nextID('seq_pv_utilisation', 'PU', 10);";
+        $reponse = DB::select($requette);
+        $id = "";
+        if(count($reponse) > 0){
+            $id = $reponse[0]->nextid;
+        }
+        return $id;
+    }
+
+    public function get_demande_utilisation() {
+        $requette = "select * from view_detail_utilisation where etat = 40";
+        $reponse = DB::select($requette);
+        return $reponse;
+    }
+
+    public function getImmobilisationFromPv($pv){
+        $requette = "select *from immobilisation_reception where id_pv_reception = '".$pv."'";
         $reponse = DB::select($requette);
         return $reponse;
     }
