@@ -38,5 +38,21 @@ class Immobilisation_reception extends Model {
         }    
     }
 
-    
+    public function getAllImmobilisation_reception(){
+        $sql = "select * from immobilisation_reception";
+        $respone = DB::select($sql);
+        return $respone;
+    }   
+
+    public function getUnImmobilisationReception($id){
+        $sql = "select * from immobilisation_reception where id_immobilisation = '$id'";
+        $reponse = DB::select($sql);
+        return $reponse;
+    }
+
+    public function getAllAmmortissement(){
+        $sql ="select * from type_ammortissement";
+        $requette = DB::select($sql);
+        return $requette;
+    }
 }

@@ -27,6 +27,7 @@ use App\Http\Controllers\Caisse_controller;
 use App\Http\Controllers\Immobilier_controller;
 use App\Http\Controllers\Pv_Reception_controller;
 use App\Http\Controllers\Gestion_Immobilisation_Controller;
+use App\Http\Controllers\Inventaire_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -284,3 +285,8 @@ Route::post('/insert_pv_utilisation', [Gestion_Immobilisation_Controller::class,
 Route::post('/insert_details_utilisation', [Gestion_Immobilisation_Controller::class, "insert_Details_demande_utilisation"])->name("insert_details_utilisation");
 Route::get('/liste_demande_pv_utilisation', [Gestion_Immobilisation_Controller::class, "liste_Demande"])->name("liste_demande_pv_utilisation");
 Route::post('/insert_valider_details_utilisation', [Gestion_Immobilisation_Controller::class, "valider_demande"])->name("insert_valider_details_utilisation");
+
+//inventaire
+Route::get('/faire_inventaire', [Inventaire_Controller::class, "formulaire_inventaire"])->name("faire_inventaire");
+Route::post('/insert_inventaire', [Inventaire_Controller::class, "insert_Inventaire"])->name("insert_inventaire");
+Route::get('/liste_inventaire', [Inventaire_Controller::class, "liste_Inventaire"])->name("liste_inventaire");

@@ -1,4 +1,4 @@
--- MODULE
+Z-- MODULE
     insert into module(type) values ('Ressource Humaine'),
                                     ('Secretariat');
 
@@ -307,7 +307,7 @@ create table inventaire(
     ammortissement int references type_ammortissement(id),
     type_inventaire varchar(60),
     libeller varchar(60),
-    description varchar(50)
+    description varchar(200)
 );
 
 create view view_pv_utilisation_valider as 
@@ -318,3 +318,31 @@ create view view_detail_utilisation as
 select view_pv_utilisation_valider.* , module.type, etat_immobilisation.nom as type_etat from
 view_pv_utilisation_valider join module on view_pv_utilisation_valider.module = module.id
 join etat_immobilisation on view_pv_utilisation_valider.etat_immobilisation = etat_immobilisation.id ;
+
+select * from pv_reception;
+     id     |    date    |       code       | id_etat_immobilisation | id_type_ammortissement | taux | id_receptionneur | id_livreur | id_bon_commande | id_article | id_categorie | quantite 
+------------+------------+------------------+------------------------+------------------------+------+------------------+------------+-----------------+------------+--------------+----------
+ PR00000009 | 2024-01-24 | ANTJAN2024213011 |                      4 |                     10 |   20 | 15               | 1          | BC00000012      | 213        | OD           |        1
+ PR00000010 | 2024-01-24 | ANTJAN2024213012 |                      1 |                     10 |   20 | 15               | 1          | BC00000012      | 213        | OD           |        3
+
+select * from inventaire;
+ id | date | immobilisation | etat_immobilisation | taux | ammortissement | type_inventaire | libeller | description 
+----+------+----------------+---------------------+------+----------------+-----------------+----------+-------------
+
+select * from immobilisation_reception;
+ id_immobilisation | id_pv_reception | id_etat_immobilisation 
+-------------------+-----------------+------------------------
+ I_R0001           | PR00000009      |                      4
+ I_R0002           | PR00000010      |                      1
+ I_R0003           | PR00000010      |                      1
+ I_R0004           | PR00000010      |                      1
+ I_R0005           | PR00000010      |                      1
+
+
+insert into inventaire(date,immobilisation,etat_immobilisation,taux,ammortissement,type_inventaire,libeller,description)
+values
+('2024-01-24','I_R0001',4,20,10,'venant pv de reception PR00000009', 'Premiere invenaire lors de la reception', 'Ordinateur Utilisable second main'),
+('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
+('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
+('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
+('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande');

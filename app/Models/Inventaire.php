@@ -12,7 +12,7 @@ class Inventaire extends Model
 {
     public $id;
     public $date;
-    public $immobisation;
+    public $immobilisation;
     public $etat_immobilisation;
     public $description;
     public $taux;
@@ -20,10 +20,10 @@ class Inventaire extends Model
     public $type_inventaire;
     public $libeller;
 
-    public function __construct($id = "", $date="", $immobisation="", $etat_immobilisation="", $description="", $taux="", $ammortissement="", $type_inventaire="", $libele="") {
+    public function __construct($id = "", $date="", $immobilisation="", $etat_immobilisation="", $description="", $taux="", $ammortissement="", $type_inventaire="", $libele="") {
         $this->id = $id;
         $this->date = $date;
-        $this->immobilisation = $immobisation;
+        $this->immobilisation = $immobilisation;
         $this->etat_immobilisation = $etat_immobilisation;
         $this->description = $description;
         $this->taux = $taux;
@@ -34,7 +34,7 @@ class Inventaire extends Model
 
     public function insert() {
         try {
-            $requete = "insert into inventaire(date, immobilisation, etat_immobilisation, description, taux, ammortissement,type_inventaire,libeller) values ('$this->id', '$this->date', '$this->immobilisation', '$this->etat_immobilisation', '$this->description', $this->taux, $this->ammortissement,'$this->type_inventaire','$this->libeller')";
+            $requete = "insert into inventaire(date, immobilisation, etat_immobilisation, description, taux, ammortissement,type_inventaire,libeller) values ('$this->date', '$this->immobilisation', '$this->etat_immobilisation', '$this->description', $this->taux, $this->ammortissement,'$this->type_inventaire','$this->libeller')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible to insert inventaire: ".$e->getMessage());
@@ -48,7 +48,7 @@ class Inventaire extends Model
     }
 
     public function getListeinventaire() {
-        $requette =  "select * from inventaire where id_etat = 32";
+        $requette =  "select * from inventaire";
         $reponse = DB::select($requette);
         return $reponse;
     }

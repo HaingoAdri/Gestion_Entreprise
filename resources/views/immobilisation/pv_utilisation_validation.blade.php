@@ -28,7 +28,7 @@
                             <tr>
                                 <td><input type="checkbox" name="c[]" class="form-check" value="{{ $index }}"></td>
                                 <td>{{ $id }} <input type="hidden" name="id[{{ $index }}]" value="{{ $id }}"></td>
-                                <td>{{ $date }}</td>
+                                <td>{{ $date }}<input type="hidden" name="date[{{ $index }}]" value="{{ $date }}"></td>
                                 <td>{{ $reception }}<input type="hidden" name="reception[{{ $index }}]" value="{{ $reception }}"></td>
                                 <td>
                                     <select name="etats[{{ $index }}]" id="" class=form-control>
