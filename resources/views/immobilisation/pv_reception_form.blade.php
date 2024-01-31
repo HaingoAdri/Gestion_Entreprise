@@ -80,7 +80,7 @@
 
                                         <div class="form-group">
                                             <label for="lastName">Type d'ammortissement</label>
-                                            <select name="ammortissement" class="form-control" onchange="ajoutTaux()">
+                                            <select name="ammortissement" class="form-control">
                                                 <option value="">Ammortissement</option>
                                                 @if(count($listeAmmortissements) > 0)
                                                     @for($i=0; $i<count($listeAmmortissements); $i++)
@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4" id="taux" style="display: none;">
+                                    <div class="col-lg-4" id="taux">
                                         <label for="firstName">Taux</label>
                                         <input type="text" class="form-control" id="taux" name="taux" placeholder="Placer un taux entre 0 a 25" value="0">
                                     </div>
@@ -116,6 +116,15 @@
                                                 @endfor
                                             @endif
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="firstName">Duree d'utilisation</label>
+                                            <input type="text" class="form-control" id="duree_an" name="duree_an">
                                         </div>
                                     </div>
                                 </div>

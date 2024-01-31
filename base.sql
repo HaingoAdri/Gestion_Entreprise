@@ -1443,3 +1443,5 @@ CREATE TABLE Immobilisation_reception(
     foreign key (id_etat_immobilisation) references etat_immobilisation(id)
     
 );
+
+alter table pv_reception add column duree_an INTEGER;

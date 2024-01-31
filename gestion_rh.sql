@@ -923,7 +923,8 @@ CREATE TABLE public.pv_reception (
     id_bon_commande character varying(10),
     id_article character varying(50),
     id_categorie character varying(50),
-    quantite double precision
+    quantite double precision,
+    duree_an integer
 );
 
 
@@ -5958,9 +5959,9 @@ COPY public.proformat (id, iddemande, idfournisseur, idarticle, prixunitaire, tv
 -- Data for Name: pv_reception; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.pv_reception (id, date, code, id_etat_immobilisation, id_type_ammortissement, taux, id_receptionneur, id_livreur, id_bon_commande, id_article, id_categorie, quantite) FROM stdin;
-PR00000009	2024-01-24	ANTJAN2024213011	4	10	20	15	1	BC00000012	213	OD	1
-PR00000010	2024-01-24	ANTJAN2024213012	1	10	20	15	1	BC00000012	213	OD	3
+COPY public.pv_reception (id, date, code, id_etat_immobilisation, id_type_ammortissement, taux, id_receptionneur, id_livreur, id_bon_commande, id_article, id_categorie, quantite, duree_an) FROM stdin;
+PR00000009	2024-01-24	ANTJAN2024213011	4	10	20	15	1	BC00000012	213	OD	1	\N
+PR00000010	2024-01-24	ANTJAN2024213012	1	10	20	15	1	BC00000012	213	OD	3	\N
 \.
 
 
