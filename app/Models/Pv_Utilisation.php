@@ -10,20 +10,22 @@ use Illuminate\Support\Facades\DB; // Importez la classe DB
 class Pv_Utilisation extends Model
 {
     public $id;
-    public $dates;
-    public $reception;
-    public $module;
+    public $date;
+    public $immobilisation;
+    public $employer;
+    public $etat;
 
-    public function __construct($id="",$dates="",$reception="",$module=""){
+    public function __construct($id=" ", $date=" ", $immobilisation=" ", $employer=" ", $etat=" "){
         $this->id = $id;
-        $this->dates = $dates;
-        $this->reception = $reception;
-        $this->module = $module;
+        $this->date = $date;
+        $this->immobilisation = $immobilisation;
+        $this->employer = $employer;
+        $this->etat = $etat;
     }
 
     public function insert_Pv_utilisation() {
         try {
-            $requete = "insert into pv_utilisation(id, date, reception, module) values ('$this->id','".$this->dates."', '".$this->reception."', ".$this->module.") returning id";
+            $requete = "insert into pv_utilisation(id, date, immobilisation, etat_immobilisation, id_employer) values ('$this->id','$this->date', '$this->immobilisation', '$this->employer', $this->etat)";
             $reponse = DB::insert($requete);
             return $reponse;
         } catch (Exception $e) {
@@ -47,8 +49,8 @@ class Pv_Utilisation extends Model
         return $reponse;
     }
 
-    public function getImmobilisationFromPv($pv){
-        $requette = "select *from immobilisation_reception where id_pv_reception = '".$pv."'";
+    public function getImmobilisation(){
+        $requette = "select *from immobilisation_reception where id_etat_immobilisation = 4";
         $reponse = DB::select($requette);
         return $reponse;
     }

@@ -14,22 +14,24 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Date</th>
-                            <th>Pv Récéption</th>
-                            <th>Etat</th>
-                            <th>Article</th>
-                            <th>Description</th>
                             <th></th>
+                            <th>Id immobilisation</th>
+                            <th>Date</th>
+                            <th>Employer</th>
+                            <th>Etat</th>
                         </tr>
                     </thead>
                     <tbody id="line-container-age">
-                            @foreach($listeImmo as $index => $immo)
+                            @foreach($reception as $index => $immo)
                             <tr>
-                                <td><input type="checkbox" name="c[]" class="form-check" value="{{ $index }}"></td>
-                                <td>{{ $id }} <input type="hidden" name="id[{{ $index }}]" value="{{ $id }}"></td>
-                                <td>{{ $date }}<input type="hidden" name="date[{{ $index }}]" value="{{ $date }}"></td>
-                                <td>{{ $reception }}<input type="hidden" name="reception[{{ $index }}]" value="{{ $reception }}"></td>
+                                <td><input type="checkbox" name="c[]" class="form-check" value="{{ $index }}"> </td>
+                                <td>{{ $immo->id_immobilisation }}
+                                <input type="hidden" name="id[{{ $index }}]" value="{{ $immo->id_immobilisation }}"></td>
+
+                                <td><input type="date" name="date[{{ $index }}]" class="form-control"></td>
+                                <td>
+                                    <input type="text" name="employer[{{ $index }}]" class="form-control">
+                                </td>
                                 <td>
                                     <select name="etats[{{ $index }}]" id="" class=form-control>
                                         @foreach($listeEtat as $etat)
@@ -37,12 +39,6 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
-                                    <input type="hidden" name="article[{{ $index }}]" value="{{ $immo->id_immobilisation }}">
-                                    {{ $immo->id_immobilisation }}
-                                </td>
-                                <td><textarea name="description[{{ $index }}]" placeholder="Description de l'article" class="form-control"></textarea></td>
-                                <td></td>
                             </tr> 
                             @endforeach
                         </tbody>

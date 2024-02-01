@@ -9,6 +9,7 @@ use App\Models\Etat_immobilisation;
 use App\Models\Details_pv_utilisation;
 use App\Models\Inventaire;
 use App\Models\Immobilisation_reception;
+use App\Models\Employer;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
@@ -24,22 +25,9 @@ class Gestion_Immobilisation_Controller extends Controller
 {
 
     public function show_pv_utilisation(){
-        $module = new Module();
-        $listeModules = $module->getListeModules();
-        $pv_reception = (new Pv_Reception())->getListeReception();
-        return view("immobilisation/pv_utilisation", compact("listeModules", "pv_reception"));
-    }
-
-    public function insert_demande_pv_utlisation(Request $request){
-        $date = $request->input('dates');
-        $reception = $request->input('reception');
-        $immobilisation = $request->input('module');
-        $id = (new Pv_Utilisation())->getNextIDPvUtilsation();
-        $pv_utilisation = new Pv_Utilisation(id:$id, dates:$date, reception:$reception, module:$immobilisation);
-        $pv_utilisation->insert_Pv_utilisation();
-        $listeImmo = $pv_utilisation->getImmobilisationFromPv($reception);
+        $reception = (new Pv_Utilisation())->getImmobilisation();
         $listeEtat = (new Etat_immobilisation())->getAllEtats();
-        return view("immobilisation/pv_utilisation_validation" , compact("listeImmo", "listeEtat","date","reception","id"));
+        return view("immobilisation/pv_utilisation_validation", compact("reception","listeEtat"));
     }
 
     public function insert_Details_demande_utilisation(Request $request)
@@ -82,7 +70,7 @@ class Gestion_Immobilisation_Controller extends Controller
 
     public function liste_Demande(){
         $listeDemande = (new Pv_Utilisation())->get_demande_utilisation();
-        return view("immobilisation/validation_utilisation", compact("listeDemande"));
+        return view("immobilisation/validation_utilisation", compact("listeDemande"));  
     }
 
     public function valider_demande(Request $request){

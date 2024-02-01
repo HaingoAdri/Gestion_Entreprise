@@ -280,8 +280,9 @@ insert into immobilisation_reception values
 
 create table pv_utilisation(
     id varchar(10) primary key,
-    reception varchar(10) REFERENCES pv_reception(id),
-    module int REFERENCES module(id),
+    immmobilisation varchar(10) references immobilisation_reception(id_immobilisation),
+    id_employer varchar(10) references employer(id_emp),   
+    etat_immobilisation int references etat_immobilisation(id),
     date date
 );
 
@@ -289,60 +290,17 @@ create sequence seq_Details_utilisation
 start with 1
 increment by 1;
 
-create table details_utilisation(
-    idDU varchar(10) default 'DU' || LPAD(nextval('seq_Details_utilisation')::text, 5, '0') not null primary key,
-    pv_utilisation varchar(10) references pv_utilisation(id),
-    immobilisation varchar(10) references immobilisation_reception(id_immobilisation),
-    description varchar(60),
-    etat_immobilisation int references etat_immobilisation(id),
-    etat int default 40
-);
 
 create table inventaire(
     id varchar(10) default 'IV' || LPAD(nextval('seq_Inventaire')::text, 5, '0') not null primary key,
     date date,
     immobilisation varchar(10) references immobilisation_reception(id_immobilisation),
     etat_immobilisation int references etat_immobilisation(id),
-    taux int,
-    ammortissement int references type_ammortissement(id),
-    type_inventaire varchar(60),
-    libeller varchar(60),
-    description varchar(200)
+    autre_description varchar(50) 
 );
 
-create view view_pv_utilisation_valider as 
-select pv_utilisation.* , details_utilisation.* from pv_utilisation
-join details_utilisation on pv_utilisation.id = details_utilisation.pv_utilisation;
-
-create view view_detail_utilisation as
-select view_pv_utilisation_valider.* , module.type, etat_immobilisation.nom as type_etat from
-view_pv_utilisation_valider join module on view_pv_utilisation_valider.module = module.id
-join etat_immobilisation on view_pv_utilisation_valider.etat_immobilisation = etat_immobilisation.id ;
-
-select * from pv_reception;
-     id     |    date    |       code       | id_etat_immobilisation | id_type_ammortissement | taux | id_receptionneur | id_livreur | id_bon_commande | id_article | id_categorie | quantite 
-------------+------------+------------------+------------------------+------------------------+------+------------------+------------+-----------------+------------+--------------+----------
- PR00000009 | 2024-01-24 | ANTJAN2024213011 |                      4 |                     10 |   20 | 15               | 1          | BC00000012      | 213        | OD           |        1
- PR00000010 | 2024-01-24 | ANTJAN2024213012 |                      1 |                     10 |   20 | 15               | 1          | BC00000012      | 213        | OD           |        3
-
-select * from inventaire;
- id | date | immobilisation | etat_immobilisation | taux | ammortissement | type_inventaire | libeller | description 
-----+------+----------------+---------------------+------+----------------+-----------------+----------+-------------
-
-select * from immobilisation_reception;
- id_immobilisation | id_pv_reception | id_etat_immobilisation 
--------------------+-----------------+------------------------
- I_R0001           | PR00000009      |                      4
- I_R0002           | PR00000010      |                      1
- I_R0003           | PR00000010      |                      1
- I_R0004           | PR00000010      |                      1
- I_R0005           | PR00000010      |                      1
-
-
-insert into inventaire(date,immobilisation,etat_immobilisation,taux,ammortissement,type_inventaire,libeller,description)
-values
-('2024-01-24','I_R0001',4,20,10,'venant pv de reception PR00000009', 'Premiere invenaire lors de la reception', 'Ordinateur Utilisable second main'),
-('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
-('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
-('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande'),
-('2024-01-24','I_R0002',1,20,10,'venant pv de reception PR00000010', 'Premiere invenaire lors de la reception', 'Ordinateur Neuf Sur commande');
+create table details_inventaire(
+    id_inventaire VARCHAR(10) references inventaire(id),
+    id_description int references description(id),
+    information varchar(60)
+);
