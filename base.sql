@@ -1445,3 +1445,4 @@ CREATE TABLE Immobilisation_reception(
 );
 
 alter table pv_reception add column duree_an INTEGER;
+alter table pv_reception add column valeur_brute DOUBLE PRECISION;

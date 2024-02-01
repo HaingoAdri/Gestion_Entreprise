@@ -127,6 +127,12 @@
                                             <input type="text" class="form-control" id="duree_an" name="duree_an">
                                         </div>
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="firstName">Valeur Brute</label>
+                                            <input type="text" class="form-control" id="valeur_brute" name="valeur_brute">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="card card-default card-profile">

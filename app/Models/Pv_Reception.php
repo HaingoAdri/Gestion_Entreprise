@@ -20,6 +20,7 @@ class Pv_Reception extends Model {
     public $id_livreur;
     public $id_bon_commande;
     public $duree_an;
+    public $valeur_brute;
     
     //compte
     public $id_article;
@@ -30,7 +31,7 @@ class Pv_Reception extends Model {
     public $nom_immobilisation;
     public $livreur;
 
-    public function __construct($id = "", $date = "", $code = "", $id_etat_immobilisation = 0, $id_type_ammortissement = 0, $taux = 0, $id_receptionneur = "", $id_livreur = "", $id_bon_commande = "", $id_article = "", $id_categorie = "", $quantite = 0, $duree_an = 0) {
+    public function __construct($id = "", $date = "", $code = "", $id_etat_immobilisation = 0, $id_type_ammortissement = 0, $taux = 0, $id_receptionneur = "", $id_livreur = "", $id_bon_commande = "", $id_article = "", $id_categorie = "", $quantite = 0, $duree_an = 0, $valeur_brute = 0) {
         $this->id = $id;
         $this->date = $date;
         $this->code = $code;
@@ -44,11 +45,12 @@ class Pv_Reception extends Model {
         $this->id_categorie = $id_categorie;
         $this->quantite = $quantite;
         $this->duree_an = $duree_an;
+        $this->valeur_brute = $valeur_brute;
     }
 
     public function insert() {
         try {
-            $requete = "insert into pv_reception(id, date, code, id_etat_immobilisation, id_type_ammortissement, taux, id_receptionneur, id_livreur, id_bon_commande, id_article, id_categorie, quantite, duree_an) values ('". $this->id."', '". $this->date ."', '". $this->code."', ". $this->id_etat_immobilisation .", ".$this->id_type_ammortissement.", ".$this->taux.", '". $this->id_receptionneur. "', ". $this->id_livreur .",'".$this->id_bon_commande."', '$this->id_article', '$this->id_categorie', $this->quantite, $this->duree_an)";
+            $requete = "insert into pv_reception(id, date, code, id_etat_immobilisation, id_type_ammortissement, taux, id_receptionneur, id_livreur, id_bon_commande, id_article, id_categorie, quantite, duree_an, valeur_brute) values ('". $this->id."', '". $this->date ."', '". $this->code."', ". $this->id_etat_immobilisation .", ".$this->id_type_ammortissement.", ".$this->taux.", '". $this->id_receptionneur. "', ". $this->id_livreur .",'".$this->id_bon_commande."', '$this->id_article', '$this->id_categorie', $this->quantite, $this->duree_an, $this->valeur_brute)";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer un pv de reception: ".$e->getMessage());
@@ -153,6 +155,7 @@ class Pv_Reception extends Model {
                 $pv->id_categorie = $resultat->id_categorie;
                 $pv->quantite = $resultat->quantite;
                 $pv->duree_an = $resultat->duree_an;
+                $pv->valeur_brute = $resultat->valeur_brute;
 
                 $etat = (new Etat_immobilisation(id: $pv->id_etat_immobilisation))->getDonnes_Un_Etat();
                 $pv->nom_immobilisation = $etat->nom;
@@ -185,6 +188,7 @@ class Pv_Reception extends Model {
                 $pv->id_categorie = $resultat->id_categorie;
                 $pv->quantite = $resultat->quantite;
                 $pv->duree_an = $resultat->duree_an;
+                $pv->valeur_brute = $resultat->valeur_brute;
 
                 $etat = (new Etat_immobilisation(id: $pv->id_etat_immobilisation))->getDonnes_Un_Etat();
                 $pv->nom_immobilisation = $etat->nom;
@@ -217,6 +221,7 @@ class Pv_Reception extends Model {
                 $pv->id_categorie = $resultat->id_categorie;
                 $pv->quantite = $resultat->quantite;
                 $pv->duree_an = $resultat->duree_an;
+                $pv->valeur_brute = $resultat->valeur_brute;
 
                 $etat = (new Etat_immobilisation(id: $pv->id_etat_immobilisation))->getDonnes_Un_Etat();
                 $pv->nom_immobilisation = $etat->nom;

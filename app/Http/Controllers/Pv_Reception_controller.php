@@ -159,8 +159,9 @@ class Pv_Reception_controller extends Controller
         $categorie = $request->get("categorie");
         $quantite = $request->get("quantite");
         $duree_an = $request->get("duree_an");
+        $valeur_brute = $request->get("valeur_brute");
         
-        $pv_reception = new Pv_Reception(date: $date, id_etat_immobilisation: $etat, id_type_ammortissement: $ammortissement, taux: $taux, id_receptionneur: $recepteur, id_livreur: $livreur, id_bon_commande: $numero_bon_commande, id_article: $id_compte, id_categorie: $categorie, quantite: $quantite, duree_an: $duree_an);
+        $pv_reception = new Pv_Reception(date: $date, id_etat_immobilisation: $etat, id_type_ammortissement: $ammortissement, taux: $taux, id_receptionneur: $recepteur, id_livreur: $livreur, id_bon_commande: $numero_bon_commande, id_article: $id_compte, id_categorie: $categorie, quantite: $quantite, duree_an: $duree_an, valeur_brute: $valeur_brute);
         
         $lastID = $pv_reception->codification($lieu, $id_compte);
 
