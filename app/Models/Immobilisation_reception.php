@@ -55,4 +55,10 @@ class Immobilisation_reception extends Model {
         $requette = DB::select($sql);
         return $requette;
     }
+
+    public function updateEtatImmobilisation($id){
+        $sql = "update immobilisation_reception set libre = 2 where id_immobilisation = '$id'";
+        $requette = DB::update($sql);
+        return $requette;
+    }
 }

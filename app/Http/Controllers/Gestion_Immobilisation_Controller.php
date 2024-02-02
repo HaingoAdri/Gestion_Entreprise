@@ -43,24 +43,19 @@ class Gestion_Immobilisation_Controller extends Controller
             // Récupérer les données associées à l'index
             $id = $request->input('id.' . $index);
             $date = $request->input('date.'.$index);
-            $article = $request->input('article.' . $index);
+            $article = $request->input('employer.' . $index);
             $etat = $request->input('etats.' . $index);
-            $description = $request->input('description.' . $index);
-
+            $id_pv = (new Pv_Utilisation())->getNextIDPvUtilsation();
             // Créer un nouvel objet Details_pv_utilisation
-            $details = new Details_pv_utilisation(
-                pv_utilisation:$id,
-                immobilisation :$article,
-                description: $description,
-                etat_immobilisation :$etat
+            $details = new Pv_Utilisation(
+                id:$id_pv,
+                date :$date,
+                immobilisation: $id,
+                employer :$article,
+                etat:$etat
             );
-            $details->insertDetails_pv_utilisation();
-            $immobilisation = (new Immobilisation_reception())->getUnImmobilisationReception($article);
-            $pv_reception = (new Pv_Reception($immobilisation[0]->id_pv_reception))->getReception();
-            for($i=0; $i<count($pv_reception); $i++){
-                $inventaire = new Inventaire(date:$date, immobilisation:$article, etat_immobilisation:$pv_reception[$i]->id_etat_immobilisation, description:$description, taux:$pv_reception[$i]->taux, ammortissement:$pv_reception[$i]->id_type_ammortissement, type_inventaire:"Pv utilisation premiere utilisation",libele:"Pv utilisation premiere usage du materiel");
-                $inventaire->insert();
-            }
+            $details->insert_Pv_utilisation();
+            
             
             // Ajouter l'objet à la liste
             $detailsList[] = $details;
@@ -77,7 +72,12 @@ class Gestion_Immobilisation_Controller extends Controller
         $checkedIndexes = $request->input('c', []);
         foreach ($checkedIndexes as $index) {
             $id = $request->input('id.' . $index);
-            $new_details = (new Details_pv_utilisation())->updateDetails_Utilisation($id);
+            $imo = $request->input('immobilisation.' . $index);
+            $etats = $request->input('etats.' . $index);
+            $date = $request->input('date.' . $index);
+            $new_details = (new Pv_Utilisation())->update_Pv_Utilisation($id);
+            $modif = (new Immobilisation_reception())->updateEtatImmobilisation($imo);
+            $inventaire = (new Inventaire(date:$date, immobilisation:$imo,etat_immobilisation:$etats,autre_description:"Premiere utilisation"))->insert();
         }
         return redirect()->route('liste_demande_pv_utilisation');
     }

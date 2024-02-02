@@ -15,27 +15,21 @@
                     <thead>
                             <th></th>
                             <th>Id</th>
-                            <th>Pv utilisation</th>
                             <th>Date</th>
-                            <th>Pv Récéption</th>
+                            <th>Immobilisation</th>
                             <th>Etat</th>
-                            <th>Article</th>
-                            <th>Description</th>
-                            <th>Module</th>
+                            <th>Employer</th>
                         
                     </thead>
                     <tbody id="line-container-age">
                         @foreach($listeDemande as $index => $immo)
                         <tr>
                             <td><input type="checkbox" name="c[]" class="form-check" value="{{ $index }}"></td>
-                            <td>{{ $immo->iddu }} <input type="hidden" name="id[{{ $index }}]" value="{{ $immo->iddu }}"></td>
-                            <td>{{ $immo->id }}</td>
-                            <td>{{ $immo->date }}</td>
-                            <td>{{ $immo->reception }}</td>
-                            <td>{{ $immo->type_etat }}</td>
-                            <td>{{ $immo->immobilisation }}</td>
-                            <td>{{ $immo->description }}</td>
-                            <td>{{ $immo->type }}</td>
+                            <td>{{ $immo->id }} <input type="hidden" name="id[{{ $index }}]" value="{{ $immo->id }}"></td>
+                            <td>{{ $immo->date }}<input type="hidden" name="date[{{ $index }}]" value="{{ $immo->date }}"></td>
+                            <td>{{ $immo->immmobilisation }} <input type="hidden" name="immobilisation[{{ $index }}]" value="{{ $immo->immmobilisation }}"></td>
+                            <td>{{ $immo->etat_immobilisation }}<input type="hidden" name="etats[{{ $index }}]" value="{{ $immo->etat_immobilisation }}"></td>
+                            <td>{{ $immo->id_employer }}</td>
                         </tr>
                         @endforeach    
                     </tbody>

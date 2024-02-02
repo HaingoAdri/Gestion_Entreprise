@@ -278,11 +278,15 @@ insert into immobilisation_reception values
 ('I_R0004','PR00000010',1),
 ('I_R0005','PR00000010',1);
 
+-- 1 izy tsy misy mampiasa dia 2 izy misy mampiasa
+
 create table pv_utilisation(
     id varchar(10) primary key,
     immmobilisation varchar(10) references immobilisation_reception(id_immobilisation),
     id_employer varchar(10) references employer(id_emp),   
     etat_immobilisation int references etat_immobilisation(id),
+    libre int default 1,
+    etat default 40,
     date date
 );
 

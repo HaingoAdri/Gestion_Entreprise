@@ -171,7 +171,7 @@ class Pv_Reception_controller extends Controller
             $id = (new Immobilisation_reception())->getNextIDImmobilisationReception();
             $immobilisation_reception = new Immobilisation_reception(id_immobilisation:$id ,id_pv_reception: $lastID, id_etat_immobilisation: $etat);
             $immobilisation_reception->insert();
-            $inventaire = new Inventaire(date:$date, immobilisation:$id, etat_immobilisation:$etat, description:" ", taux:$taux, ammortissement:$ammortissement, type_inventaire:"Pv de reception du ".$lastID.".", libele:"Premiere inventaire");
+            $inventaire = new Inventaire(date:$date, immobilisation:$id, etat_immobilisation:$etat, autre_description:"Reception de pour immoblisation reception");
             $inventaire->insert();
         }
 
@@ -180,6 +180,8 @@ class Pv_Reception_controller extends Controller
             $details = new Details_Pv_Reception($lastID, $listeDescription[$i]->id, $information);
             $details->insert();
         }
+
+        
 
         return redirect()->route('show_list_bon_commande');
     }
