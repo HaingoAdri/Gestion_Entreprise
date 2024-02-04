@@ -11,12 +11,14 @@ class Immobilisation_reception extends Model {
     public $id_immobilisation;
     public $id_pv_reception;
     public $id_etat_immobilisation;
+    public $dernier_date;
    
 
-    public function __construct($id_immobilisation = "", $id_pv_reception = "", $id_etat_immobilisation = 0) {
+    public function __construct($id_immobilisation = "", $id_pv_reception = "", $id_etat_immobilisation = 0, $dernier_date = "") {
         $this->id_immobilisation = $id_immobilisation;
         $this->id_pv_reception = $id_pv_reception;
         $this->id_etat_immobilisation = $id_etat_immobilisation;
+        $this->dernier_date = $dernier_date;
     }
 
     public function getNextIDImmobilisationReception() {
@@ -31,7 +33,7 @@ class Immobilisation_reception extends Model {
 
     public function insert() {
         try {
-            $requete = "insert into Immobilisation_reception (id, id_pv_reception, id_etat_immobilisation) values ('$this->getNextIDImmobilisationReception','$this->id_pv_reception', $this->id_etat_immobilisation)";
+            $requete = "insert into Immobilisation_reception (id, id_pv_reception, id_etat_immobilisation, dernier_date) values ('.$this->getNextIDImmobilisationReception().','$this->id_pv_reception', $this->id_etat_immobilisation, '$this->dernier_date')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer Etat_immobilisation: ".$e->getMessage());
@@ -61,4 +63,24 @@ class Immobilisation_reception extends Model {
         $requette = DB::update($sql);
         return $requette;
     }
+
+    public function updateImmobilisation($id, $date){
+        $sql = "update immobilisation_reception set id_etat_immobilisation = 4, dernier_date = '$date' where id_immobilisation = '$id'";
+        $requette = DB::update($sql);
+        return $requette;
+    }
+
+    public function getListeImmobilisationInutilisable() {
+        $requette = "select * from immobilisation_reception where id_etat_immobilisation = 3";
+        $reponse = DB::select($requette);
+        $liste = array();
+        if(count($reponse) > 0){
+            foreach($reponse as $resultat) {
+                $Immobilisation_reception = new Immobilisation_reception(id_immobilisation: $resultat->id_immobilisation, id_pv_reception: $resultat->id_pv_reception, id_etat_immobilisation: $resultat->id_etat_immobilisation, dernier_date: $resultat->dernier_date);
+                $liste[] = $Immobilisation_reception;
+            }
+        }
+        return $liste;
+    }
+
 }

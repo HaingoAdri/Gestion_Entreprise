@@ -28,6 +28,7 @@ use App\Http\Controllers\Immobilier_controller;
 use App\Http\Controllers\Pv_Reception_controller;
 use App\Http\Controllers\Gestion_Immobilisation_Controller;
 use App\Http\Controllers\Inventaire_Controller;
+use App\Http\Controllers\Maintenance_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -290,3 +291,13 @@ Route::post('/insert_valider_details_utilisation', [Gestion_Immobilisation_Contr
 Route::get('/faire_inventaire', [Inventaire_Controller::class, "formulaire_inventaire"])->name("faire_inventaire");
 Route::post('/insert_inventaire', [Inventaire_Controller::class, "insert_Inventaire"])->name("insert_inventaire");
 Route::get('/liste_inventaire', [Inventaire_Controller::class, "liste_Inventaire"])->name("liste_inventaire");
+
+
+// Maintenance
+Route::get('/liste_maintenance', [Maintenance_controller::class, "listeMaintenance"])->name("liste_maintenance");
+Route::post('/insert_maintenance', [Maintenance_controller::class, "insertMaintenance"])->name("insert_maintenance");
+Route::get('/liste_maintenance_en_cours', [Maintenance_controller::class, "listeMaintenanceEnCours"])->name("liste_maintenance_en_cours");
+Route::get('/terminer_maintenance', [Maintenance_controller::class, "terminerMaintenance"])->name("terminer_maintenance");
+Route::get('/liste_maintenance_terminer', [Maintenance_controller::class, "listeMaintenanceTerminer"])->name("liste_maintenance_terminer");
+Route::get('/terminer_maintenance_form', [Maintenance_controller::class, "terminerMaintenanceForm"])->name("terminer_maintenance_form");
+Route::post('/insert_maintenance_form', [Maintenance_controller::class, "insertMaintenanceForm"])->name("insert_maintenance_form");

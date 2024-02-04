@@ -1446,3 +1446,42 @@ CREATE TABLE Immobilisation_reception(
 
 alter table pv_reception add column duree_an INTEGER;
 alter table pv_reception add column valeur_brute DOUBLE PRECISION;
+
+alter table immobilisation_reception add column dernier_date DATE;
+
+CREATE TABLE etat_entretien(
+    id VARCHAR(10) PRImARY KEY,
+    designation VARCHAR(255)
+);
+
+insert into etat_entretien values ('EE000001','En cours');
+insert into etat_entretien values ('EE000002','Terminer');
+
+CREATE TABLE type_entretien(
+    id VARCHAR(10) PRImARY KEY,
+    designation VARCHAR(255)
+);
+
+insert into type_entretien values ('TP000001', 'Mise a jour');
+insert into type_entretien values ('TP000002', 'Rechange');
+insert into type_entretien values ('TP000003', 'Virus');
+insert into type_entretien values ('TP000004', 'Autres');
+
+create sequence seqMaintenance
+increment by 1
+start with 1
+minValue 1;
+
+CREATE TABLE Maintenance(
+    id_maintenance VARCHAR(10) PRIMARY KEY,
+    id_immobilisation_reception VARCHAR(10),
+    id_type_entretien VARCHAR(10),
+    debut_maintenance DATE,
+    fin_maintenance DATE,
+    date_prochain_entretient DATE,
+    id_etat_entretien VARCHAR(10),
+    designation TEXT,
+    foreign key (id_immobilisation_reception) references immobilisation_reception(id_immobilisation),
+    foreign key (id_type_entretien) references type_entretien(id),
+    foreign key (id_etat_entretien) references etat_entretien(id)
+);
