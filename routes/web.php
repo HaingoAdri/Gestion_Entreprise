@@ -292,6 +292,11 @@ Route::get('/faire_inventaire', [Inventaire_Controller::class, "formulaire_inven
 Route::post('/insert_inventaire', [Inventaire_Controller::class, "insert_Inventaire"])->name("insert_inventaire");
 Route::get('/liste_inventaire', [Inventaire_Controller::class, "liste_Inventaire"])->name("liste_inventaire");
 
+//pv radiation
+Route::get('/faire_pv_radiation', [Gestion_Immobilisation_Controller::class, "faire_pv_radiation"])->name("faire_pv_radiation");
+Route::post('/insert_pv_radiation', [Gestion_Immobilisation_Controller::class, "insert_pv_radiation"])->name("insert_pv_radiation");
+Route::get('/show_pv_radiation', [Gestion_Immobilisation_Controller::class, "show_pv_radiation"])->name("show_pv_radiation");
+
 
 // Maintenance
 Route::get('/liste_maintenance', [Maintenance_controller::class, "listeMaintenance"])->name("liste_maintenance");

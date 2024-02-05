@@ -263,6 +263,9 @@
                                     <li><a class="sidenav-item-link" href="{{ route('liste_demande_pv_utilisation') }}">
                                         <span class="nav-text"> Validation de demande d'utilisation</span>
                                     </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('faire_pv_radiation') }}">
+                                        <span class="nav-text"> Pv de radiation</span>
+                                    </a></li>
                                     <li><a class="sidenav-item-link" href="{{ route('faire_inventaire') }}">
                                         <span class="nav-text">Inventaire</span>
                                     </a></li>

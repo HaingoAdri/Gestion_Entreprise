@@ -81,4 +81,25 @@ class Gestion_Immobilisation_Controller extends Controller
         }
         return redirect()->route('liste_demande_pv_utilisation');
     }
+
+    public function faire_pv_radiation(){
+        $descriptions = (new Pv_radiation)->getAllDescription();
+        $immobilisation = (new Pv_Utilisation)->getImmobilisation();
+        return view("immobilisation/pv_radiation",compact("descriptions","immobilisation"));       
+    }
+
+    public function insert_pv_radiation(Request $request){
+        $date = $request->input('date');
+        $immobilisation = $request->input('immobilisation');
+        $cause = $request->input('cause');
+        $id = (new Pv_radiation())->getNextIDPvRadiation();
+        $pv_radiation = (new Pv_radiation($id,$date,$immobilisation,$cause))->insert_Pv_Radiation();
+        $eradier_immobilisation = (new Pv_radiation())->update_immobilisation($immobilisation);
+        return redirect()->route('faire_pv_radiation');
+    }
+
+    public function show_pv_radiation(){
+        $pv_radiation = (new Pv_radiation())->show_pv_radiation();
+        return view("immobilisation/liste_pv_radiation",compact("pv_radiation"));
+    }
 }
