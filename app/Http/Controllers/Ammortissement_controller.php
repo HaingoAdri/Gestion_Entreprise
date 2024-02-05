@@ -6,6 +6,7 @@ use App\Models\BonCommande;
 use App\Models\Fournisseur;
 use App\Models\BonReception;
 use App\Models\Details_Bon_Reception;
+use App\Models\Ammortissement;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB; // Importez la classe DB
@@ -24,7 +25,14 @@ class Ammortissement_controller extends Controller
         $annee = $request->input('annee');
         $reference = $request->input('reference');
 
+        $ammortissement = new Ammortissement();
+
         $tableau = array();
+        if($reference == ""){
+            $tableau = $ammortissement->getTableau($annee);
+        } else {
+            $tableau = $ammortissement->getTableauByImmobilisation($annee, $reference);
+        }
 
         return view("immobilisation/tableau_ammortissement", compact("tableau"));
     }
