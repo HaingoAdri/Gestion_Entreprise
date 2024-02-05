@@ -167,7 +167,7 @@ class Pv_Reception_controller extends Controller
 
         $listeDescription = (new Categorie(id: $categorie))->getDonneesUncategorie()->listeDescription;
 
-        for($j = 0; $j < quantite; $j++){
+        for($j = 0; $j < $quantite; $j++){
             $id = (new Immobilisation_reception())->getNextIDImmobilisationReception();
             $immobilisation_reception = new Immobilisation_reception(id_immobilisation:$id ,id_pv_reception: $lastID, id_etat_immobilisation: $etat, dernier_date: $date);
             $immobilisation_reception->insert();

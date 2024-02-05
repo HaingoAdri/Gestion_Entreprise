@@ -18,6 +18,8 @@ use App\Models\Inventaire;
 use App\Models\Categorie;
 use App\Models\Maintenance;
 
+use App\Http\Controllers\Pv_Reception_controller;
+
 use Illuminate\Support\Facades\Session;
 
 class Maintenance_controller extends Controller
@@ -39,11 +41,14 @@ class Maintenance_controller extends Controller
         $type = $request->get('type_entretient');
         $immobilisation = $request->get('immobilisation');
         $debut = $request->get('debut');
-        $designation = $request->get('designation');
+        $description = $request->get('designation');
         $etat_entretien = "EE000001";
 
-        $maintenance = new Maintenance(id_immobilisation_reception: $immobilisation, id_type_entretien: $type, debut_maintenance: $debut, id_etat_entretien: $etat_entretien, designation: $description);
-        $maitenance->insert();
+        $maintenance = new Maintenance(id_immobilisation_reception: $immobilisation, id_type_entretien: $type, debut_maintenance: $debut, id_etat_entretien: $etat_entretien, description: $description);
+        $maintenance->insert();
+
+        $immobilisation_reception = new Immobilisation_reception();
+        $immobilisation_reception->updateImmobilisationEnCoursMaintenance($immobilisation);
 
         return redirect()->route('liste_maintenance_en_cours');
     }
@@ -72,12 +77,29 @@ class Maintenance_controller extends Controller
         $id_immobilisation = $request->get('id_immobilisation');
 
         $maintenance = new Maintenance();
-        $maitenance->updateMaintenance($id_maintenance, $fin, "EE000002");
+        $maintenance->updateMaintenance($id_maintenance, $fin, "EE000002");
 
-        $immobilisation_reception = new Immobilisation_reception();
-        $immobilisation_reception->updateImmobilisation($id_immobilisation, $fin);
+        // $immobilisation_reception = new Immobilisation_reception();
+        // $immobilisation_reception->updateImmobilisation($id_immobilisation, $fin);
 
-        return redirect()->route('liste_maintenance_terminer');
+        $immobilisation = (new Immobilisation_reception())->getOneImmobilisation($id_immobilisation);
+        $pv_reception = (new Pv_Reception(id: $immobilisation->id_pv_reception))->getReception();
+
+        $pv_reception_controller = new Pv_Reception_controller();
+
+        $mockRequestData = [
+            "bonCommande" => "null",
+            "idArticle" => $pv_reception->id_article,
+            "categorie" => $pv_reception->id_categorie
+        ];
+
+        // Create a mock request object
+        $requestData = new Request([], $mockRequestData);
+
+        $view = $pv_reception_controller->create_pv_reception($requestData);
+
+        return $view;
+        // return redirect()->route('liste_maintenance_terminer');
     }
     
 }

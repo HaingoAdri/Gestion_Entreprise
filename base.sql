@@ -1480,8 +1480,10 @@ CREATE TABLE Maintenance(
     fin_maintenance DATE,
     date_prochain_entretient DATE,
     id_etat_entretien VARCHAR(10),
-    designation TEXT,
+    description TEXT,
     foreign key (id_immobilisation_reception) references immobilisation_reception(id_immobilisation),
     foreign key (id_type_entretien) references type_entretien(id),
     foreign key (id_etat_entretien) references etat_entretien(id)
 );
+
+insert into etat_immobilisation values(default, 'En cours de maintenance');

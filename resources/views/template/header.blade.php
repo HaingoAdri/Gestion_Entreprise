@@ -269,6 +269,27 @@
                             </div>
                         </ul>
                     </li>
+
+                    <li  class="has-sub" >
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#maintenance" aria-expanded="false" aria-controls="achat">
+                            <i class="mdi mdi-truck-fast"></i>
+                            <span class="nav-text">Maintenance</span> <b class="caret"></b>
+                        </a>
+                        <ul  class="collapse"  id="maintenance" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                               
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_maintenance') }}">
+                                        <span class="nav-text">A maintenir</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_maintenance_en_cours') }}">
+                                        <span class="nav-text">En cours</span>
+                                    </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('liste_maintenance_terminer') }}">
+                                        <span class="nav-text">Terminer</span>
+                                    </a></li>
+                            </div>
+                        </ul>
+                    </li>
                     @endif
 
                     @if(session("administrateur_rh")->module->id == 8 || session("administrateur_rh")->module->id == 9)

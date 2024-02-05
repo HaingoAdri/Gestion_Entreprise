@@ -21,7 +21,7 @@
                                 <br>
 
                                 <input type="hidden" name="id_maintenance" value="{{$id_maintenance}}">
-                                <input type="hidden" name="id_immobilisation" value="{{$id_mid_immobilisationaintenance}}">
+                                <input type="hidden" name="id_immobilisation" value="{{$id_immobilisation}}">
 
                                 <div class="row mb-2">
                                     <div class="col-lg-6">

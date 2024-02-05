@@ -295,9 +295,9 @@ Route::get('/liste_inventaire', [Inventaire_Controller::class, "liste_Inventaire
 
 // Maintenance
 Route::get('/liste_maintenance', [Maintenance_controller::class, "listeMaintenance"])->name("liste_maintenance");
-Route::post('/insert_maintenance', [Maintenance_controller::class, "insertMaintenance"])->name("insert_maintenance");
+Route::get('/insert_maintenance', [Maintenance_controller::class, "insertMaintenance"])->name("insert_maintenance");
 Route::get('/liste_maintenance_en_cours', [Maintenance_controller::class, "listeMaintenanceEnCours"])->name("liste_maintenance_en_cours");
 Route::get('/terminer_maintenance', [Maintenance_controller::class, "terminerMaintenance"])->name("terminer_maintenance");
 Route::get('/liste_maintenance_terminer', [Maintenance_controller::class, "listeMaintenanceTerminer"])->name("liste_maintenance_terminer");
 Route::get('/terminer_maintenance_form', [Maintenance_controller::class, "terminerMaintenanceForm"])->name("terminer_maintenance_form");
-Route::post('/insert_maintenance_form', [Maintenance_controller::class, "insertMaintenanceForm"])->name("insert_maintenance_form");
+Route::get('/insert_maintenance_form', [Maintenance_controller::class, "insertMaintenanceForm"])->name("insert_maintenance_form");

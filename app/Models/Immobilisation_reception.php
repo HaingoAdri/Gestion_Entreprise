@@ -33,7 +33,7 @@ class Immobilisation_reception extends Model {
 
     public function insert() {
         try {
-            $requete = "insert into Immobilisation_reception (id, id_pv_reception, id_etat_immobilisation, dernier_date) values ('.$this->getNextIDImmobilisationReception().','$this->id_pv_reception', $this->id_etat_immobilisation, '$this->dernier_date')";
+            $requete = "insert into Immobilisation_reception (id_immobilisation, id_pv_reception, id_etat_immobilisation, dernier_date) values ('$this->id_immobilisation','$this->id_pv_reception', $this->id_etat_immobilisation, '$this->dernier_date')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer Etat_immobilisation: ".$e->getMessage());
@@ -59,7 +59,7 @@ class Immobilisation_reception extends Model {
     }
 
     public function updateEtatImmobilisation($id){
-        $sql = "update immobilisation_reception set libre = 2 where id_immobilisation = '$id'";
+        $sql = "update immobilisation_reception set libre = 65 where id_immobilisation = '$id'";
         $requette = DB::update($sql);
         return $requette;
     }
@@ -70,8 +70,27 @@ class Immobilisation_reception extends Model {
         return $requette;
     }
 
+    public function updateImmobilisationEnCoursMaintenance($id){
+        $sql = "update immobilisation_reception set id_etat_immobilisation = 5 where id_immobilisation = '$id'";
+        $requette = DB::update($sql);
+        return $requette;
+    }
+
+    public function getOneImmobilisation($id) {
+        $requette = "select * from immobilisation_reception where id_immobilisation = '$id'";
+        // $requette = "select * from immobilisation_reception where id_etat_immobilisation = 3 and libre = 60";
+        $reponse = DB::select($requette);
+        $liste = null;
+        if(count($reponse) > 0){
+            $Immobilisation_reception = new Immobilisation_reception(id_immobilisation: $reponse[0]->id_immobilisation, id_pv_reception: $reponse[0]->id_pv_reception, id_etat_immobilisation: $reponse[0]->id_etat_immobilisation, dernier_date: $reponse[0]->dernier_date);
+            $liste = $Immobilisation_reception;
+        }
+        return $liste;
+    }
+
     public function getListeImmobilisationInutilisable() {
         $requette = "select * from immobilisation_reception where id_etat_immobilisation = 3";
+        // $requette = "select * from immobilisation_reception where id_etat_immobilisation = 3 and libre = 60";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){

@@ -21,24 +21,24 @@ class Maintenance extends Model {
     public $id_etat_entretien;
     public $designation_etat_entretien;
 
-    public $designation;
+    public $description;
    
 
-    public function __construct($id_maintenance = "", $id_immobilisation_reception = "", $id_type_entretien = "", $designation_type_entretien = "", $debut_maintenance = "", $fin_maintenance = "", $date_prochain_entretient = "", $id_etat_entretien = "", $designation_etat_entretien = "", $designation = "") {
-        $this->$id_maintenance = $id_maintenance;
-        $this->$id_immobilisation_reception = $id_immobilisation_reception;
+    public function __construct($id_maintenance = "", $id_immobilisation_reception = "", $id_type_entretien = "", $designation_type_entretien = "", $debut_maintenance = "", $fin_maintenance = "", $date_prochain_entretient = "", $id_etat_entretien = "", $designation_etat_entretien = "", $description = "") {
+        $this->id_maintenance = $id_maintenance;
+        $this->id_immobilisation_reception = $id_immobilisation_reception;
 
-        $this->$id_type_entretien = $id_type_entretien;
-        $this->$designation_type_entretien = $designation_type_entretien;
+        $this->id_type_entretien = $id_type_entretien;
+        $this->designation_type_entretien = $designation_type_entretien;
 
-        $this->$debut_maintenance = $debut_maintenance;
-        $this->$fin_maintenance = $fin_maintenance;
-        $this->$date_prochain_entretient = $date_prochain_entretient;
+        $this->debut_maintenance = $debut_maintenance;
+        $this->fin_maintenance = $fin_maintenance;
+        $this->date_prochain_entretient = $date_prochain_entretient;
 
-        $this->$id_etat_entretien = $id_etat_entretien;
-        $this->$designation_etat_entretien = $designation_etat_entretien;
+        $this->id_etat_entretien = $id_etat_entretien;
+        $this->designation_etat_entretien = $designation_etat_entretien;
 
-        $this->designation = $designation;
+        $this->description = $description;
     }
 
     public function getNextIDMaintenance() {
@@ -53,7 +53,8 @@ class Maintenance extends Model {
 
     public function insert() {
         try {
-            $requete = "insert into maintenance (id_maintenance, id_immobilisation_reception, id_type_entretien, debut_maintenance, fin_maintenance, date_prochain_entretient, id_etat_entretien) values ('$this->getNextIDMaintenance()', '$this->id_immobilisation_reception', '$this->id_type_entretien', '$this->debut_maintenance', CURDATE(), CURDATE(), '$this->id_etat_entretien', '$this->description')";
+            $id = $this->getNextIDMaintenance();
+            $requete = "insert into maintenance (id_maintenance, id_immobilisation_reception, id_type_entretien, debut_maintenance, fin_maintenance, date_prochain_entretient, id_etat_entretien, description) values ('$id', '$this->id_immobilisation_reception', '$this->id_type_entretien', '$this->debut_maintenance', NOW(), NOW(), '$this->id_etat_entretien', '$this->description')";
             DB::insert($requete);
         } catch (Exception $e) {
             throw new Exception("Impossible d'inserer maintenance: ".$e->getMessage());
@@ -61,7 +62,7 @@ class Maintenance extends Model {
     }
 
     public function getListeTypeEntretient(){
-        $sql = "select * from type_entretient";
+        $sql = "select * from type_entretien";
         $respone = DB::select($sql);
         $liste = array();
         if(count($respone) > 0){
@@ -74,7 +75,7 @@ class Maintenance extends Model {
     }   
 
     public function getListeEtatEntretient(){
-        $sql = "select * from etat_entretient";
+        $sql = "select * from etat_entretien";
         $respone = DB::select($sql);
         $liste = array();
         if(count($respone) > 0){
@@ -87,13 +88,13 @@ class Maintenance extends Model {
     }   
 
     public function updateMaintenance($id, $fin_maintenance, $id_etat_entretien){
-        $sql = "update maintenance set fin_maintenance = '$fin_maintenance', date_prochain_entretient = DATE_ADD('$fin_maintenance', INTERVAL 6 MONTH), id_etat_entretien = $id_etat_entretient where id_maintenance = '$id'";
+        $sql = "update maintenance set fin_maintenance = '$fin_maintenance', date_prochain_entretient = ('$fin_maintenance'::date + INTERVAL '6 month'), id_etat_entretien = '$id_etat_entretien' where id_maintenance = '$id'";
         $requette = DB::update($sql);
         return $requette;
     }
 
     public function getListeMaintenanceEnCours() {
-        $requette = "select * from maintenance where etat_entretient = 'EE000001'";
+        $requette = "select * from maintenance where id_etat_entretien = 'EE000001'";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
@@ -106,12 +107,12 @@ class Maintenance extends Model {
     }
 
     public function getListeMaintenanceTerminer() {
-        $requette = "select * from maintenance where etat_entretient = 'EE000002'";
+        $requette = "select * from maintenance where id_etat_entretien = 'EE000002'";
         $reponse = DB::select($requette);
         $liste = array();
         if(count($reponse) > 0){
             foreach($reponse as $resultat) {
-                $maintenance = new Maintenance(id_maintenance: $resultat->id_maintenance, id_immobilisation_reception: $resultat->id_immobilisation_reception, id_type_entretien: $resultat->id_type_entretien, debut_maintenance: $resultat->debut_maintenance, id_etat_entretien: $resultat->id_etat_entretien = "", description: $resultat->description);
+                $maintenance = new Maintenance(id_maintenance: $resultat->id_maintenance, id_immobilisation_reception: $resultat->id_immobilisation_reception, id_type_entretien: $resultat->id_type_entretien, debut_maintenance: $resultat->debut_maintenance, fin_maintenance: $resultat->fin_maintenance, date_prochain_entretient: $resultat->date_prochain_entretient, id_etat_entretien: $resultat->id_etat_entretien = "", description: $resultat->description);
                 $liste[] = $maintenance;
             }
         }

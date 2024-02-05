@@ -29,7 +29,7 @@
 
                                 <div class="row mb-2">
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
 
                                         <div class="form-group">
                                             <label for="lastName">Type d'entretient</label>
@@ -47,15 +47,15 @@
 
                                 <div class="row mb-2">
 
-                                    <div class="col-lg-6" id="designation">
-                                        <label for="firstName">Designation</label>
+                                    <div class="col-lg-12" id="designation">
+                                        <label for="firstName">Description</label>
                                         <input type="text" class="form-control" id="designation" name="designation">
                                     </div>
 
                                 </div>
 
                                 <div class="row mb-2">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="firstName">Date Debut</label>
                                             <input type="date" class="form-control" id="debut" name="debut">

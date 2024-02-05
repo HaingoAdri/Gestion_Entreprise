@@ -15,6 +15,7 @@
                             <th>Id</th>
                             <th>Reference immobilisation</th>
                             <th>Date debut</th>
+                            <th>Description</th>
                             <th>Etat</th>
                             <th></th>
                             <th></th>
@@ -25,6 +26,7 @@
                         <tr id="tbody-age">
                             <th>{{ $maintenance->id_maintenance }}</th>
                             <td>{{ $maintenance->id_immobilisation_reception }}</td>
+                            <td>{{ $maintenance->description }}</td>
                             <td>{{ $maintenance->debut_maintenance }}</td>
                             <td>En cours</td>
                             <td>
