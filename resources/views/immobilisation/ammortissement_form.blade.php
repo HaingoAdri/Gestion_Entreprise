@@ -24,6 +24,13 @@
                                             <input type="number" class="form-control" id="annee" name="annee">
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="firstName">Reference Immobilisation</label>
+                                            <input type="text" class="form-control" id="reference" name="reference">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-6">

@@ -22,6 +22,7 @@ class Ammortissement_controller extends Controller
     
     public function voir_ammortissement(Request $request){
         $annee = $request->input('annee');
+        $reference = $request->input('reference');
 
         $tableau = array();
 
