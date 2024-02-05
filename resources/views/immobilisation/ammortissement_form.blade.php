@@ -16,7 +16,7 @@
 
                         <div class="card-body">
 
-                            <form action="{{ route('create_bon_de_reception_form') }}">
+                            <form action="{{ route('voir_ammortissement') }}">
                                 <div class="row mb-2">
                                     <div class="col-lg-6">
                                         <div class="form-group">

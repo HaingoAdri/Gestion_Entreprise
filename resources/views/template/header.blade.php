@@ -269,6 +269,9 @@
                                     <li><a class="sidenav-item-link" href="{{ route('faire_inventaire') }}">
                                         <span class="nav-text">Inventaire</span>
                                     </a></li>
+                                    <li><a class="sidenav-item-link" href="{{ route('show_form') }}">
+                                        <span class="nav-text">Tableau d'ammortissement</span>
+                                    </a></li>
                             </div>
                         </ul>
                     </li>

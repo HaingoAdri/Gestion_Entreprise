@@ -29,6 +29,7 @@ use App\Http\Controllers\Pv_Reception_controller;
 use App\Http\Controllers\Gestion_Immobilisation_Controller;
 use App\Http\Controllers\Inventaire_Controller;
 use App\Http\Controllers\Maintenance_controller;
+use App\Http\Controllers\Ammortissement_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -306,3 +307,7 @@ Route::get('/terminer_maintenance', [Maintenance_controller::class, "terminerMai
 Route::get('/liste_maintenance_terminer', [Maintenance_controller::class, "listeMaintenanceTerminer"])->name("liste_maintenance_terminer");
 Route::get('/terminer_maintenance_form', [Maintenance_controller::class, "terminerMaintenanceForm"])->name("terminer_maintenance_form");
 Route::get('/insert_maintenance_form', [Maintenance_controller::class, "insertMaintenanceForm"])->name("insert_maintenance_form");
+
+// ammortissement
+Route::get('/show_form', [Ammortissement_controller::class, "show_form"])->name("show_form");
+Route::get('/voir_ammortissement', [Ammortissement_controller::class, "voir_ammortissement"])->name("voir_ammortissement");
